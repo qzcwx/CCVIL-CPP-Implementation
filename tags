@@ -1,0 +1,211 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+A	Benchmarks.h	/^	int64_t A ;$/;"	m	class:Benchmarks	access:protected
+Benchmarks	Benchmarks.cpp	/^Benchmarks::Benchmarks(RunParameter runParam){$/;"	f	class:Benchmarks	signature:(RunParameter runParam)
+Benchmarks	Benchmarks.h	/^	Benchmarks(RunParameter runParam);$/;"	p	class:Benchmarks	access:public	signature:(RunParameter runParam)
+Benchmarks	Benchmarks.h	/^class Benchmarks{$/;"	c
+Benchmarks::A	Benchmarks.h	/^	int64_t A ;$/;"	m	class:Benchmarks	access:protected
+Benchmarks::Benchmarks	Benchmarks.cpp	/^Benchmarks::Benchmarks(RunParameter runParam){$/;"	f	class:Benchmarks	signature:(RunParameter runParam)
+Benchmarks::Benchmarks	Benchmarks.h	/^	Benchmarks(RunParameter runParam);$/;"	p	class:Benchmarks	access:public	signature:(RunParameter runParam)
+Benchmarks::M	Benchmarks.h	/^	int64_t M ;$/;"	m	class:Benchmarks	access:protected
+Benchmarks::MASK	Benchmarks.h	/^	int64_t MASK;$/;"	m	class:Benchmarks	access:protected
+Benchmarks::Ovector	Benchmarks.h	/^	double *Ovector;$/;"	m	class:Benchmarks	access:protected
+Benchmarks::Pvector	Benchmarks.h	/^	int*    Pvector;$/;"	m	class:Benchmarks	access:protected
+Benchmarks::RotMatrix	Benchmarks.h	/^	double* RotMatrix;$/;"	m	class:Benchmarks	access:protected
+Benchmarks::ackley	Benchmarks.cpp	/^double Benchmarks::ackley(double*x,int dim){$/;"	f	class:Benchmarks	signature:(double*x,int dim)
+Benchmarks::ackley	Benchmarks.h	/^	double ackley(double*x,int dim);$/;"	p	class:Benchmarks	access:protected	signature:(double*x,int dim)
+Benchmarks::anotherz	Benchmarks.h	/^	double* anotherz;$/;"	m	class:Benchmarks	access:protected
+Benchmarks::anotherz1	Benchmarks.h	/^	double* anotherz1;$/;"	m	class:Benchmarks	access:protected
+Benchmarks::anotherz2	Benchmarks.h	/^	double* anotherz2;$/;"	m	class:Benchmarks	access:protected
+Benchmarks::compute	Benchmarks.h	/^	virtual double compute(double* x){return 0;};$/;"	f	class:Benchmarks	access:public	signature:(double* x)
+Benchmarks::createPermVector	Benchmarks.cpp	/^int* Benchmarks::createPermVector(int dim){$/;"	f	class:Benchmarks	signature:(int dim)
+Benchmarks::createPermVector	Benchmarks.h	/^	int* createPermVector(int dim);$/;"	p	class:Benchmarks	access:protected	signature:(int dim)
+Benchmarks::createRotMatrix	Benchmarks.cpp	/^double** Benchmarks::createRotMatrix(int dim){$/;"	f	class:Benchmarks	signature:(int dim)
+Benchmarks::createRotMatrix	Benchmarks.h	/^	double** createRotMatrix(int dim);$/;"	p	class:Benchmarks	access:protected	signature:(int dim)
+Benchmarks::createRotMatrix1D	Benchmarks.cpp	/^double* Benchmarks::createRotMatrix1D(int dim){$/;"	f	class:Benchmarks	signature:(int dim)
+Benchmarks::createRotMatrix1D	Benchmarks.h	/^	double* createRotMatrix1D(int dim);$/;"	p	class:Benchmarks	access:protected	signature:(int dim)
+Benchmarks::createShiftVector	Benchmarks.cpp	/^double* Benchmarks::createShiftVector(int dim, double min,double max) {$/;"	f	class:Benchmarks	signature:(int dim, double min,double max)
+Benchmarks::createShiftVector	Benchmarks.h	/^	double* createShiftVector(int dim, double min,double max);$/;"	p	class:Benchmarks	access:protected	signature:(int dim, double min,double max)
+Benchmarks::dimension	Benchmarks.h	/^	int dimension;$/;"	m	class:Benchmarks	access:protected
+Benchmarks::elliptic	Benchmarks.cpp	/^double Benchmarks::elliptic(double*x,int dim) {$/;"	f	class:Benchmarks	signature:(double*x,int dim)
+Benchmarks::elliptic	Benchmarks.cpp	/^double Benchmarks::elliptic(double*x,int dim){$/;"	f	class:Benchmarks	signature:(double*x,int dim)
+Benchmarks::elliptic	Benchmarks.h	/^	double elliptic(double*x,int dim);$/;"	p	class:Benchmarks	access:protected	signature:(double*x,int dim)
+Benchmarks::functionInitRandomSeed	Benchmarks.h	/^	int64_t functionInitRandomSeed;$/;"	m	class:Benchmarks	access:protected
+Benchmarks::lookup	Benchmarks.h	/^	double*lookup;$/;"	m	class:Benchmarks	access:protected
+Benchmarks::lookupprepare	Benchmarks.cpp	/^void Benchmarks::lookupprepare() {$/;"	f	class:Benchmarks	signature:()
+Benchmarks::lookupprepare	Benchmarks.h	/^	void lookupprepare();$/;"	p	class:Benchmarks	access:protected	signature:()
+Benchmarks::m_havenextGaussian	Benchmarks.h	/^	int  m_havenextGaussian;$/;"	m	class:Benchmarks	access:protected
+Benchmarks::m_nextGaussian	Benchmarks.h	/^	double m_nextGaussian;$/;"	m	class:Benchmarks	access:protected
+Benchmarks::m_seed	Benchmarks.h	/^	int64_t m_seed;$/;"	m	class:Benchmarks	access:protected
+Benchmarks::multiply	Benchmarks.cpp	/^double* Benchmarks::multiply(double*vector, double*matrix,int dim){$/;"	f	class:Benchmarks	signature:(double*vector, double*matrix,int dim)
+Benchmarks::next	Benchmarks.cpp	/^int Benchmarks::next(int bits) {$/;"	f	class:Benchmarks	signature:(int bits)
+Benchmarks::next	Benchmarks.h	/^	int next(int bits);$/;"	p	class:Benchmarks	access:protected	signature:(int bits)
+Benchmarks::nextDouble	Benchmarks.cpp	/^double Benchmarks::nextDouble(){$/;"	f	class:Benchmarks	signature:()
+Benchmarks::nextDouble	Benchmarks.h	/^	double nextDouble();$/;"	p	class:Benchmarks	access:protected	signature:()
+Benchmarks::nextGaussian	Benchmarks.cpp	/^double Benchmarks::nextGaussian(){$/;"	f	class:Benchmarks	signature:()
+Benchmarks::nextGaussian	Benchmarks.h	/^	double nextGaussian();$/;"	p	class:Benchmarks	access:protected	signature:()
+Benchmarks::nextInt	Benchmarks.cpp	/^int Benchmarks::nextInt(int n) {$/;"	f	class:Benchmarks	signature:(int n)
+Benchmarks::nextInt	Benchmarks.h	/^	int nextInt(int n);$/;"	p	class:Benchmarks	access:protected	signature:(int n)
+Benchmarks::rastrigin	Benchmarks.cpp	/^double Benchmarks::rastrigin(double*x,int dim){$/;"	f	class:Benchmarks	signature:(double*x,int dim)
+Benchmarks::rastrigin	Benchmarks.h	/^	double rastrigin(double*x,int dim);$/;"	p	class:Benchmarks	access:protected	signature:(double*x,int dim)
+Benchmarks::rot_elliptic	Benchmarks.cpp	/^double Benchmarks::rot_elliptic(double*x,int dim){$/;"	f	class:Benchmarks	signature:(double*x,int dim)
+Benchmarks::setOvectorToZero	Benchmarks.h	/^	bool setOvectorToZero;$/;"	m	class:Benchmarks	access:protected
+Benchmarks::~Benchmarks	Benchmarks.cpp	/^Benchmarks::~Benchmarks(){$/;"	f	class:Benchmarks	signature:()
+Benchmarks::~Benchmarks	Benchmarks.h	/^	~Benchmarks();$/;"	p	class:Benchmarks	access:public	signature:()
+CC	Makefile	/^CC=g++$/;"	m
+CFLAGS	Makefile	/^CFLAGS=-Wall -pedantic -ggdb$/;"	m
+D	Benchmarks.h	13;"	d
+E	Benchmarks.h	11;"	d
+F1	F1.cpp	/^F1::F1(RunParameter runParam):Benchmarks(runParam){$/;"	f	class:F1	signature:(RunParameter runParam)
+F1	F1.h	/^	F1(RunParameter runParam);$/;"	p	class:F1	access:public	signature:(RunParameter runParam)
+F1	F1.h	/^class F1:public Benchmarks{$/;"	c	inherits:Benchmarks
+F1::F1	F1.cpp	/^F1::F1(RunParameter runParam):Benchmarks(runParam){$/;"	f	class:F1	signature:(RunParameter runParam)
+F1::F1	F1.h	/^	F1(RunParameter runParam);$/;"	p	class:F1	access:public	signature:(RunParameter runParam)
+F1::Ovector	F1.h	/^	double *Ovector;$/;"	m	class:F1	access:protected
+F1::compute	F1.cpp	/^double F1::compute(double* x) {$/;"	f	class:F1	signature:(double* x)
+F1::compute	F1.h	/^	double compute(double* x) ;$/;"	p	class:F1	access:public	signature:(double* x)
+F1::maxX	F1.h	/^	static const int maxX = 100;$/;"	m	class:F1	access:protected
+F1::minX	F1.h	/^	static const int minX = -100;$/;"	m	class:F1	access:protected
+F1::~F1	F1.cpp	/^F1::~F1(){$/;"	f	class:F1	signature:()
+F1::~F1	F1.h	/^	~F1();$/;"	p	class:F1	access:public	signature:()
+F2	F2.cpp	/^F2::F2(RunParameter runParam):Benchmarks(runParam){$/;"	f	class:F2	signature:(RunParameter runParam)
+F2	F2.h	/^	F2(RunParameter runParam);$/;"	p	class:F2	access:public	signature:(RunParameter runParam)
+F2	F2.h	/^class F2:public Benchmarks{$/;"	c	inherits:Benchmarks
+F2::F2	F2.cpp	/^F2::F2(RunParameter runParam):Benchmarks(runParam){$/;"	f	class:F2	signature:(RunParameter runParam)
+F2::F2	F2.h	/^	F2(RunParameter runParam);$/;"	p	class:F2	access:public	signature:(RunParameter runParam)
+F2::Ovector	F2.h	/^	double *Ovector;$/;"	m	class:F2	access:protected
+F2::compute	F2.cpp	/^double F2::compute(double* x){$/;"	f	class:F2	signature:(double* x)
+F2::compute	F2.h	/^	double compute(double* x) ;$/;"	p	class:F2	access:public	signature:(double* x)
+F2::maxX	F2.h	/^	static const int maxX = 5;$/;"	m	class:F2	access:protected
+F2::minX	F2.h	/^	static const int minX = -5;$/;"	m	class:F2	access:protected
+F2::~F2	F2.cpp	/^F2::~F2(){$/;"	f	class:F2	signature:()
+F2::~F2	F2.h	/^	~F2();$/;"	p	class:F2	access:public	signature:()
+F3	F3.cpp	/^F3::F3(RunParameter runParam):Benchmarks(runParam){$/;"	f	class:F3	signature:(RunParameter runParam)
+F3	F3.h	/^	F3(RunParameter runParam);$/;"	p	class:F3	access:public	signature:(RunParameter runParam)
+F3	F3.h	/^class F3:public Benchmarks{$/;"	c	inherits:Benchmarks
+F3::F3	F3.cpp	/^F3::F3(RunParameter runParam):Benchmarks(runParam){$/;"	f	class:F3	signature:(RunParameter runParam)
+F3::F3	F3.h	/^	F3(RunParameter runParam);$/;"	p	class:F3	access:public	signature:(RunParameter runParam)
+F3::compute	F3.cpp	/^ double F3::compute(double*x){$/;"	f	class:F3	signature:(double*x)
+F3::compute	F3.h	/^	double compute(double* x) ;$/;"	p	class:F3	access:public	signature:(double* x)
+F3::maxX	F3.h	/^	static const int maxX = 32;$/;"	m	class:F3	access:protected
+F3::minX	F3.h	/^	static const int minX = -32;$/;"	m	class:F3	access:protected
+F3::~F3	F3.cpp	/^F3::~F3(){$/;"	f	class:F3	signature:()
+F3::~F3	F3.h	/^	~F3();$/;"	p	class:F3	access:public	signature:()
+F4	F4.h	/^	F4(RunParameter runParam);$/;"	p	class:F4	access:public	signature:(RunParameter runParam)
+F4	F4.h	/^class F4:public Benchmarks{$/;"	c	inherits:Benchmarks
+F4::F4	F4.h	/^	F4(RunParameter runParam);$/;"	p	class:F4	access:public	signature:(RunParameter runParam)
+F4::compute	F4.cpp	/^double F4::compute(double*x){$/;"	f	class:F4	signature:(double*x)
+F4::compute	F4.h	/^	double compute(double* x) ;$/;"	p	class:F4	access:public	signature:(double* x)
+F4::maxX	F4.h	/^	static const int maxX = 32;$/;"	m	class:F4	access:protected
+F4::minX	F4.h	/^	static const int minX = -32;$/;"	m	class:F4	access:protected
+F4::~F4	F4.h	/^	~F4();$/;"	p	class:F4	access:public	signature:()
+L	Benchmarks.h	12;"	d
+M	Benchmarks.h	/^	int64_t M ;$/;"	m	class:Benchmarks	access:protected
+MASK	Benchmarks.h	/^	int64_t MASK;$/;"	m	class:Benchmarks	access:protected
+NP	RunParameter.h	/^	int NP;$/;"	m	class:RunParameter	access:public
+OBJECTS	Makefile	/^OBJECTS=main.o RunParameter.o F1.o F2.o F3.o F4.o Benchmarks.o$/;"	m
+Ovector	Benchmarks.h	/^	double *Ovector;$/;"	m	class:Benchmarks	access:protected
+Ovector	F1.h	/^	double *Ovector;$/;"	m	class:F1	access:protected
+Ovector	F2.h	/^	double *Ovector;$/;"	m	class:F2	access:protected
+PI	Benchmarks.h	10;"	d
+Pvector	Benchmarks.h	/^	int*    Pvector;$/;"	m	class:Benchmarks	access:protected
+RotMatrix	Benchmarks.h	/^	double* RotMatrix;$/;"	m	class:Benchmarks	access:protected
+RunParameter	RunParameter.cpp	/^RunParameter::RunParameter(){$/;"	f	class:RunParameter	signature:()
+RunParameter	RunParameter.h	/^	RunParameter();$/;"	p	class:RunParameter	access:public	signature:()
+RunParameter	RunParameter.h	/^class RunParameter{$/;"	c
+RunParameter::NP	RunParameter.h	/^	int NP;$/;"	m	class:RunParameter	access:public
+RunParameter::RunParameter	RunParameter.cpp	/^RunParameter::RunParameter(){$/;"	f	class:RunParameter	signature:()
+RunParameter::RunParameter	RunParameter.h	/^	RunParameter();$/;"	p	class:RunParameter	access:public	signature:()
+RunParameter::dimension	RunParameter.h	/^	int dimension;$/;"	m	class:RunParameter	access:public
+RunParameter::fitnessCheckPoint	RunParameter.h	/^	vector<int> fitnessCheckPoint;$/;"	m	class:RunParameter	access:public
+RunParameter::functionToRun	RunParameter.h	/^	vector<int> functionToRun;$/;"	m	class:RunParameter	access:public
+RunParameter::initRandomSeed	RunParameter.h	/^	int initRandomSeed;$/;"	m	class:RunParameter	access:public
+RunParameter::initialGroupSize	RunParameter.h	/^	int initialGroupSize;$/;"	m	class:RunParameter	access:public
+RunParameter::numOfRun	RunParameter.h	/^	int numOfRun;$/;"	m	class:RunParameter	access:public
+RunParameter::samplingInterval	RunParameter.h	/^	int samplingInterval;$/;"	m	class:RunParameter	access:public
+RunParameter::~RunParameter	RunParameter.cpp	/^RunParameter::~RunParameter() {$/;"	f	class:RunParameter	signature:()
+RunParameter::~RunParameter	RunParameter.h	/^	~RunParameter();$/;"	p	class:RunParameter	access:public	signature:()
+_BENCHMARKS_H	Benchmarks.h	2;"	d
+_F1_H	F1.h	2;"	d
+_F2_H	F2.h	2;"	d
+_F3_H	F3.h	2;"	d
+_F4_H	F4.h	2;"	d
+_HEADER_H	Header.h	2;"	d
+_RUNPARAMETER_H	RunParameter.h	2;"	d
+ackley	Benchmarks.cpp	/^double Benchmarks::ackley(double*x,int dim){$/;"	f	class:Benchmarks	signature:(double*x,int dim)
+ackley	Benchmarks.h	/^	double ackley(double*x,int dim);$/;"	p	class:Benchmarks	access:protected	signature:(double*x,int dim)
+anotherz	Benchmarks.h	/^	double* anotherz;$/;"	m	class:Benchmarks	access:protected
+anotherz1	Benchmarks.h	/^	double* anotherz1;$/;"	m	class:Benchmarks	access:protected
+anotherz2	Benchmarks.h	/^	double* anotherz2;$/;"	m	class:Benchmarks	access:protected
+compute	Benchmarks.h	/^	virtual double compute(double* x){return 0;};$/;"	f	class:Benchmarks	access:public	signature:(double* x)
+compute	F1.cpp	/^double F1::compute(double* x) {$/;"	f	class:F1	signature:(double* x)
+compute	F1.h	/^	double compute(double* x) ;$/;"	p	class:F1	access:public	signature:(double* x)
+compute	F2.cpp	/^double F2::compute(double* x){$/;"	f	class:F2	signature:(double* x)
+compute	F2.h	/^	double compute(double* x) ;$/;"	p	class:F2	access:public	signature:(double* x)
+compute	F3.cpp	/^ double F3::compute(double*x){$/;"	f	class:F3	signature:(double*x)
+compute	F3.h	/^	double compute(double* x) ;$/;"	p	class:F3	access:public	signature:(double* x)
+compute	F4.cpp	/^double F4::compute(double*x){$/;"	f	class:F4	signature:(double*x)
+compute	F4.h	/^	double compute(double* x) ;$/;"	p	class:F4	access:public	signature:(double* x)
+createPermVector	Benchmarks.cpp	/^int* Benchmarks::createPermVector(int dim){$/;"	f	class:Benchmarks	signature:(int dim)
+createPermVector	Benchmarks.h	/^	int* createPermVector(int dim);$/;"	p	class:Benchmarks	access:protected	signature:(int dim)
+createRotMatrix	Benchmarks.cpp	/^double** Benchmarks::createRotMatrix(int dim){$/;"	f	class:Benchmarks	signature:(int dim)
+createRotMatrix	Benchmarks.h	/^	double** createRotMatrix(int dim);$/;"	p	class:Benchmarks	access:protected	signature:(int dim)
+createRotMatrix1D	Benchmarks.cpp	/^double* Benchmarks::createRotMatrix1D(int dim){$/;"	f	class:Benchmarks	signature:(int dim)
+createRotMatrix1D	Benchmarks.h	/^	double* createRotMatrix1D(int dim);$/;"	p	class:Benchmarks	access:protected	signature:(int dim)
+createShiftVector	Benchmarks.cpp	/^double* Benchmarks::createShiftVector(int dim, double min,double max) {$/;"	f	class:Benchmarks	signature:(int dim, double min,double max)
+createShiftVector	Benchmarks.h	/^	double* createShiftVector(int dim, double min,double max);$/;"	p	class:Benchmarks	access:protected	signature:(int dim, double min,double max)
+dimension	Benchmarks.h	/^	int dimension;$/;"	m	class:Benchmarks	access:protected
+dimension	RunParameter.h	/^	int dimension;$/;"	m	class:RunParameter	access:public
+elliptic	Benchmarks.cpp	/^double Benchmarks::elliptic(double*x,int dim) {$/;"	f	class:Benchmarks	signature:(double*x,int dim)
+elliptic	Benchmarks.cpp	/^double Benchmarks::elliptic(double*x,int dim){$/;"	f	class:Benchmarks	signature:(double*x,int dim)
+elliptic	Benchmarks.h	/^	double elliptic(double*x,int dim);$/;"	p	class:Benchmarks	access:protected	signature:(double*x,int dim)
+fitnessCheckPoint	RunParameter.h	/^	vector<int> fitnessCheckPoint;$/;"	m	class:RunParameter	access:public
+functionInitRandomSeed	Benchmarks.h	/^	int64_t functionInitRandomSeed;$/;"	m	class:Benchmarks	access:protected
+functionToRun	RunParameter.h	/^	vector<int> functionToRun;$/;"	m	class:RunParameter	access:public
+initRandomSeed	RunParameter.h	/^	int initRandomSeed;$/;"	m	class:RunParameter	access:public
+initialGroupSize	RunParameter.h	/^	int initialGroupSize;$/;"	m	class:RunParameter	access:public
+lookup	Benchmarks.h	/^	double*lookup;$/;"	m	class:Benchmarks	access:protected
+lookupprepare	Benchmarks.cpp	/^void Benchmarks::lookupprepare() {$/;"	f	class:Benchmarks	signature:()
+lookupprepare	Benchmarks.h	/^	void lookupprepare();$/;"	p	class:Benchmarks	access:protected	signature:()
+m_havenextGaussian	Benchmarks.h	/^	int  m_havenextGaussian;$/;"	m	class:Benchmarks	access:protected
+m_nextGaussian	Benchmarks.h	/^	double m_nextGaussian;$/;"	m	class:Benchmarks	access:protected
+m_seed	Benchmarks.h	/^	int64_t m_seed;$/;"	m	class:Benchmarks	access:protected
+main	main.cpp	/^int main(){$/;"	f	signature:()
+maxX	F1.h	/^	static const int maxX = 100;$/;"	m	class:F1	access:protected
+maxX	F2.h	/^	static const int maxX = 5;$/;"	m	class:F2	access:protected
+maxX	F3.h	/^	static const int maxX = 32;$/;"	m	class:F3	access:protected
+maxX	F4.h	/^	static const int maxX = 32;$/;"	m	class:F4	access:protected
+minX	F1.h	/^	static const int minX = -100;$/;"	m	class:F1	access:protected
+minX	F2.h	/^	static const int minX = -5;$/;"	m	class:F2	access:protected
+minX	F3.h	/^	static const int minX = -32;$/;"	m	class:F3	access:protected
+minX	F4.h	/^	static const int minX = -32;$/;"	m	class:F4	access:protected
+multiply	Benchmarks.cpp	/^double* Benchmarks::multiply(double*vector, double*matrix,int dim){$/;"	f	class:Benchmarks	signature:(double*vector, double*matrix,int dim)
+next	Benchmarks.cpp	/^int Benchmarks::next(int bits) {$/;"	f	class:Benchmarks	signature:(int bits)
+next	Benchmarks.h	/^	int next(int bits);$/;"	p	class:Benchmarks	access:protected	signature:(int bits)
+nextDouble	Benchmarks.cpp	/^double Benchmarks::nextDouble(){$/;"	f	class:Benchmarks	signature:()
+nextDouble	Benchmarks.h	/^	double nextDouble();$/;"	p	class:Benchmarks	access:protected	signature:()
+nextGaussian	Benchmarks.cpp	/^double Benchmarks::nextGaussian(){$/;"	f	class:Benchmarks	signature:()
+nextGaussian	Benchmarks.h	/^	double nextGaussian();$/;"	p	class:Benchmarks	access:protected	signature:()
+nextInt	Benchmarks.cpp	/^int Benchmarks::nextInt(int n) {$/;"	f	class:Benchmarks	signature:(int n)
+nextInt	Benchmarks.h	/^	int nextInt(int n);$/;"	p	class:Benchmarks	access:protected	signature:(int n)
+numOfRun	RunParameter.h	/^	int numOfRun;$/;"	m	class:RunParameter	access:public
+rastrigin	Benchmarks.cpp	/^double Benchmarks::rastrigin(double*x,int dim){$/;"	f	class:Benchmarks	signature:(double*x,int dim)
+rastrigin	Benchmarks.h	/^	double rastrigin(double*x,int dim);$/;"	p	class:Benchmarks	access:protected	signature:(double*x,int dim)
+rot_elliptic	Benchmarks.cpp	/^double Benchmarks::rot_elliptic(double*x,int dim){$/;"	f	class:Benchmarks	signature:(double*x,int dim)
+samplingInterval	RunParameter.h	/^	int samplingInterval;$/;"	m	class:RunParameter	access:public
+setOvectorToZero	Benchmarks.h	/^	bool setOvectorToZero;$/;"	m	class:Benchmarks	access:protected
+~Benchmarks	Benchmarks.cpp	/^Benchmarks::~Benchmarks(){$/;"	f	class:Benchmarks	signature:()
+~Benchmarks	Benchmarks.h	/^	~Benchmarks();$/;"	p	class:Benchmarks	access:public	signature:()
+~F1	F1.cpp	/^F1::~F1(){$/;"	f	class:F1	signature:()
+~F1	F1.h	/^	~F1();$/;"	p	class:F1	access:public	signature:()
+~F2	F2.cpp	/^F2::~F2(){$/;"	f	class:F2	signature:()
+~F2	F2.h	/^	~F2();$/;"	p	class:F2	access:public	signature:()
+~F3	F3.cpp	/^F3::~F3(){$/;"	f	class:F3	signature:()
+~F3	F3.h	/^	~F3();$/;"	p	class:F3	access:public	signature:()
+~F4	F4.h	/^	~F4();$/;"	p	class:F4	access:public	signature:()
+~RunParameter	RunParameter.cpp	/^RunParameter::~RunParameter() {$/;"	f	class:RunParameter	signature:()
+~RunParameter	RunParameter.h	/^	~RunParameter();$/;"	p	class:RunParameter	access:public	signature:()
