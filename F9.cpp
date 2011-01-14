@@ -23,7 +23,12 @@ F9::F9(RunParameter runParam):Benchmarks(runParam){
 F9::~F9(){
 	delete[] Ovector;
 	delete[] Pvector;
-	delete[] RotMatrix;
+	// delete 2D array
+	int i;
+	for(i=0;i<dimension/(2*nonSeparableGroupSize);i++){
+		delete[] MultiRotMatrix1D[i];
+	}
+	delete[] MultiRotMatrix1D;
 	cout<<"F9 Class destroyed"<<endl;
 }
 
@@ -32,20 +37,29 @@ double F9::compute(double*x){
 	double result=0.0;
 	double* lookup;
 
-	if(Ovector==NULL)
-	{
+	if(Ovector==NULL){
 		Ovector=createShiftVector(dimension,minX,maxX);
 		Pvector=createPermVector(dimension);
-		RotMatrix=createRotMatrix1D(nonSeparableGroupSize);
+		MultiRotMatrix1D=createMultiRotateMatrix1D(nonSeparableGroupSize,dimension/(2*nonSeparableGroupSize));
+
+		/* 
+		 * print the multi rotated matrix 
+		printf("\n\n\n print the multi rotated matrix\n\n\n");
+		for (k = 0; k<dimension/(2*nonSeparableGroupSize); k++){
+		printf("\n matrix %d: \n", k+1);
+			for (i = 0; i<nonSeparableGroupSize*nonSeparableGroupSize; i++){
+				printf("%1.20E\t", MultiRotMatrix1D[k][i]);
+			}
+		}
+		 */
 	}
-	for(i=0;i<dimension;i++)
-	{
+
+	for(i=0;i<dimension;i++){
 		anotherz[i]=x[i]-Ovector[i];
 	}
 
 	lookup = lookupprepare(nonSeparableGroupSize);
-	for(k=1;k<=dimension/(2*nonSeparableGroupSize);k++)
-	{
+	for(k=1;k<=dimension/(2*nonSeparableGroupSize);k++){
 		result+=rot_elliptic(anotherz,nonSeparableGroupSize,k,lookup);
 	}
 	delete[] lookup;

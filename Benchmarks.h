@@ -22,6 +22,7 @@ protected:
 	int* createPermVector(int dim);
 	double** createRotMatrix(int dim);
 	double* createRotMatrix1D(int dim);
+	double** createMultiRotateMatrix1D(int dim, int num);
 
 	double* lookupprepare(int dim);
 
@@ -60,6 +61,7 @@ protected:
 	double *Ovector;
 	int*    Pvector;
 	double* RotMatrix;
+	double** MultiRotMatrix1D;
 
 	double* anotherz;
 	double* anotherz1;

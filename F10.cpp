@@ -23,8 +23,13 @@ F10::F10(RunParameter runParam):Benchmarks(runParam){
 F10::~F10(){
 	delete[] Ovector;
 	delete[] Pvector;
-	delete[] RotMatrix;
 	cout<<"F10 Class destroyed"<<endl;
+	// delete 2D array
+	int i;
+	for(i=0;i<dimension/(2*nonSeparableGroupSize);i++){
+		delete[] MultiRotMatrix1D[i];
+	}
+	delete[] MultiRotMatrix1D;
 }
 
 double F10::compute(double*x){
@@ -35,7 +40,7 @@ double F10::compute(double*x){
 	{
 		Ovector=createShiftVector(dimension,minX,maxX);
 		Pvector=createPermVector(dimension);
-		RotMatrix=createRotMatrix1D(nonSeparableGroupSize);
+		MultiRotMatrix1D=createMultiRotateMatrix1D(nonSeparableGroupSize,dimension/(2*nonSeparableGroupSize));
 	}
 	for(i=0;i<dimension;i++)
 	{

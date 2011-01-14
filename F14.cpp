@@ -21,10 +21,18 @@ F14::F14(RunParameter runParam):Benchmarks(runParam){
 }
 
 F14::~F14(){
+	cout<<"F14 Class destroyed 0"<<endl;
 	delete[] Ovector;
 	delete[] Pvector;
-	delete[] RotMatrix;
-	cout<<"F14 Class destroyed"<<endl;
+	cout<<"F14 Class destroyed 1"<<endl;
+	// delete 2D array
+	int i;
+	for(i=0;i<dimension/(nonSeparableGroupSize);i++){
+		delete[] MultiRotMatrix1D[i];
+	}
+	delete[] MultiRotMatrix1D;
+
+	cout<<"F14 Class destroyed 2"<<endl;
 }
 
 double F14::compute(double*x){
@@ -34,7 +42,7 @@ double F14::compute(double*x){
 	if(Ovector==NULL){
 		Ovector=createShiftVector(dimension,minX,maxX);
 		Pvector=createPermVector(dimension);
-		RotMatrix=createRotMatrix1D(nonSeparableGroupSize);
+		MultiRotMatrix1D=createMultiRotateMatrix1D(nonSeparableGroupSize,dimension/(nonSeparableGroupSize));
 		//	preparelookup(dimension/2);
 		//	preparelookup2(nonSeparableGroupSize);
 	}

@@ -23,7 +23,13 @@ F15::F15(RunParameter runParam):Benchmarks(runParam){
 F15::~F15(){
 	delete[] Ovector;
 	delete[] Pvector;
-	delete[] RotMatrix;
+	// delete 2D array
+	int i;
+	for(i=0;i<dimension/(nonSeparableGroupSize);i++){
+		delete[] MultiRotMatrix1D[i];
+	}
+	delete[] MultiRotMatrix1D;
+
 	cout<<"F15 Class destroyed"<<endl;
 }
 
@@ -31,21 +37,20 @@ double F15::compute(double*x){
 	int i,k;
 	double result=0.0;
 
-	if(Ovector==NULL)
-	{
+	if(Ovector==NULL){
 		Ovector=createShiftVector(dimension,minX,maxX);
 		Pvector=createPermVector(dimension);
-		RotMatrix=createRotMatrix1D(nonSeparableGroupSize);
+		MultiRotMatrix1D=createMultiRotateMatrix1D(nonSeparableGroupSize,dimension/(nonSeparableGroupSize));
 	}
-	for(i=0;i<dimension;i++)
-	{
+
+	for(i=0;i<dimension;i++){
 		anotherz[i]=x[i]-Ovector[i];
 	}
-	for(k=1;k<=dimension/(nonSeparableGroupSize);k++)
-	{
-		result+=rot_rastrigin(anotherz,nonSeparableGroupSize,k);
 
+	for(k=1;k<=dimension/(nonSeparableGroupSize);k++){
+		result+=rot_rastrigin(anotherz,nonSeparableGroupSize,k);
 	}
+
 	return(result);
 }
 

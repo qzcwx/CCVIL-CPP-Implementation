@@ -213,12 +213,32 @@ double* Benchmarks::createRotMatrix1D(int dim){
 	for(i=0;i<dim;i++){
 		delete []a[i];
 	}
+	delete[] a;
 
 	return(b);
 }
 
+/*
+ * create several 1-D rotation matrix randomly
+ */
+double** Benchmarks::createMultiRotateMatrix1D(int dim, int num){
+	double** a;
+	int i;
+
+	/*  allocate storage for an array of pointers */
+	a =(double **) malloc(num * sizeof(double *));
+
+	/* for each pointer, allocate storage for an array of ints */
+	for (i = 0; i < num; i++) {
+		a[i] = (double *)malloc(dim * sizeof(dim));
+		a[i] = createRotMatrix1D(dim);
+	}
+
+	return (a);
+}
 
 double* Benchmarks::lookupprepare(int dim) {
+
 	double pownum;
 	int    i;
 	double* lookup;
@@ -363,7 +383,7 @@ double Benchmarks::rot_elliptic(double*x,int dim, int k, double *lookup){
 		anotherz1[i]=0;
 		for(j=dim-1;j>=0;j--)
 		{
-			anotherz1[i]+=x[Pvector[(k-1)*dim+j]]*RotMatrix[dim*j+i];
+			anotherz1[i]+=x[Pvector[(k-1)*dim+j]]*MultiRotMatrix1D[k-1][dim*j+i];
 		}
 	}
 	for(i=dim-1;i>=0;i--)
@@ -394,7 +414,7 @@ double Benchmarks::rot_rastrigin(double *x,int dim,int k)
 		anotherz1[i]=0;
 		for(j=dim-1;j>=0;j--)
 		{
-			anotherz1[i]+=x[Pvector[(k-1)*dim+j]]*RotMatrix[dim*j+i];
+			anotherz1[i]+=x[Pvector[(k-1)*dim+j]]*MultiRotMatrix1D[k-1][dim*j+i];
 		}
 	}
 
@@ -427,7 +447,7 @@ double Benchmarks::rot_ackley(double *x,int dim,int k)
 		anotherz1[i]=0;
 		for(j=dim-1;j>=0;j--)
 		{
-			anotherz1[i]+=x[Pvector[(k-1)*dim+j]]*RotMatrix[dim*j+i];
+			anotherz1[i]+=x[Pvector[(k-1)*dim+j]]*MultiRotMatrix1D[k-1][dim*j+i];
 		}
 	}
 	for(i=dim-1;i>=0;i--)

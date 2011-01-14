@@ -23,7 +23,12 @@ F11::F11(RunParameter runParam):Benchmarks(runParam){
 F11::~F11(){
 	delete[] Ovector;
 	delete[] Pvector;
-	delete[] RotMatrix;
+	// delete 2D array
+	int i;
+	for(i=0;i<dimension/(2*nonSeparableGroupSize);i++){
+		delete[] MultiRotMatrix1D[i];
+	}
+	delete[] MultiRotMatrix1D;
 	cout<<"F11 Class destroyed"<<endl;
 }
 
@@ -35,7 +40,7 @@ double F11::compute(double*x){
 	{
 		Ovector=createShiftVector(dimension,minX,maxX);
 		Pvector=createPermVector(dimension);
-		RotMatrix=createRotMatrix1D(nonSeparableGroupSize);
+		MultiRotMatrix1D=createMultiRotateMatrix1D(nonSeparableGroupSize,dimension/(2*nonSeparableGroupSize));
 	}
 
 	for(i=0;i<dimension;i++)

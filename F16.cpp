@@ -23,7 +23,13 @@ F16::F16(RunParameter runParam):Benchmarks(runParam){
 F16::~F16(){
 	delete[] Ovector;
 	delete[] Pvector;
-	delete[] RotMatrix;
+	// delete 2D array
+	int i;
+	for(i=0;i<dimension/(nonSeparableGroupSize);i++){
+		delete[] MultiRotMatrix1D[i];
+	}
+	delete[] MultiRotMatrix1D;
+
 	cout<<"F16 Class destroyed"<<endl;
 }
 
@@ -35,7 +41,7 @@ double F16::compute(double*x){
 	{
 		Ovector=createShiftVector(dimension,minX,maxX);
 		Pvector=createPermVector(dimension);
-		RotMatrix=createRotMatrix1D(nonSeparableGroupSize);
+		MultiRotMatrix1D=createMultiRotateMatrix1D(nonSeparableGroupSize,dimension/(nonSeparableGroupSize));
 	}
 	for(i=0;i<dimension;i++)
 	{

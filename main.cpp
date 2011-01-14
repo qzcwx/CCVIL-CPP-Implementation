@@ -85,8 +85,8 @@ int main(){
 
 	printf("function value = %1.20E\n", fp->compute(X));
 
+	fp->~Benchmarks();
+
 	delete[] X;
 	return 0;
 }
-
-
