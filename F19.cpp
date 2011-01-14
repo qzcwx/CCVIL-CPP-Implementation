@@ -1,7 +1,8 @@
-#include "F2.h"
+#include "F19.h"
+#include <stdio.h>
 
 /**
- * Shifted Rastrigin's Function
+ * Single-group Shifted and m-rotated Elliptic Function
  *
  * as defined in "Benchmark Functions for the CEC'2010 Special Session
  * and Competition on Large-Scale Global Optimization" by Ke Tang,
@@ -12,31 +13,33 @@
  * Hefei, Anhui, China.
  */
 
-F2::F2(RunParameter runParam):Benchmarks(runParam){
-	cout<<"F2 Class initialization"<<endl;
+F19::F19(RunParameter runParam):Benchmarks(runParam){
+	cout<<"F19 Class initialization"<<endl;
 	dimension = runParam.dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 }
 
-F2::~F2(){
- 	delete[] Ovector;
-	cout<<"F2 Class destroyed"<<endl;
+F19::~F19(){
+	delete[] Ovector;
+	cout<<"F19 Class destroyed"<<endl;
 }
 
+double F19::compute(double*x){
+	int i;
+	double result;
 
-double F2::compute(double* x){
-  int    i;
-  double result;
+	if(Ovector==NULL)
+	{
+		Ovector=createShiftVector(dimension,minX,maxX);
+	}
 
-  if(Ovector == NULL) {
-    Ovector = createShiftVector(dimension,minX,maxX);
-  }
+	for(i=0;i<dimension;i++)
+	{
+		anotherz[i]=x[i]-Ovector[i];
+	}
 
-  for(i = 0; i < dimension; i++) {
-    anotherz[i] = x[i] - Ovector[i];
-  }
-
-  result = rastrigin(anotherz,dimension);
-  return(result);
+	result=schwefel(anotherz, dimension);
+	return(result);
 }
+

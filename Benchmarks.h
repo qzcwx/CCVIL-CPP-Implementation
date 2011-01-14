@@ -23,14 +23,28 @@ protected:
 	double** createRotMatrix(int dim);
 	double* createRotMatrix1D(int dim);
 
-	void lookupprepare();
+	double* lookupprepare(int dim);
 
 	// Basic mathematical functions' declaration
 	double* multiply(double*vector, double*matrix,int dim);
 	double elliptic(double*x,int dim);
+	double elliptic(double*x, int dim, int k);
 	double rastrigin(double*x,int dim);
+	double rastrigin(double *x, int dim, int k); 
 	double ackley(double*x,int dim);
+	double ackley(double*x,int dim, int k);
 	double rot_elliptic(double*x,int dim);
+	double rot_elliptic(double*x,int dim, int k, double *lookup);
+	double rot_rastrigin(double*x,int dim);
+	double rot_rastrigin(double *x,int dim,int k);
+	double rot_ackley(double*x,int dim);
+	double rot_ackley(double*x,int dim,int k);
+	double schwefel(double*x,int dim);
+	double schwefel(double*x,int dim, int k);
+	double sphere(double*x,int dim);
+	double sphere(double*x,int dim, int k);
+	double rosenbrock(double*x,int dim);
+	double rosenbrock(double*x,int dim, int k);
 
 	int dimension;
 	int nonSeparableGroupSize;
@@ -39,9 +53,8 @@ protected:
 	int64_t A ;
 	int64_t m_seed;
 	int64_t MASK;
-	double*lookup;
 	double m_nextGaussian;
-	int  m_havenextGaussian;
+	bool  m_havenextGaussian;
 	bool setOvectorToZero;
 
 	double *Ovector;

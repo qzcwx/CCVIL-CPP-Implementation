@@ -1,7 +1,8 @@
-#include "F2.h"
+#include "F7.h"
+#include <stdio.h>
 
 /**
- * Shifted Rastrigin's Function
+ * Single-group Shifted and m-rotated Elliptic Function
  *
  * as defined in "Benchmark Functions for the CEC'2010 Special Session
  * and Competition on Large-Scale Global Optimization" by Ke Tang,
@@ -12,31 +13,42 @@
  * Hefei, Anhui, China.
  */
 
-F2::F2(RunParameter runParam):Benchmarks(runParam){
-	cout<<"F2 Class initialization"<<endl;
+F7::F7(RunParameter runParam):Benchmarks(runParam){
+	cout<<"F7 Class initialization"<<endl;
 	dimension = runParam.dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 }
 
-F2::~F2(){
- 	delete[] Ovector;
-	cout<<"F2 Class destroyed"<<endl;
+F7::~F7(){
+	delete[] Ovector;
+	delete[] Pvector;
+	cout<<"F7 Class destroyed"<<endl;
 }
 
 
-double F2::compute(double* x){
+double F7::compute(double*x){
+  int    m = nonSeparableGroupSize;
   int    i;
   double result;
 
   if(Ovector == NULL) {
     Ovector = createShiftVector(dimension,minX,maxX);
+    Pvector = createPermVector(dimension);
   }
 
   for(i = 0; i < dimension; i++) {
     anotherz[i] = x[i] - Ovector[i];
   }
 
-  result = rastrigin(anotherz,dimension);
+  for(i = 0; i < m; i++) {
+    anotherz1[i] = anotherz[Pvector[i]];
+  }
+
+  for(i = m; i < dimension; i++) {
+    anotherz2[i - m] = anotherz[Pvector[i]];
+  }
+
+  result = schwefel(anotherz1,m) * 1e6 + sphere(anotherz2,dimension - m);
   return(result);
 }

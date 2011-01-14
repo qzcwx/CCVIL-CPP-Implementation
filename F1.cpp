@@ -16,7 +16,6 @@ F1::F1(RunParameter runParam):Benchmarks(runParam){
 	cout<<"F1 Class initialization"<<endl;
 	dimension = runParam.dimension;
 	m_havenextGaussian=0;
-	lookup  = NULL;
 	Ovector = NULL;
 }
 
@@ -31,7 +30,6 @@ double F1::compute(double* x) {
 
   if(Ovector == NULL) {
     Ovector = createShiftVector(dimension,minX,maxX);
-    lookupprepare();
   }
 
   for(i = dimension - 1; i >= 0; i--) {

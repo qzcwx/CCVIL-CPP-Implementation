@@ -1,7 +1,8 @@
-#include "F2.h"
+#include "F20.h"
+#include <stdio.h>
 
 /**
- * Shifted Rastrigin's Function
+ * Single-group Shifted and m-rotated Elliptic Function
  *
  * as defined in "Benchmark Functions for the CEC'2010 Special Session
  * and Competition on Large-Scale Global Optimization" by Ke Tang,
@@ -12,31 +13,33 @@
  * Hefei, Anhui, China.
  */
 
-F2::F2(RunParameter runParam):Benchmarks(runParam){
-	cout<<"F2 Class initialization"<<endl;
+F20::F20(RunParameter runParam):Benchmarks(runParam){
+	cout<<"F20 Class initialization"<<endl;
 	dimension = runParam.dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 }
 
-F2::~F2(){
- 	delete[] Ovector;
-	cout<<"F2 Class destroyed"<<endl;
+F20::~F20(){
+	delete[] Ovector;
+	cout<<"F20 Class destroyed"<<endl;
 }
 
+double F20::compute(double*x){
+	int i;
+	double result=0.0;
 
-double F2::compute(double* x){
-  int    i;
-  double result;
+	if(Ovector==NULL)
+	{
+		Ovector=createShiftVector(dimension,minX,maxX);
+	}
 
-  if(Ovector == NULL) {
-    Ovector = createShiftVector(dimension,minX,maxX);
-  }
+	for(i=0;i<dimension;i++)
+	{
+		anotherz[i]=x[i]-Ovector[i];
+	}
 
-  for(i = 0; i < dimension; i++) {
-    anotherz[i] = x[i] - Ovector[i];
-  }
-
-  result = rastrigin(anotherz,dimension);
-  return(result);
+	result=rosenbrock(anotherz, dimension);
+	return(result);
 }
+

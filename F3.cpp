@@ -16,7 +16,6 @@ F3::F3(RunParameter runParam):Benchmarks(runParam){
 	cout<<"F3 Class initialization"<<endl;
 	dimension = runParam.dimension;
 	m_havenextGaussian=0;
-	lookup  = NULL;
 	Ovector = NULL;
 }
 
