@@ -29,7 +29,6 @@ F16::~F16(){
 		delete[] MultiRotMatrix1D[i];
 	}
 	delete[] MultiRotMatrix1D;
-
 	cout<<"F16 Class destroyed"<<endl;
 }
 

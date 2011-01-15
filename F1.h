@@ -3,7 +3,6 @@
 
 #include "Benchmarks.h"
 
-
 class F1:public Benchmarks{
 protected:
 	static const int minX = -100;

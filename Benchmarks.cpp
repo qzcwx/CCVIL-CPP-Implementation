@@ -86,8 +86,8 @@ double* Benchmarks::createShiftVector(int dim, double min,double max) {
 	middle = (min + hw);
 	d      = (double*)malloc(sizeof(double) * dim);
 
-	printf("middle = %1.20E\n",middle);
-	printf("hw = %1.20E\n",hw);
+//	printf("middle = %1.20E\n",middle);
+//	printf("hw = %1.20E\n",hw);
 
 	for (i = (dim - 1); i >= 0; i--) {
 		if (setOvectorToZero == true){
@@ -102,7 +102,7 @@ double* Benchmarks::createShiftVector(int dim, double min,double max) {
 				   */
 			} while ((s < min) || (s > max));
 			d[i] = s;
-			printf("shift vector = %1.20E\n", d[i]);
+//			printf("shift vector = %1.20E\n", d[i]);
 		}
 	}
 	return(d);
@@ -230,7 +230,6 @@ double** Benchmarks::createMultiRotateMatrix1D(int dim, int num){
 
 	/* for each pointer, allocate storage for an array of ints */
 	for (i = 0; i < num; i++) {
-		a[i] = (double *)malloc(dim * sizeof(dim));
 		a[i] = createRotMatrix1D(dim);
 	}
 

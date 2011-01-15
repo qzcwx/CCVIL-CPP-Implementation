@@ -31,7 +31,7 @@ double F20::compute(double*x){
 
 	if(Ovector==NULL)
 	{
-		Ovector=createShiftVector(dimension,minX,maxX);
+		Ovector=createShiftVector(dimension,minX,maxX-1);
 	}
 
 	for(i=0;i<dimension;i++)

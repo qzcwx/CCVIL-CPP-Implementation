@@ -32,11 +32,11 @@ double F8::compute(double* x){
 	double result;
 
 	if(Ovector == NULL) {
-		Ovector = createShiftVector(dimension,minX,maxX);
+		Ovector = createShiftVector(dimension,minX,maxX-1);
 
 		printf("\n\n\nO vector\n\n\n");
 		for (i = 0; i<dimension; i++){
-			printf("%lf\t",Ovector[i]);
+			printf("%f\t",Ovector[i]);
 		}
 
 		Pvector = createPermVector(dimension);

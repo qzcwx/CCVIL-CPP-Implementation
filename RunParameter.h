@@ -1,20 +1,19 @@
 #ifndef _RUNPARAMETER_H
 #define _RUNPARAMETER_H
 
-#include "Header.h"
+#include <vector>
 #include <fstream>
 #include <string>
 #include <cstring>
-#include <vector>
 #include <cstdlib>
+#include <iostream>
+
+using namespace std;
 
 class RunParameter{
 public:
 	// Dimension of problems
 	int dimension;
-
-	// the IDes of benchmark functions to be tested in the experiment
-	vector<int> functionToRun;
 
 	// the amount of independent run
 	int numOfRun;
@@ -25,8 +24,6 @@ public:
 	// initial Group Size
 	int initialGroupSize;
 
-	// Fitness check point
-	vector<int> fitnessCheckPoint;
 
 	// Sampling interval for plotting the convergence curve
 	int samplingInterval;
@@ -36,11 +33,17 @@ public:
 
 	// group size for non-separable part of function
 	int nonSeparableGroupSize;
+	// Fitness check point
+	vector<int> fitnessCheckPoint;
+
+	// the IDes of benchmark functions to be tested in the experiment
+	vector<int> functionToRun;
 
 	// default constructor
 	RunParameter();
 
 	// default destructor
 	~RunParameter();
+
 };
 #endif

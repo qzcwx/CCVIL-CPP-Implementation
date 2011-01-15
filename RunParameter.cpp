@@ -2,9 +2,9 @@
 
 // default constructor
 RunParameter::RunParameter(){
-	cout<<"Class RunParameter Initialization"<<endl;
+//	cout<<"Class RunParameter Initialization"<<endl;
 
-	cout<<"Read from File configFile, and load the parameters' settings"<<endl;
+//	cout<<"Read from File configFile, and load the parameters' settings"<<endl;
 	ifstream configFile("configure.ini");
 	string tempStr;
 	char* strArray;
@@ -12,26 +12,26 @@ RunParameter::RunParameter(){
 	if (configFile.is_open()){
 		while(configFile.good()){
 			getline(configFile, tempStr);
+			/*
 			cout<<tempStr.c_str()<<endl;
 			cout<<"String Size = "<<tempStr.size()<<endl;
 			cout<<"---------------------"<<endl;
+			*/
 			string::iterator strIter = tempStr.begin();
 
 			if (*strIter!='#' && tempStr.size()!=0){
-				cout<<"Not Comment Line"<<endl;
+//				cout<<"Not Comment Line"<<endl;
 				// if current line is not comment
 				strArray = strtok(const_cast<char *>(tempStr.c_str()), " ");
 				bool init = false;
 				string confType;
 				while (strArray!=NULL){
-					cout<<"Str is not NULL"<<endl;
+//					cout<<"Str is not NULL"<<endl;
 
 					if (init == true){
-						cout<<"confType = "<<confType.c_str()<<endl;
-
+//						cout<<"confType = "<<confType.c_str()<<endl;
 						if (strcmp(confType.c_str(), "dimension")==0){
 							dimension = atoi (strArray);
-							cout <<"dimension = " <<dimension<<endl;
 						}else if (strcmp(confType.c_str(), "functionToRun")==0){
 							functionToRun.push_back(atoi (strArray));
 						}else if (strcmp(confType.c_str(), "numOfRun")==0){
@@ -70,5 +70,5 @@ RunParameter::RunParameter(){
 RunParameter::~RunParameter() {
 	functionToRun.clear();
 	fitnessCheckPoint.clear();
-	cout<<"Class RunParameter Destroyed"<<endl;
+//	cout<<"Class RunParameter Destroyed"<<endl;
 } 

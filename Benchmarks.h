@@ -1,10 +1,8 @@
 #ifndef _BENCHMARKS_H
 #define _BENCHMARKS_H
 
-#include <inttypes.h>
-#include <stdio.h>
-#include <math.h>
-#include <malloc.h>
+#include <cstdlib>
+#include <cmath>
 #include "RunParameter.h"
 
 #define PI 3.141592653589793238462643383279
@@ -69,7 +67,8 @@ protected:
 
 public:
 	Benchmarks(RunParameter runParam);
-	~Benchmarks();
+	virtual ~Benchmarks();
 	virtual double compute(double* x){return 0;};
 };
+
 #endif

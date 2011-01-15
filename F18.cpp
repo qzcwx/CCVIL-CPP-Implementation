@@ -32,7 +32,7 @@ double F18::compute(double*x){
 
   if(Ovector==NULL)
   {
-    Ovector=createShiftVector(dimension,minX,maxX);
+    Ovector=createShiftVector(dimension,minX,maxX-1);
     Pvector=createPermVector(dimension);
   }
   for(i=0;i<dimension;i++)

@@ -13,6 +13,7 @@ Benchmarks::Benchmarks	Benchmarks.cpp	/^Benchmarks::Benchmarks(RunParameter runP
 Benchmarks::Benchmarks	Benchmarks.h	/^	Benchmarks(RunParameter runParam);$/;"	p	class:Benchmarks	access:public	signature:(RunParameter runParam)
 Benchmarks::M	Benchmarks.h	/^	int64_t M ;$/;"	m	class:Benchmarks	access:protected
 Benchmarks::MASK	Benchmarks.h	/^	int64_t MASK;$/;"	m	class:Benchmarks	access:protected
+Benchmarks::MultiRotMatrix1D	Benchmarks.h	/^	double** MultiRotMatrix1D;$/;"	m	class:Benchmarks	access:protected
 Benchmarks::Ovector	Benchmarks.h	/^	double *Ovector;$/;"	m	class:Benchmarks	access:protected
 Benchmarks::Pvector	Benchmarks.h	/^	int*    Pvector;$/;"	m	class:Benchmarks	access:protected
 Benchmarks::RotMatrix	Benchmarks.h	/^	double* RotMatrix;$/;"	m	class:Benchmarks	access:protected
@@ -24,6 +25,8 @@ Benchmarks::anotherz	Benchmarks.h	/^	double* anotherz;$/;"	m	class:Benchmarks	ac
 Benchmarks::anotherz1	Benchmarks.h	/^	double* anotherz1;$/;"	m	class:Benchmarks	access:protected
 Benchmarks::anotherz2	Benchmarks.h	/^	double* anotherz2;$/;"	m	class:Benchmarks	access:protected
 Benchmarks::compute	Benchmarks.h	/^	virtual double compute(double* x){return 0;};$/;"	f	class:Benchmarks	access:public	signature:(double* x)
+Benchmarks::createMultiRotateMatrix1D	Benchmarks.cpp	/^double** Benchmarks::createMultiRotateMatrix1D(int dim, int num){$/;"	f	class:Benchmarks	signature:(int dim, int num)
+Benchmarks::createMultiRotateMatrix1D	Benchmarks.h	/^	double** createMultiRotateMatrix1D(int dim, int num);$/;"	p	class:Benchmarks	access:protected	signature:(int dim, int num)
 Benchmarks::createPermVector	Benchmarks.cpp	/^int* Benchmarks::createPermVector(int dim){$/;"	f	class:Benchmarks	signature:(int dim)
 Benchmarks::createPermVector	Benchmarks.h	/^	int* createPermVector(int dim);$/;"	p	class:Benchmarks	access:protected	signature:(int dim)
 Benchmarks::createRotMatrix	Benchmarks.cpp	/^double** Benchmarks::createRotMatrix(int dim){$/;"	f	class:Benchmarks	signature:(int dim)
@@ -180,6 +183,28 @@ F17::maxX	F17.h	/^	static const int maxX = 100;$/;"	m	class:F17	access:protected
 F17::minX	F17.h	/^	static const int minX = -100;$/;"	m	class:F17	access:protected
 F17::~F17	F17.cpp	/^F17::~F17(){$/;"	f	class:F17	signature:()
 F17::~F17	F17.h	/^	~F17();$/;"	p	class:F17	access:public	signature:()
+F18	F18.cpp	/^F18::F18(RunParameter runParam):Benchmarks(runParam){$/;"	f	class:F18	signature:(RunParameter runParam)
+F18	F18.h	/^	F18(RunParameter runParam);$/;"	p	class:F18	access:public	signature:(RunParameter runParam)
+F18	F18.h	/^class F18:public Benchmarks{$/;"	c	inherits:Benchmarks
+F18::F18	F18.cpp	/^F18::F18(RunParameter runParam):Benchmarks(runParam){$/;"	f	class:F18	signature:(RunParameter runParam)
+F18::F18	F18.h	/^	F18(RunParameter runParam);$/;"	p	class:F18	access:public	signature:(RunParameter runParam)
+F18::compute	F18.cpp	/^double F18::compute(double*x){$/;"	f	class:F18	signature:(double*x)
+F18::compute	F18.h	/^	double compute(double* x) ;$/;"	p	class:F18	access:public	signature:(double* x)
+F18::maxX	F18.h	/^	static const int maxX = 100;$/;"	m	class:F18	access:protected
+F18::minX	F18.h	/^	static const int minX = -100;$/;"	m	class:F18	access:protected
+F18::~F18	F18.cpp	/^F18::~F18(){$/;"	f	class:F18	signature:()
+F18::~F18	F18.h	/^	~F18();$/;"	p	class:F18	access:public	signature:()
+F19	F19.cpp	/^F19::F19(RunParameter runParam):Benchmarks(runParam){$/;"	f	class:F19	signature:(RunParameter runParam)
+F19	F19.h	/^	F19(RunParameter runParam);$/;"	p	class:F19	access:public	signature:(RunParameter runParam)
+F19	F19.h	/^class F19:public Benchmarks{$/;"	c	inherits:Benchmarks
+F19::F19	F19.cpp	/^F19::F19(RunParameter runParam):Benchmarks(runParam){$/;"	f	class:F19	signature:(RunParameter runParam)
+F19::F19	F19.h	/^	F19(RunParameter runParam);$/;"	p	class:F19	access:public	signature:(RunParameter runParam)
+F19::compute	F19.cpp	/^double F19::compute(double*x){$/;"	f	class:F19	signature:(double*x)
+F19::compute	F19.h	/^	double compute(double* x) ;$/;"	p	class:F19	access:public	signature:(double* x)
+F19::maxX	F19.h	/^	static const int maxX = 100;$/;"	m	class:F19	access:protected
+F19::minX	F19.h	/^	static const int minX = -100;$/;"	m	class:F19	access:protected
+F19::~F19	F19.cpp	/^F19::~F19(){$/;"	f	class:F19	signature:()
+F19::~F19	F19.h	/^	~F19();$/;"	p	class:F19	access:public	signature:()
 F1::F1	F1.cpp	/^F1::F1(RunParameter runParam):Benchmarks(runParam){$/;"	f	class:F1	signature:(RunParameter runParam)
 F1::F1	F1.h	/^	F1(RunParameter runParam);$/;"	p	class:F1	access:public	signature:(RunParameter runParam)
 F1::Ovector	F1.h	/^	double *Ovector;$/;"	m	class:F1	access:protected
@@ -192,6 +217,17 @@ F1::~F1	F1.h	/^	~F1();$/;"	p	class:F1	access:public	signature:()
 F2	F2.cpp	/^F2::F2(RunParameter runParam):Benchmarks(runParam){$/;"	f	class:F2	signature:(RunParameter runParam)
 F2	F2.h	/^	F2(RunParameter runParam);$/;"	p	class:F2	access:public	signature:(RunParameter runParam)
 F2	F2.h	/^class F2:public Benchmarks{$/;"	c	inherits:Benchmarks
+F20	F20.cpp	/^F20::F20(RunParameter runParam):Benchmarks(runParam){$/;"	f	class:F20	signature:(RunParameter runParam)
+F20	F20.h	/^	F20(RunParameter runParam);$/;"	p	class:F20	access:public	signature:(RunParameter runParam)
+F20	F20.h	/^class F20:public Benchmarks{$/;"	c	inherits:Benchmarks
+F20::F20	F20.cpp	/^F20::F20(RunParameter runParam):Benchmarks(runParam){$/;"	f	class:F20	signature:(RunParameter runParam)
+F20::F20	F20.h	/^	F20(RunParameter runParam);$/;"	p	class:F20	access:public	signature:(RunParameter runParam)
+F20::compute	F20.cpp	/^double F20::compute(double*x){$/;"	f	class:F20	signature:(double*x)
+F20::compute	F20.h	/^	double compute(double* x) ;$/;"	p	class:F20	access:public	signature:(double* x)
+F20::maxX	F20.h	/^	static const int maxX = 100;$/;"	m	class:F20	access:protected
+F20::minX	F20.h	/^	static const int minX = -100;$/;"	m	class:F20	access:protected
+F20::~F20	F20.cpp	/^F20::~F20(){$/;"	f	class:F20	signature:()
+F20::~F20	F20.h	/^	~F20();$/;"	p	class:F20	access:public	signature:()
 F2::F2	F2.cpp	/^F2::F2(RunParameter runParam):Benchmarks(runParam){$/;"	f	class:F2	signature:(RunParameter runParam)
 F2::F2	F2.h	/^	F2(RunParameter runParam);$/;"	p	class:F2	access:public	signature:(RunParameter runParam)
 F2::Ovector	F2.h	/^	double *Ovector;$/;"	m	class:F2	access:protected
@@ -281,8 +317,9 @@ F9::~F9	F9.h	/^	~F9();$/;"	p	class:F9	access:public	signature:()
 L	Benchmarks.h	12;"	d
 M	Benchmarks.h	/^	int64_t M ;$/;"	m	class:Benchmarks	access:protected
 MASK	Benchmarks.h	/^	int64_t MASK;$/;"	m	class:Benchmarks	access:protected
+MultiRotMatrix1D	Benchmarks.h	/^	double** MultiRotMatrix1D;$/;"	m	class:Benchmarks	access:protected
 NP	RunParameter.h	/^	int NP;$/;"	m	class:RunParameter	access:public
-OBJECTS	Makefile	/^OBJECTS=main.o RunParameter.o F1.o F2.o F3.o F4.o F5.o F6.o F7.o F8.o F9.o F10.o F11.o F12.o F13.o F14.o F15.o F16.o F17.o Benchmarks.o$/;"	m
+OBJECTS	Makefile	/^OBJECTS=main.o RunParameter.o F1.o F2.o F3.o F4.o F5.o F6.o F7.o F8.o F9.o F10.o F11.o F12.o F13.o F14.o F15.o F16.o F17.o F18.o F19.o F20.o Benchmarks.o$/;"	m
 Ovector	Benchmarks.h	/^	double *Ovector;$/;"	m	class:Benchmarks	access:protected
 Ovector	F1.h	/^	double *Ovector;$/;"	m	class:F1	access:protected
 Ovector	F2.h	/^	double *Ovector;$/;"	m	class:F2	access:protected
@@ -314,7 +351,10 @@ _F14_H	F14.h	2;"	d
 _F15_H	F15.h	2;"	d
 _F16_H	F16.h	2;"	d
 _F17_H	F17.h	2;"	d
+_F18_H	F18.h	2;"	d
+_F19_H	F19.h	2;"	d
 _F1_H	F1.h	2;"	d
+_F20_H	F20.h	2;"	d
 _F2_H	F2.h	2;"	d
 _F3_H	F3.h	2;"	d
 _F4_H	F4.h	2;"	d
@@ -351,8 +391,14 @@ compute	F16.cpp	/^double F16::compute(double*x){$/;"	f	class:F16	signature:(doub
 compute	F16.h	/^	double compute(double* x) ;$/;"	p	class:F16	access:public	signature:(double* x)
 compute	F17.cpp	/^double F17::compute(double*x){$/;"	f	class:F17	signature:(double*x)
 compute	F17.h	/^	double compute(double* x) ;$/;"	p	class:F17	access:public	signature:(double* x)
+compute	F18.cpp	/^double F18::compute(double*x){$/;"	f	class:F18	signature:(double*x)
+compute	F18.h	/^	double compute(double* x) ;$/;"	p	class:F18	access:public	signature:(double* x)
+compute	F19.cpp	/^double F19::compute(double*x){$/;"	f	class:F19	signature:(double*x)
+compute	F19.h	/^	double compute(double* x) ;$/;"	p	class:F19	access:public	signature:(double* x)
 compute	F2.cpp	/^double F2::compute(double* x){$/;"	f	class:F2	signature:(double* x)
 compute	F2.h	/^	double compute(double* x) ;$/;"	p	class:F2	access:public	signature:(double* x)
+compute	F20.cpp	/^double F20::compute(double*x){$/;"	f	class:F20	signature:(double*x)
+compute	F20.h	/^	double compute(double* x) ;$/;"	p	class:F20	access:public	signature:(double* x)
 compute	F3.cpp	/^ double F3::compute(double*x){$/;"	f	class:F3	signature:(double*x)
 compute	F3.h	/^	double compute(double* x) ;$/;"	p	class:F3	access:public	signature:(double* x)
 compute	F4.cpp	/^double F4::compute(double*x){$/;"	f	class:F4	signature:(double*x)
@@ -367,6 +413,8 @@ compute	F8.cpp	/^double F8::compute(double* x){$/;"	f	class:F8	signature:(double
 compute	F8.h	/^	double compute(double* x) ;$/;"	p	class:F8	access:public	signature:(double* x)
 compute	F9.cpp	/^double F9::compute(double*x){$/;"	f	class:F9	signature:(double*x)
 compute	F9.h	/^	double compute(double* x) ;$/;"	p	class:F9	access:public	signature:(double* x)
+createMultiRotateMatrix1D	Benchmarks.cpp	/^double** Benchmarks::createMultiRotateMatrix1D(int dim, int num){$/;"	f	class:Benchmarks	signature:(int dim, int num)
+createMultiRotateMatrix1D	Benchmarks.h	/^	double** createMultiRotateMatrix1D(int dim, int num);$/;"	p	class:Benchmarks	access:protected	signature:(int dim, int num)
 createPermVector	Benchmarks.cpp	/^int* Benchmarks::createPermVector(int dim){$/;"	f	class:Benchmarks	signature:(int dim)
 createPermVector	Benchmarks.h	/^	int* createPermVector(int dim);$/;"	p	class:Benchmarks	access:protected	signature:(int dim)
 createRotMatrix	Benchmarks.cpp	/^double** Benchmarks::createRotMatrix(int dim){$/;"	f	class:Benchmarks	signature:(int dim)
@@ -401,7 +449,10 @@ maxX	F14.h	/^	static const int maxX = 100;$/;"	m	class:F14	access:protected
 maxX	F15.h	/^	static const int maxX = 5;$/;"	m	class:F15	access:protected
 maxX	F16.h	/^	static const int maxX = 32;$/;"	m	class:F16	access:protected
 maxX	F17.h	/^	static const int maxX = 100;$/;"	m	class:F17	access:protected
+maxX	F18.h	/^	static const int maxX = 100;$/;"	m	class:F18	access:protected
+maxX	F19.h	/^	static const int maxX = 100;$/;"	m	class:F19	access:protected
 maxX	F2.h	/^	static const int maxX = 5;$/;"	m	class:F2	access:protected
+maxX	F20.h	/^	static const int maxX = 100;$/;"	m	class:F20	access:protected
 maxX	F3.h	/^	static const int maxX = 32;$/;"	m	class:F3	access:protected
 maxX	F4.h	/^	static const int maxX = 100;$/;"	m	class:F4	access:protected
 maxX	F5.h	/^	static const int maxX = 5;$/;"	m	class:F5	access:protected
@@ -418,7 +469,10 @@ minX	F14.h	/^	static const int minX = -100;$/;"	m	class:F14	access:protected
 minX	F15.h	/^	static const int minX = -5;$/;"	m	class:F15	access:protected
 minX	F16.h	/^	static const int minX = -32;$/;"	m	class:F16	access:protected
 minX	F17.h	/^	static const int minX = -100;$/;"	m	class:F17	access:protected
+minX	F18.h	/^	static const int minX = -100;$/;"	m	class:F18	access:protected
+minX	F19.h	/^	static const int minX = -100;$/;"	m	class:F19	access:protected
 minX	F2.h	/^	static const int minX = -5;$/;"	m	class:F2	access:protected
+minX	F20.h	/^	static const int minX = -100;$/;"	m	class:F20	access:protected
 minX	F3.h	/^	static const int minX = -32;$/;"	m	class:F3	access:protected
 minX	F4.h	/^	static const int minX = -100;$/;"	m	class:F4	access:protected
 minX	F5.h	/^	static const int minX = -5;$/;"	m	class:F5	access:protected
@@ -489,8 +543,14 @@ sphere	Benchmarks.h	/^	double sphere(double*x,int dim, int k);$/;"	p	class:Bench
 ~F16	F16.h	/^	~F16();$/;"	p	class:F16	access:public	signature:()
 ~F17	F17.cpp	/^F17::~F17(){$/;"	f	class:F17	signature:()
 ~F17	F17.h	/^	~F17();$/;"	p	class:F17	access:public	signature:()
+~F18	F18.cpp	/^F18::~F18(){$/;"	f	class:F18	signature:()
+~F18	F18.h	/^	~F18();$/;"	p	class:F18	access:public	signature:()
+~F19	F19.cpp	/^F19::~F19(){$/;"	f	class:F19	signature:()
+~F19	F19.h	/^	~F19();$/;"	p	class:F19	access:public	signature:()
 ~F2	F2.cpp	/^F2::~F2(){$/;"	f	class:F2	signature:()
 ~F2	F2.h	/^	~F2();$/;"	p	class:F2	access:public	signature:()
+~F20	F20.cpp	/^F20::~F20(){$/;"	f	class:F20	signature:()
+~F20	F20.h	/^	~F20();$/;"	p	class:F20	access:public	signature:()
 ~F3	F3.cpp	/^F3::~F3(){$/;"	f	class:F3	signature:()
 ~F3	F3.h	/^	~F3();$/;"	p	class:F3	access:public	signature:()
 ~F4	F4.cpp	/^F4::~F4(){$/;"	f	class:F4	signature:()
