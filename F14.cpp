@@ -13,9 +13,9 @@
  * Hefei, Anhui, China.
  */
 
-F14::F14(RunParameter runParam):Benchmarks(runParam){
+F14::F14(RunParameter* runParam):Benchmarks(runParam){
 	cout<<"F14 Class initialization"<<endl;
-	dimension = runParam.dimension;
+	dimension = runParam->dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -100;

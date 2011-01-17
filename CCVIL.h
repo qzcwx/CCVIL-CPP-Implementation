@@ -1,21 +1,26 @@
 #ifndef _CCVIL_H
 #define _CCVIL_H
 
-#include "Benchmarks.h"
 #include <EALib/PopulationT.h>
+#include <vector>
+#include "Benchmarks.h"
+
+using namespace std;
 
 class CCVIL{
-protect:
+protected:
+
+	PopulationT<double> *parents,*offsprings;
 	Benchmarks* fp;
-	vector<vector<unsigned>>  groupInfo;
-	learningStage();
-	optimizationStage();
-	PopulationT<double>* parents, offsprings;
+	vector< vector<int> > groupInfo;
+
+	void learningStage();
+	void optimizationStage();
 
 public:
-	void setObjFunc(Benchmarks* fp){this.fp = fp};
 	CCVIL(RunParameter* runParam);
 	~CCVIL();
-	run();
-}
+	void run();
+	void setObjFunc(Benchmarks* infp){fp = infp;};
+};
 #endif

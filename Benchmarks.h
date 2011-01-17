@@ -69,7 +69,7 @@ protected:
 	int minX;
 	int maxX;
 public:
-	Benchmarks(RunParameter runParam);
+	Benchmarks(RunParameter* runParam);
 	virtual ~Benchmarks();
 	virtual double compute(double* x){return 0;};
 	virtual double compute(vector<double> x){return 0;};

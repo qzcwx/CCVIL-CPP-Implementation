@@ -13,9 +13,9 @@
  * Hefei, Anhui, China.
  */
 
-F15::F15(RunParameter runParam):Benchmarks(runParam){
+F15::F15(RunParameter* runParam):Benchmarks(runParam){
 	cout<<"F15 Class initialization"<<endl;
-	dimension = runParam.dimension;
+	dimension = runParam->dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -5;

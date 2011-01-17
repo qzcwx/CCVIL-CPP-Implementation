@@ -7,6 +7,9 @@
 #include <cstdio>
 #include <EALib/PopulationT.h>
 
+// optimization algorithms
+#include "CCVIL.h"
+
 // benchmark set header files
 #include "F1.h"
 #include "F2.h"
@@ -29,8 +32,9 @@
 #include "F19.h"
 #include "F20.h"
 
+
 using namespace std;
 
-Benchmarks* generateFuncObj(RunParameter runParam, int funcID);
+Benchmarks* generateFuncObj(RunParameter* runParam, int funcID);
 
 #endif

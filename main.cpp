@@ -3,22 +3,22 @@
 int main(){
 
 	RunParameter* runParam;
-	double* X;
+//	double* X;
 	unsigned int funcIndex;
-	Benchmarks *fp;
-    int i;
+	Benchmarks* fp;
 
+	runParam = new RunParameter();
 	vector<int> funcToRun=runParam->functionToRun;
 
 	
-	CCVIL algo = new CCVIL(runParam);
-	runParam = new RunParameter();
+	CCVIL* algo = new CCVIL(runParam);
 
 	for (funcIndex = 0; funcIndex < runParam->functionToRun.size(); funcIndex++ ){
 		fp = generateFuncObj(runParam, funcToRun[funcIndex]);
-		algo.setObjFunc(fp);
+		algo->setObjFunc(fp);
 	}
 
+	/*
 	X = new double[runParam->dimension];
 
 	for (i=0; i<runParam->dimension; i++){
@@ -39,8 +39,10 @@ int main(){
 
 	//printf("function value = %1.20E\n", fp->compute(X));
 
+	*/
+
 	delete fp;
-	delete[] X;
+//	delete[] X;
 
 	return 0;
 }

@@ -4,7 +4,7 @@ SHARKINC=/usr/local/include/
 LDLIBS=-lshark
 LDFLAGS=-L${SHARKLIB} -Wl,-rpath,${SHARKLIB}
 CXXFLAGS=-Wall -pedantic -ggdb -DDEBUG -I${SHARKINC}
-OBJECTS=main.o RunParameter.o Benchmarks.o\
+OBJECTS=main.o RunParameter.o Benchmarks.o CCVIL.o\
 F1.o F2.o F3.o F4.o F5.o F6.o F7.o F8.o F9.o F10.o\
 F11.o F12.o F13.o F14.o F15.o F16.o F17.o F18.o F19.o F20.o 
 #OBJECTS = main.o RunParameter.o F2.o Benchmarks.o
@@ -12,11 +12,14 @@ F11.o F12.o F13.o F14.o F15.o F16.o F17.o F18.o F19.o F20.o
 main: $(OBJECTS)
 #$(CC) $(CXXFLAGS) -o main $(OBJECTS) $(LDLIBS)
 
-main.o: Header.h RunParameter.h Benchmarks.h main.cpp\
+main.o: Header.h RunParameter.h Benchmarks.h main.cpp CCVIL.h\
 F1.h F2.h F3.h F4.h F5.h F6.h F7.h F8.h F9.h F10.h\
 F11.h F12.h F13.h F14.h F15.h F16.h F17.h F18.h F19.h F20.h
 #main.o: Header.h RunParameter.h F2.h Benchmarks.h main.cpp
 	$(CC) $(CXXFLAGS) -c main.cpp 
+
+CCVIL.o: CCVIL.h Benchmarks.h
+	$(CC) $(CXXFLAGS) -c CCVIL.cpp
 
 Benchmarks.o: RunParameter.h Benchmarks.h  Benchmarks.cpp
 	$(CC) $(CXXFLAGS) -c Benchmarks.cpp

@@ -6,11 +6,9 @@ CCVIL::CCVIL(RunParameter* runParam){
 
 }
 
-CCVIL::~
 
 void CCVIL::run(){
-
 	parents->setMinimize();
-	offsprings.setMinimize();
+	offsprings->setMinimize();
 }
 

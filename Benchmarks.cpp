@@ -1,9 +1,9 @@
 #include "Benchmarks.h"
 
-Benchmarks::Benchmarks(RunParameter runParam){
+Benchmarks::Benchmarks(RunParameter* runParam){
 	cout<<"Benchmarks Class initialization"<<endl;
-	dimension = runParam.dimension;		
-	nonSeparableGroupSize = runParam.nonSeparableGroupSize;
+	dimension = runParam->dimension;		
+	nonSeparableGroupSize = runParam->nonSeparableGroupSize;
 	MASK = ((L(1)) << (L(48))) - (L(1));
 	m_havenextGaussian = false;
 
@@ -15,7 +15,7 @@ Benchmarks::Benchmarks(RunParameter runParam){
 	// Runtime Parameters setting
 	setOvectorToZero = false;
 
-	functionInitRandomSeed = L(runParam.initRandomSeed);
+	functionInitRandomSeed = L(runParam->initRandomSeed);
 	m_seed= functionInitRandomSeed;
 	M  = 0x5DEECE66D;
 	A  = 0xB;

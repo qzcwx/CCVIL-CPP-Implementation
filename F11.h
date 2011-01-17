@@ -6,7 +6,7 @@
 class F11:public Benchmarks{
 protected:
 public:
-	F11(RunParameter runParam);
+	F11(RunParameter* runParam);
 	double compute(double* x) ;
 	double compute(vector<double> x) ;
 	~F11();

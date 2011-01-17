@@ -13,9 +13,9 @@
  * Hefei, Anhui, China.
  */
 
-F9::F9(RunParameter runParam):Benchmarks(runParam){
+F9::F9(RunParameter* runParam):Benchmarks(runParam){
 	cout<<"F9 Class initialization"<<endl;
-	dimension = runParam.dimension;
+	dimension = runParam->dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -100;
