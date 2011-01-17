@@ -19,6 +19,9 @@ Benchmarks::Benchmarks(RunParameter runParam){
 	m_seed= functionInitRandomSeed;
 	M  = 0x5DEECE66D;
 	A  = 0xB;
+
+	minX = -100;
+	maxX = 100;
 }
 
 Benchmarks::~Benchmarks(){
@@ -544,4 +547,12 @@ double Benchmarks::rosenbrock(double*x,int dim, int k){
 		result += (t * t);
 	}
 	return(result);
+}
+
+int Benchmarks::getMinX(){
+	return minX;
+}
+	
+int Benchmarks::getMaxX(){
+	return maxX;
 }

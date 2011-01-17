@@ -18,6 +18,8 @@ F17::F17(RunParameter runParam):Benchmarks(runParam){
 	dimension = runParam.dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
+	minX = -100;
+	maxX = 100;
 }
 
 F17::~F17(){
@@ -27,6 +29,25 @@ F17::~F17(){
 }
 
 double F17::compute(double*x){
+  int i,k;
+  double result=0.0;
+
+  if(Ovector==NULL){
+    Ovector=createShiftVector(dimension,minX,maxX);
+    Pvector=createPermVector(dimension);
+  }
+
+  for(i=0;i<dimension;i++){
+    anotherz[i]=x[i]-Ovector[i];
+  }
+
+  for(k=1;k<=dimension/(nonSeparableGroupSize);k++){
+    result+=schwefel(anotherz,nonSeparableGroupSize,k);
+  }
+  return(result);
+}
+
+double F17::compute(vector<double> x){
   int i,k;
   double result=0.0;
 

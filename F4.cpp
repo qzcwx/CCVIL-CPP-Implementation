@@ -18,6 +18,8 @@ F4::F4(RunParameter runParam):Benchmarks(runParam){
 	dimension = runParam.dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
+	minX = -100;
+	maxX = 100;
 }
 
 F4::~F4(){
@@ -28,6 +30,60 @@ F4::~F4(){
 }
 
 double F4::compute(double*x){
+  int    i;
+  double result = 0.0;
+
+  if(Ovector == NULL) {
+    Ovector   = createShiftVector(dimension,minX,maxX);
+	/*
+	printf("\n\n\nO vector\n\n\n");
+	for (i = 0; i<dimension; i++){
+		printf("%lf\t",Ovector[i]);
+	}
+	*/
+
+    Pvector   = createPermVector(dimension);
+	/*
+	printf("\n\n\nP vector\n\n\n");
+	for (i = 0; i<dimension; i++){
+		printf("%d\t",Pvector[i]);
+	}
+	*/
+
+    RotMatrix = createRotMatrix1D(nonSeparableGroupSize);
+	/*
+	printf("\n\n\nRot Matrix\n\n\n");
+	for (i = 0; i<nonSeparableGroupSize; i++){
+		for (j=0; j<nonSeparableGroupSize; j++){
+			printf("%lf\t",RotMatrix[i*nonSeparableGroupSize+j]);
+		}
+		printf("\n");
+	}
+	*/
+  }
+
+  for(i = 0; i < dimension; i++) {
+    anotherz[i] = x[i] - Ovector[i];
+  }
+
+  for(i = 0; i < nonSeparableGroupSize; i++) {
+    anotherz1[i] = anotherz[Pvector[i]];
+  }
+
+  for(i = nonSeparableGroupSize; i < dimension; i++) {
+    anotherz2[i - nonSeparableGroupSize] = anotherz[Pvector[i]];
+  }
+
+  result = rot_elliptic(anotherz1,nonSeparableGroupSize) * 1e6 + elliptic(
+    anotherz2,dimension - nonSeparableGroupSize);
+
+  printf("Rotated Part = %1.16E\n", rot_elliptic(anotherz1,nonSeparableGroupSize) * 1e6);
+  printf("Separable Part = %1.16E\n", elliptic(anotherz2,dimension - nonSeparableGroupSize));
+
+  return(result);
+}
+
+double F4::compute(vector<double> x){
   int    i;
   double result = 0.0;
 

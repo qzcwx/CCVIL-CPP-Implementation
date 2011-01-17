@@ -18,6 +18,8 @@ F14::F14(RunParameter runParam):Benchmarks(runParam){
 	dimension = runParam.dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
+	minX = -100;
+	maxX = 100;
 }
 
 F14::~F14(){
@@ -36,6 +38,32 @@ F14::~F14(){
 }
 
 double F14::compute(double*x){
+	int i,k;
+	double result=0.0;
+
+	if(Ovector==NULL){
+		Ovector=createShiftVector(dimension,minX,maxX);
+		Pvector=createPermVector(dimension);
+		MultiRotMatrix1D=createMultiRotateMatrix1D(nonSeparableGroupSize,dimension/(nonSeparableGroupSize));
+		//	preparelookup(dimension/2);
+		//	preparelookup2(nonSeparableGroupSize);
+	}
+
+	for(i=0;i<dimension;i++){
+		anotherz[i]=x[i]-Ovector[i];
+	}
+
+	double* lookup = lookupprepare(nonSeparableGroupSize);
+
+	for(k=1;k<=dimension/(nonSeparableGroupSize);k++){
+		result+=rot_elliptic(anotherz,nonSeparableGroupSize,k, lookup);
+	}
+
+	delete[] lookup;
+	return(result);
+}
+
+double F14::compute(vector<double> x){
 	int i,k;
 	double result=0.0;
 

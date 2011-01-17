@@ -18,6 +18,8 @@ F11::F11(RunParameter runParam):Benchmarks(runParam){
 	dimension = runParam.dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
+	minX = -32;
+	maxX = 32;
 }
 
 F11::~F11(){
@@ -33,6 +35,37 @@ F11::~F11(){
 }
 
 double F11::compute(double*x){
+	int i,k;
+	double result=0.0;
+
+	if(Ovector==NULL)
+	{
+		Ovector=createShiftVector(dimension,minX,maxX);
+		Pvector=createPermVector(dimension);
+		MultiRotMatrix1D=createMultiRotateMatrix1D(nonSeparableGroupSize,dimension/(2*nonSeparableGroupSize));
+	}
+
+	for(i=0;i<dimension;i++)
+	{
+		anotherz[i]=x[i]-Ovector[i];
+	}
+
+	for(k=1;k<=dimension/(2*nonSeparableGroupSize);k++)
+	{
+		result+=rot_ackley(anotherz,nonSeparableGroupSize,k);
+
+	}
+	printf("Rot Ackley = %1.16E\n", result);
+
+	double sepSum = ackley(anotherz,dimension,2);
+	printf("Separable Ackley = %1.16E\n", sepSum);
+
+	result+=sepSum;
+	return(result);
+}
+
+
+double F11::compute(vector<double> x){
 	int i,k;
 	double result=0.0;
 

@@ -5,11 +5,10 @@
 
 class F18:public Benchmarks{
 protected:
-	static const int minX = -100;
-	static const int maxX = 100;
 public:
 	F18(RunParameter runParam);
 	double compute(double* x) ;
+	double compute(vector<double> x) ;
 	~F18();
 };
 

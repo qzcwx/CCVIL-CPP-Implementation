@@ -18,6 +18,8 @@ F7::F7(RunParameter runParam):Benchmarks(runParam){
 	dimension = runParam.dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
+	minX = -100;
+	maxX = 100;
 }
 
 F7::~F7(){
@@ -28,6 +30,32 @@ F7::~F7(){
 
 
 double F7::compute(double*x){
+  int    m = nonSeparableGroupSize;
+  int    i;
+  double result;
+
+  if(Ovector == NULL) {
+    Ovector = createShiftVector(dimension,minX,maxX);
+    Pvector = createPermVector(dimension);
+  }
+
+  for(i = 0; i < dimension; i++) {
+    anotherz[i] = x[i] - Ovector[i];
+  }
+
+  for(i = 0; i < m; i++) {
+    anotherz1[i] = anotherz[Pvector[i]];
+  }
+
+  for(i = m; i < dimension; i++) {
+    anotherz2[i - m] = anotherz[Pvector[i]];
+  }
+
+  result = schwefel(anotherz1,m) * 1e6 + sphere(anotherz2,dimension - m);
+  return(result);
+}
+
+double F7::compute(vector<double> x){
   int    m = nonSeparableGroupSize;
   int    i;
   double result;

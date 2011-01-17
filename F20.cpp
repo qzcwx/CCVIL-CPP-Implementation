@@ -18,6 +18,8 @@ F20::F20(RunParameter runParam):Benchmarks(runParam){
 	dimension = runParam.dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
+	minX = -100;
+	maxX = 100;
 }
 
 F20::~F20(){
@@ -26,6 +28,24 @@ F20::~F20(){
 }
 
 double F20::compute(double*x){
+	int i;
+	double result=0.0;
+
+	if(Ovector==NULL)
+	{
+		Ovector=createShiftVector(dimension,minX,maxX-1);
+	}
+
+	for(i=0;i<dimension;i++)
+	{
+		anotherz[i]=x[i]-Ovector[i];
+	}
+
+	result=rosenbrock(anotherz, dimension);
+	return(result);
+}
+
+double F20::compute(vector<double> x){
 	int i;
 	double result=0.0;
 

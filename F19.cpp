@@ -18,6 +18,8 @@ F19::F19(RunParameter runParam):Benchmarks(runParam){
 	dimension = runParam.dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
+	minX = -100;
+	maxX = 100;
 }
 
 F19::~F19(){
@@ -43,3 +45,21 @@ double F19::compute(double*x){
 	return(result);
 }
 
+
+double F19::compute(vector<double> x){
+	int i;
+	double result;
+
+	if(Ovector==NULL)
+	{
+		Ovector=createShiftVector(dimension,minX,maxX);
+	}
+
+	for(i=0;i<dimension;i++)
+	{
+		anotherz[i]=x[i]-Ovector[i];
+	}
+
+	result=schwefel(anotherz, dimension);
+	return(result);
+}

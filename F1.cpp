@@ -17,6 +17,8 @@ F1::F1(RunParameter runParam):Benchmarks(runParam){
 	dimension = runParam.dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
+	minX = -100;
+	maxX = 100;
 }
 
 F1::~F1(){
@@ -40,3 +42,19 @@ double F1::compute(double* x) {
   return(result);
 }
 
+
+double F1::compute(vector<double> x){
+  double result;
+  int    i;
+
+  if(Ovector == NULL) {
+    Ovector = createShiftVector(dimension,minX,maxX);
+  }
+
+  for(i = dimension - 1; i >= 0; i--) {
+    anotherz[i] = x[i] - Ovector[i];
+  }
+
+  result = elliptic(anotherz,dimension);
+  return(result);
+}

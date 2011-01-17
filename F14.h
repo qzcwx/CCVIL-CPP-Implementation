@@ -5,11 +5,10 @@
 
 class F14:public Benchmarks{
 protected:
-	static const int minX = -100;
-	static const int maxX = 100;
 public:
 	F14(RunParameter runParam);
 	double compute(double* x) ;
+	double compute(vector<double> x) ;
 	~F14();
 };
 

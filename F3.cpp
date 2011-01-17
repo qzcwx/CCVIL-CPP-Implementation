@@ -17,6 +17,8 @@ F3::F3(RunParameter runParam):Benchmarks(runParam){
 	dimension = runParam.dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
+	minX = -32;
+	maxX = 32;
 }
 
 F3::~F3(){
@@ -25,7 +27,24 @@ F3::~F3(){
 }
 
 
- double F3::compute(double*x){
+double F3::compute(double*x){
+  int    i;
+  double result;
+
+  if(Ovector == NULL) {
+    Ovector = createShiftVector(dimension,minX,maxX);
+  }
+
+  for(i = dimension - 1; i >= 0; i--) {
+    anotherz[i] = x[i] - Ovector[i];
+  }
+
+  result = ackley(anotherz,dimension);
+  return(result);
+}
+
+
+double F3::compute(vector<double> x){
   int    i;
   double result;
 

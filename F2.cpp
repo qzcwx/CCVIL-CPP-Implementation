@@ -17,6 +17,8 @@ F2::F2(RunParameter runParam):Benchmarks(runParam){
 	dimension = runParam.dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
+	minX = -5;
+	maxX = 5;
 }
 
 F2::~F2(){
@@ -26,6 +28,22 @@ F2::~F2(){
 
 
 double F2::compute(double* x){
+  int    i;
+  double result;
+
+  if(Ovector == NULL) {
+    Ovector = createShiftVector(dimension,minX,maxX);
+  }
+
+  for(i = 0; i < dimension; i++) {
+    anotherz[i] = x[i] - Ovector[i];
+  }
+
+  result = rastrigin(anotherz,dimension);
+  return(result);
+}
+
+double F2::compute(vector<double> x){
   int    i;
   double result;
 

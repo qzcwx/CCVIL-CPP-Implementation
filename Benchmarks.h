@@ -48,8 +48,8 @@ protected:
 	int dimension;
 	int nonSeparableGroupSize;
 	int64_t functionInitRandomSeed;
-	int64_t M ;
-	int64_t A ;
+	int64_t M;
+	int64_t A;
 	int64_t m_seed;
 	int64_t MASK;
 	double m_nextGaussian;
@@ -65,10 +65,17 @@ protected:
 	double* anotherz1;
 	double* anotherz2;
 
+	// domain of decision variables
+	int minX;
+	int maxX;
 public:
 	Benchmarks(RunParameter runParam);
 	virtual ~Benchmarks();
 	virtual double compute(double* x){return 0;};
+	virtual double compute(vector<double> x){return 0;};
+	
+	int getMinX();
+	int getMaxX();
 };
 
 #endif

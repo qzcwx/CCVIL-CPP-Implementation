@@ -18,6 +18,8 @@ F9::F9(RunParameter runParam):Benchmarks(runParam){
 	dimension = runParam.dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
+	minX = -100;
+	maxX = 100;
 }
 
 F9::~F9(){
@@ -33,6 +35,44 @@ F9::~F9(){
 }
 
 double F9::compute(double*x){
+	int i,k;
+	double result=0.0;
+	double* lookup;
+
+	if(Ovector==NULL){
+		Ovector=createShiftVector(dimension,minX,maxX);
+		Pvector=createPermVector(dimension);
+		MultiRotMatrix1D=createMultiRotateMatrix1D(nonSeparableGroupSize,dimension/(2*nonSeparableGroupSize));
+
+		/* 
+		 * print the multi rotated matrix 
+		printf("\n\n\n print the multi rotated matrix\n\n\n");
+		for (k = 0; k<dimension/(2*nonSeparableGroupSize); k++){
+		printf("\n matrix %d: \n", k+1);
+			for (i = 0; i<nonSeparableGroupSize*nonSeparableGroupSize; i++){
+				printf("%1.20E\t", MultiRotMatrix1D[k][i]);
+			}
+		}
+		 */
+	}
+
+	for(i=0;i<dimension;i++){
+		anotherz[i]=x[i]-Ovector[i];
+	}
+
+	lookup = lookupprepare(nonSeparableGroupSize);
+	for(k=1;k<=dimension/(2*nonSeparableGroupSize);k++){
+		result+=rot_elliptic(anotherz,nonSeparableGroupSize,k,lookup);
+	}
+	delete[] lookup;
+
+	printf("Rotated Part = %1.20E\n", result);
+
+	result+=elliptic(anotherz, dimension, 2);
+	return(result);
+}
+
+double F9::compute(vector<double> x){
 	int i,k;
 	double result=0.0;
 	double* lookup;
