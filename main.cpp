@@ -4,11 +4,11 @@ int main(){
 
 	RunParameter* runParam;
 //	double* X;
-	unsigned int funcIndex;
+	unsigned funcIndex;
 	Benchmarks* fp;
 
 	runParam = new RunParameter();
-	vector<int> funcToRun=runParam->functionToRun;
+	vector<unsigned> funcToRun=runParam->functionToRun;
 
 	
 	CCVIL* algo = new CCVIL(runParam);
@@ -18,6 +18,8 @@ int main(){
 		algo->setObjFunc(fp);
 	}
 
+
+	algo->run();
 	/*
 	X = new double[runParam->dimension];
 
@@ -42,11 +44,11 @@ int main(){
 	*/
 
 	delete fp;
-//	delete[] X;
+	delete algo;
+	delete runParam;
 
 	return 0;
 }
-
 
 // create new object of class according to the configure.ini file
 Benchmarks* generateFuncObj(RunParameter* runParam, int funcID){

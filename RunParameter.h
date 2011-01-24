@@ -13,31 +13,43 @@ using namespace std;
 class RunParameter{
 public:
 	// Dimension of problems
-	int dimension;
+	unsigned dimension;
 
 	// the amount of independent run
-	int numOfRun;
+	unsigned numOfRun;
 
 	// initial population size
-	int NP;
+	unsigned NP;
 
 	// initial Group Size
-	int initialGroupSize;
+	unsigned initialGroupSize;
 
 
 	// Sampling interval for plotting the convergence curve
-	int samplingInterval;
+	unsigned samplingInterval;
 
 	// initialized random seed
 	int initRandomSeed;
 
 	// group size for non-separable part of function
-	int nonSeparableGroupSize;
+	unsigned nonSeparableGroupSize;
 	// Fitness check point
-	vector<int> fitnessCheckPoint;
+	vector<unsigned> fitnessCheckPoint;
 
 	// the IDes of benchmark functions to be tested in the experiment
-	vector<int> functionToRun;
+	vector<unsigned> functionToRun;
+
+	// CCVIL's lower threshold
+	unsigned lowerThreshold;
+
+	// Runtime Parameter for rJADE
+	double c;	
+
+	double p;
+
+	unsigned failThreshold;
+
+	unsigned Afactor;
 
 	// default constructor
 	RunParameter();

@@ -7,6 +7,11 @@ Benchmarks::Benchmarks(RunParameter* runParam){
 	MASK = ((L(1)) << (L(48))) - (L(1));
 	m_havenextGaussian = false;
 
+	if (dimension<nonSeparableGroupSize){
+		cerr<<"ERROR: In configuration file, dimension is smaller than the non-separable part"<<endl;
+		exit(-1);
+	}
+
 	// allocate the memory
 	anotherz = new double[dimension];
 	anotherz1= new double[nonSeparableGroupSize];
