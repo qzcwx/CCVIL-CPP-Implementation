@@ -1,15 +1,20 @@
 #ifndef _ARCHIVE_H
 #define _ARCHIVE_H
 
-class Archive{
-public:
-	unsigned NP;
-	//TODO: Adjust the population, 
-	double* pop;
-	double* fitVal;
+#include <EALib/PopulationT.h>
 
-	Archive();
+class Archive{
+protected:
+	unsigned MAX_NP;
+	unsigned dimension;
+	PopulationT<double>* pop;
+
+public:
+	Archive(unsigned inNP, unsigned inD);
 	~Archive();
+
+	unsigned getNP();
+	PopulationT<double>* getPop();
 };
 
 #endif
