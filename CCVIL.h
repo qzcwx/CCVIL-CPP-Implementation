@@ -21,7 +21,7 @@ protected:
 	vector< PopulationT<double> > pop;
 	vector< vector<unsigned> > groupInfo;
 
-	PopulationT<double>* bestCand;
+	IndividualT<double>* bestCand;
 	Benchmarks* fp;
 	unsigned* p; // random permutation
 	unsigned* lookUpGroup;
@@ -31,6 +31,7 @@ protected:
 	unsigned lowerThreshold;
 	unsigned upperThreshold;
 	RunParameter* param;
+	double lastBestValue;
 	double* groupCR;
 	double* groupF;
 	long fes;
@@ -38,7 +39,7 @@ protected:
 	void learningStage();
 	void optimizationStage();
 	bool sameGroup(unsigned v1, unsigned v2);
-	void rJADECC(unsigned index, bool learnStageFlag);
+	void JADECC(unsigned index, bool learnStageFlag);
 	void captureInter(unsigned curDim, unsigned lastDim);
 	void popInit(PopulationT<double> *inPop);
 	void popInit();
@@ -47,8 +48,10 @@ protected:
 	double cauchyRnd(double mu, double delta);
 	void printArray(double* a, unsigned D);
 	void printArray(unsigned* a, unsigned D);
-	void printPopulation(PopulationT<double> &printPop);
-	void printWholePop();
+	void printPopulation(PopulationT<double> printPop);
+	void printPopulation(IndividualT<double> printIndiv);
+	void print2Dvector(vector< PopulationT<double> > vector2D);
+	void print2Dvector(vector< vector<unsigned> > vector2D);
 	void printFitness(PopulationT<double> printPop);
 	void printVector(vector<unsigned> v);
 	void printVector(vector<double> v);

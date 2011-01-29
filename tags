@@ -22,8 +22,8 @@ Archive::getPop	Archive.h	/^	PopulationT<double>* getPop();$/;"	p	class:Archive	
 Archive::pop	Archive.h	/^	PopulationT<double>* pop;$/;"	m	class:Archive	access:protected
 Archive::removeDuplicateElem	Archive.cpp	/^void Archive::removeDuplicateElem(){$/;"	f	class:Archive	signature:()
 Archive::removeDuplicateElem	Archive.h	/^	void removeDuplicateElem();$/;"	p	class:Archive	access:public	signature:()
-Archive::runcateArchive	Archive.h	/^	void runcateArchive();$/;"	p	class:Archive	access:public	signature:()
 Archive::truncateArchive	Archive.cpp	/^void Archive::truncateArchive(){$/;"	f	class:Archive	signature:()
+Archive::truncateArchive	Archive.h	/^	void truncateArchive();$/;"	p	class:Archive	access:public	signature:()
 Archive::unique	Archive.cpp	/^PopulationT<double> Archive::unique(PopulationT<double> popAll){$/;"	f	class:Archive	signature:(PopulationT<double> popAll)
 Archive::unique	Archive.h	/^	PopulationT<double> unique(PopulationT<double> popAll);$/;"	p	class:Archive	access:public	signature:(PopulationT<double> popAll)
 Archive::updateArchive	Archive.h	/^	void updateArchive(PopulationT<double> popAll);$/;"	p	class:Archive	access:public	signature:(PopulationT<double> popAll)
@@ -125,10 +125,12 @@ CCVIL	CCVIL.h	/^	CCVIL(RunParameter* runParam);$/;"	p	class:CCVIL	access:public	
 CCVIL	CCVIL.h	/^class CCVIL{$/;"	c
 CCVIL::CCVIL	CCVIL.cpp	/^CCVIL::CCVIL(RunParameter* runParam){$/;"	f	class:CCVIL	signature:(RunParameter* runParam)
 CCVIL::CCVIL	CCVIL.h	/^	CCVIL(RunParameter* runParam);$/;"	p	class:CCVIL	access:public	signature:(RunParameter* runParam)
+CCVIL::JADECC	CCVIL.cpp	/^void CCVIL::JADECC(unsigned index, bool learnStageFlag){$/;"	f	class:CCVIL	signature:(unsigned index, bool learnStageFlag)
+CCVIL::JADECC	CCVIL.h	/^	void JADECC(unsigned index, bool learnStageFlag);$/;"	p	class:CCVIL	access:protected	signature:(unsigned index, bool learnStageFlag)
 CCVIL::MaxFitEval	CCVIL.h	/^	unsigned MaxFitEval; \/\/ total fitness evaluation limitation for optimization$/;"	m	class:CCVIL	access:protected
-CCVIL::bestCand	CCVIL.h	/^	PopulationT<double>* bestCand;$/;"	m	class:CCVIL	access:protected
-CCVIL::boundConstrain	CCVIL.cpp	/^void CCVIL::boundConstrain(PopulationT<double> vi, PopulationT<double> offsprings, unsigned LB, unsigned UB, vector<unsigned> vecIndex){$/;"	f	class:CCVIL	signature:(PopulationT<double> vi, PopulationT<double> offsprings, unsigned LB, unsigned UB, vector<unsigned> vecIndex)
-CCVIL::boundConstrain	CCVIL.h	/^	void boundConstrain(PopulationT<double> vi, PopulationT<double> offsprings, unsigned LB, unsigned UB, vector<unsigned> vecIndex);$/;"	p	class:CCVIL	access:protected	signature:(PopulationT<double> vi, PopulationT<double> offsprings, unsigned LB, unsigned UB, vector<unsigned> vecIndex)
+CCVIL::bestCand	CCVIL.h	/^	IndividualT<double>* bestCand;$/;"	m	class:CCVIL	access:protected
+CCVIL::boundConstrain	CCVIL.cpp	/^void CCVIL::boundConstrain(PopulationT<double> &vi, PopulationT<double> offsprings, int LB, int UB, vector<unsigned> vecIndex){$/;"	f	class:CCVIL	signature:(PopulationT<double> &vi, PopulationT<double> offsprings, int LB, int UB, vector<unsigned> vecIndex)
+CCVIL::boundConstrain	CCVIL.h	/^	void boundConstrain(PopulationT<double> &vi, PopulationT<double> offsprings, int LB, int UB, vector<unsigned> vecIndex);$/;"	p	class:CCVIL	access:protected	signature:(PopulationT<double> &vi, PopulationT<double> offsprings, int LB, int UB, vector<unsigned> vecIndex)
 CCVIL::captureInter	CCVIL.cpp	/^void CCVIL::captureInter(unsigned curDim, unsigned lastDim){$/;"	f	class:CCVIL	signature:(unsigned curDim, unsigned lastDim)
 CCVIL::captureInter	CCVIL.h	/^	void captureInter(unsigned curDim, unsigned lastDim);$/;"	p	class:CCVIL	access:protected	signature:(unsigned curDim, unsigned lastDim)
 CCVIL::cauchyRnd	CCVIL.cpp	/^double CCVIL::cauchyRnd(double mu, double delta){$/;"	f	class:CCVIL	signature:(double mu, double delta)
@@ -147,6 +149,7 @@ CCVIL::gnR1R2	CCVIL.h	/^	void gnR1R2(unsigned NP1, unsigned NP2, unsigned *r1, u
 CCVIL::groupCR	CCVIL.h	/^	double* groupCR;$/;"	m	class:CCVIL	access:protected
 CCVIL::groupF	CCVIL.h	/^	double* groupF;$/;"	m	class:CCVIL	access:protected
 CCVIL::groupInfo	CCVIL.h	/^	vector< vector<unsigned> > groupInfo;$/;"	m	class:CCVIL	access:protected
+CCVIL::lastBestValue	CCVIL.h	/^	double lastBestValue;$/;"	m	class:CCVIL	access:protected
 CCVIL::learningStage	CCVIL.cpp	/^void CCVIL::learningStage(){$/;"	f	class:CCVIL	signature:()
 CCVIL::learningStage	CCVIL.h	/^	void learningStage();$/;"	p	class:CCVIL	access:protected	signature:()
 CCVIL::lookUpGroup	CCVIL.h	/^	unsigned* lookUpGroup;$/;"	m	class:CCVIL	access:protected
@@ -160,18 +163,23 @@ CCVIL::popGenerate	CCVIL.h	/^	void popGenerate();$/;"	p	class:CCVIL	access:prote
 CCVIL::popInit	CCVIL.cpp	/^void CCVIL::popInit(){$/;"	f	class:CCVIL	signature:()
 CCVIL::popInit	CCVIL.h	/^	void popInit();$/;"	p	class:CCVIL	access:protected	signature:()
 CCVIL::popInit	CCVIL.h	/^	void popInit(PopulationT<double> *inPop);$/;"	p	class:CCVIL	access:protected	signature:(PopulationT<double> *inPop)
+CCVIL::print2Dvector	CCVIL.cpp	/^void CCVIL::print2Dvector(vector< PopulationT<double> > vector2D){$/;"	f	class:CCVIL	signature:(vector< PopulationT<double> > vector2D)
+CCVIL::print2Dvector	CCVIL.cpp	/^void CCVIL::print2Dvector(vector< vector<unsigned> > vector2D){$/;"	f	class:CCVIL	signature:(vector< vector<unsigned> > vector2D)
 CCVIL::printArray	CCVIL.cpp	/^void CCVIL::printArray(double* a, unsigned D){$/;"	f	class:CCVIL	signature:(double* a, unsigned D)
 CCVIL::printArray	CCVIL.cpp	/^void CCVIL::printArray(unsigned* a, unsigned D){$/;"	f	class:CCVIL	signature:(unsigned* a, unsigned D)
 CCVIL::printArray	CCVIL.h	/^	void printArray(double* a, unsigned D);$/;"	p	class:CCVIL	access:protected	signature:(double* a, unsigned D)
 CCVIL::printArray	CCVIL.h	/^	void printArray(unsigned* a, unsigned D);$/;"	p	class:CCVIL	access:protected	signature:(unsigned* a, unsigned D)
 CCVIL::printFitness	CCVIL.cpp	/^void CCVIL::printFitness(PopulationT<double> printPop){$/;"	f	class:CCVIL	signature:(PopulationT<double> printPop)
 CCVIL::printFitness	CCVIL.h	/^	void printFitness(PopulationT<double> printPop);$/;"	p	class:CCVIL	access:protected	signature:(PopulationT<double> printPop)
-CCVIL::printPopulation	CCVIL.cpp	/^void CCVIL::printPopulation(PopulationT<double> &printPop){$/;"	f	class:CCVIL	signature:(PopulationT<double> &printPop)
-CCVIL::printPopulation	CCVIL.h	/^	void printPopulation(PopulationT<double> &printPop);$/;"	p	class:CCVIL	access:protected	signature:(PopulationT<double> &printPop)
-CCVIL::printWholePop	CCVIL.cpp	/^void CCVIL::printWholePop(){$/;"	f	class:CCVIL	signature:()
+CCVIL::printPopulation	CCVIL.cpp	/^void CCVIL::printPopulation(IndividualT<double> printIndiv){$/;"	f	class:CCVIL	signature:(IndividualT<double> printIndiv)
+CCVIL::printPopulation	CCVIL.cpp	/^void CCVIL::printPopulation(PopulationT<double> printPop){$/;"	f	class:CCVIL	signature:(PopulationT<double> printPop)
+CCVIL::printPopulation	CCVIL.h	/^	void printPopulation(IndividualT<double> printIndiv);$/;"	p	class:CCVIL	access:protected	signature:(IndividualT<double> printIndiv)
+CCVIL::printPopulation	CCVIL.h	/^	void printPopulation(PopulationT<double> printPop);$/;"	p	class:CCVIL	access:protected	signature:(PopulationT<double> printPop)
+CCVIL::printVector	CCVIL.cpp	/^void CCVIL::printVector(vector<double> v){$/;"	f	class:CCVIL	signature:(vector<double> v)
+CCVIL::printVector	CCVIL.cpp	/^void CCVIL::printVector(vector<unsigned> v){$/;"	f	class:CCVIL	signature:(vector<unsigned> v)
+CCVIL::printVector	CCVIL.h	/^	void printVector(vector<double> v);$/;"	p	class:CCVIL	access:protected	signature:(vector<double> v)
+CCVIL::printVector	CCVIL.h	/^	void printVector(vector<unsigned> v);$/;"	p	class:CCVIL	access:protected	signature:(vector<unsigned> v)
 CCVIL::printWholePop	CCVIL.h	/^	void printWholePop();$/;"	p	class:CCVIL	access:protected	signature:()
-CCVIL::rJADECC	CCVIL.cpp	/^void CCVIL::rJADECC(unsigned index, bool learnStageFlag){$/;"	f	class:CCVIL	signature:(unsigned index, bool learnStageFlag)
-CCVIL::rJADECC	CCVIL.h	/^	void rJADECC(unsigned index, bool learnStageFlag);$/;"	p	class:CCVIL	access:protected	signature:(unsigned index, bool learnStageFlag)
 CCVIL::randFCR	CCVIL.cpp	/^void CCVIL::randFCR(unsigned NP, double CRm, double CRsigma, double Fm, double Fsigma, double* &F, double* &CR){$/;"	f	class:CCVIL	signature:(unsigned NP, double CRm, double CRsigma, double Fm, double Fsigma, double* &F, double* &CR)
 CCVIL::randFCR	CCVIL.h	/^	void randFCR(unsigned NP, double CRm, double CRsigma, double Fm, double Fsigma, double *&F, double *&CR);$/;"	p	class:CCVIL	access:protected	signature:(unsigned NP, double CRm, double CRsigma, double Fm, double Fsigma, double *&F, double *&CR)
 CCVIL::randPerm	CCVIL.cpp	/^unsigned* CCVIL::randPerm(unsigned N)$/;"	f	class:CCVIL	signature:(unsigned N)
@@ -409,6 +417,8 @@ F9::compute	F9.h	/^	double compute(double* x) ;$/;"	p	class:F9	access:public	sig
 F9::compute	F9.h	/^	double compute(vector<double> x) ;$/;"	p	class:F9	access:public	signature:(vector<double> x)
 F9::~F9	F9.cpp	/^F9::~F9(){$/;"	f	class:F9	signature:()
 F9::~F9	F9.h	/^	~F9();$/;"	p	class:F9	access:public	signature:()
+JADECC	CCVIL.cpp	/^void CCVIL::JADECC(unsigned index, bool learnStageFlag){$/;"	f	class:CCVIL	signature:(unsigned index, bool learnStageFlag)
+JADECC	CCVIL.h	/^	void JADECC(unsigned index, bool learnStageFlag);$/;"	p	class:CCVIL	access:protected	signature:(unsigned index, bool learnStageFlag)
 L	Benchmarks.h	10;"	d
 LDFLAGS	Makefile	/^LDFLAGS=-L${SHARKLIB} -Wl,-rpath,${SHARKLIB}$/;"	m
 LDLIBS	Makefile	/^LDLIBS=-lshark$/;"	m
@@ -480,9 +490,9 @@ addToArchive	Archive.h	/^	void addToArchive(IndividualT<double> failIndiv);$/;"	
 anotherz	Benchmarks.h	/^	double* anotherz;$/;"	m	class:Benchmarks	access:protected
 anotherz1	Benchmarks.h	/^	double* anotherz1;$/;"	m	class:Benchmarks	access:protected
 anotherz2	Benchmarks.h	/^	double* anotherz2;$/;"	m	class:Benchmarks	access:protected
-bestCand	CCVIL.h	/^	PopulationT<double>* bestCand;$/;"	m	class:CCVIL	access:protected
-boundConstrain	CCVIL.cpp	/^void CCVIL::boundConstrain(PopulationT<double> vi, PopulationT<double> offsprings, unsigned LB, unsigned UB, vector<unsigned> vecIndex){$/;"	f	class:CCVIL	signature:(PopulationT<double> vi, PopulationT<double> offsprings, unsigned LB, unsigned UB, vector<unsigned> vecIndex)
-boundConstrain	CCVIL.h	/^	void boundConstrain(PopulationT<double> vi, PopulationT<double> offsprings, unsigned LB, unsigned UB, vector<unsigned> vecIndex);$/;"	p	class:CCVIL	access:protected	signature:(PopulationT<double> vi, PopulationT<double> offsprings, unsigned LB, unsigned UB, vector<unsigned> vecIndex)
+bestCand	CCVIL.h	/^	IndividualT<double>* bestCand;$/;"	m	class:CCVIL	access:protected
+boundConstrain	CCVIL.cpp	/^void CCVIL::boundConstrain(PopulationT<double> &vi, PopulationT<double> offsprings, int LB, int UB, vector<unsigned> vecIndex){$/;"	f	class:CCVIL	signature:(PopulationT<double> &vi, PopulationT<double> offsprings, int LB, int UB, vector<unsigned> vecIndex)
+boundConstrain	CCVIL.h	/^	void boundConstrain(PopulationT<double> &vi, PopulationT<double> offsprings, int LB, int UB, vector<unsigned> vecIndex);$/;"	p	class:CCVIL	access:protected	signature:(PopulationT<double> &vi, PopulationT<double> offsprings, int LB, int UB, vector<unsigned> vecIndex)
 c	RunParameter.h	/^	double c;	$/;"	m	class:RunParameter	access:public
 captureInter	CCVIL.cpp	/^void CCVIL::captureInter(unsigned curDim, unsigned lastDim){$/;"	f	class:CCVIL	signature:(unsigned curDim, unsigned lastDim)
 captureInter	CCVIL.h	/^	void captureInter(unsigned curDim, unsigned lastDim);$/;"	p	class:CCVIL	access:protected	signature:(unsigned curDim, unsigned lastDim)
@@ -616,6 +626,7 @@ groupF	CCVIL.h	/^	double* groupF;$/;"	m	class:CCVIL	access:protected
 groupInfo	CCVIL.h	/^	vector< vector<unsigned> > groupInfo;$/;"	m	class:CCVIL	access:protected
 initRandomSeed	RunParameter.h	/^	int initRandomSeed;$/;"	m	class:RunParameter	access:public
 initialGroupSize	RunParameter.h	/^	unsigned initialGroupSize;$/;"	m	class:RunParameter	access:public
+lastBestValue	CCVIL.h	/^	double lastBestValue;$/;"	m	class:CCVIL	access:protected
 learningStage	CCVIL.cpp	/^void CCVIL::learningStage(){$/;"	f	class:CCVIL	signature:()
 learningStage	CCVIL.h	/^	void learningStage();$/;"	p	class:CCVIL	access:protected	signature:()
 lookUpGroup	CCVIL.h	/^	unsigned* lookUpGroup;$/;"	m	class:CCVIL	access:protected
@@ -654,18 +665,23 @@ popGenerate	CCVIL.h	/^	void popGenerate();$/;"	p	class:CCVIL	access:protected	si
 popInit	CCVIL.cpp	/^void CCVIL::popInit(){$/;"	f	class:CCVIL	signature:()
 popInit	CCVIL.h	/^	void popInit();$/;"	p	class:CCVIL	access:protected	signature:()
 popInit	CCVIL.h	/^	void popInit(PopulationT<double> *inPop);$/;"	p	class:CCVIL	access:protected	signature:(PopulationT<double> *inPop)
+print2Dvector	CCVIL.cpp	/^void CCVIL::print2Dvector(vector< PopulationT<double> > vector2D){$/;"	f	class:CCVIL	signature:(vector< PopulationT<double> > vector2D)
+print2Dvector	CCVIL.cpp	/^void CCVIL::print2Dvector(vector< vector<unsigned> > vector2D){$/;"	f	class:CCVIL	signature:(vector< vector<unsigned> > vector2D)
 printArray	CCVIL.cpp	/^void CCVIL::printArray(double* a, unsigned D){$/;"	f	class:CCVIL	signature:(double* a, unsigned D)
 printArray	CCVIL.cpp	/^void CCVIL::printArray(unsigned* a, unsigned D){$/;"	f	class:CCVIL	signature:(unsigned* a, unsigned D)
 printArray	CCVIL.h	/^	void printArray(double* a, unsigned D);$/;"	p	class:CCVIL	access:protected	signature:(double* a, unsigned D)
 printArray	CCVIL.h	/^	void printArray(unsigned* a, unsigned D);$/;"	p	class:CCVIL	access:protected	signature:(unsigned* a, unsigned D)
 printFitness	CCVIL.cpp	/^void CCVIL::printFitness(PopulationT<double> printPop){$/;"	f	class:CCVIL	signature:(PopulationT<double> printPop)
 printFitness	CCVIL.h	/^	void printFitness(PopulationT<double> printPop);$/;"	p	class:CCVIL	access:protected	signature:(PopulationT<double> printPop)
-printPopulation	CCVIL.cpp	/^void CCVIL::printPopulation(PopulationT<double> &printPop){$/;"	f	class:CCVIL	signature:(PopulationT<double> &printPop)
-printPopulation	CCVIL.h	/^	void printPopulation(PopulationT<double> &printPop);$/;"	p	class:CCVIL	access:protected	signature:(PopulationT<double> &printPop)
-printWholePop	CCVIL.cpp	/^void CCVIL::printWholePop(){$/;"	f	class:CCVIL	signature:()
+printPopulation	CCVIL.cpp	/^void CCVIL::printPopulation(IndividualT<double> printIndiv){$/;"	f	class:CCVIL	signature:(IndividualT<double> printIndiv)
+printPopulation	CCVIL.cpp	/^void CCVIL::printPopulation(PopulationT<double> printPop){$/;"	f	class:CCVIL	signature:(PopulationT<double> printPop)
+printPopulation	CCVIL.h	/^	void printPopulation(IndividualT<double> printIndiv);$/;"	p	class:CCVIL	access:protected	signature:(IndividualT<double> printIndiv)
+printPopulation	CCVIL.h	/^	void printPopulation(PopulationT<double> printPop);$/;"	p	class:CCVIL	access:protected	signature:(PopulationT<double> printPop)
+printVector	CCVIL.cpp	/^void CCVIL::printVector(vector<double> v){$/;"	f	class:CCVIL	signature:(vector<double> v)
+printVector	CCVIL.cpp	/^void CCVIL::printVector(vector<unsigned> v){$/;"	f	class:CCVIL	signature:(vector<unsigned> v)
+printVector	CCVIL.h	/^	void printVector(vector<double> v);$/;"	p	class:CCVIL	access:protected	signature:(vector<double> v)
+printVector	CCVIL.h	/^	void printVector(vector<unsigned> v);$/;"	p	class:CCVIL	access:protected	signature:(vector<unsigned> v)
 printWholePop	CCVIL.h	/^	void printWholePop();$/;"	p	class:CCVIL	access:protected	signature:()
-rJADECC	CCVIL.cpp	/^void CCVIL::rJADECC(unsigned index, bool learnStageFlag){$/;"	f	class:CCVIL	signature:(unsigned index, bool learnStageFlag)
-rJADECC	CCVIL.h	/^	void rJADECC(unsigned index, bool learnStageFlag);$/;"	p	class:CCVIL	access:protected	signature:(unsigned index, bool learnStageFlag)
 randFCR	CCVIL.cpp	/^void CCVIL::randFCR(unsigned NP, double CRm, double CRsigma, double Fm, double Fsigma, double* &F, double* &CR){$/;"	f	class:CCVIL	signature:(unsigned NP, double CRm, double CRsigma, double Fm, double Fsigma, double* &F, double* &CR)
 randFCR	CCVIL.h	/^	void randFCR(unsigned NP, double CRm, double CRsigma, double Fm, double Fsigma, double *&F, double *&CR);$/;"	p	class:CCVIL	access:protected	signature:(unsigned NP, double CRm, double CRsigma, double Fm, double Fsigma, double *&F, double *&CR)
 randPerm	CCVIL.cpp	/^unsigned* CCVIL::randPerm(unsigned N)$/;"	f	class:CCVIL	signature:(unsigned N)
@@ -694,7 +710,6 @@ rot_rastrigin	Benchmarks.h	/^	double rot_rastrigin(double *x,int dim,int k);$/;"
 rot_rastrigin	Benchmarks.h	/^	double rot_rastrigin(double*x,int dim);$/;"	p	class:Benchmarks	access:protected	signature:(double*x,int dim)
 run	CCVIL.cpp	/^void CCVIL::run(){$/;"	f	class:CCVIL	signature:()
 run	CCVIL.h	/^	void run();$/;"	p	class:CCVIL	access:public	signature:()
-runcateArchive	Archive.h	/^	void runcateArchive();$/;"	p	class:Archive	access:public	signature:()
 sameGroup	CCVIL.cpp	/^bool CCVIL::sameGroup(unsigned v1, unsigned v2){$/;"	f	class:CCVIL	signature:(unsigned v1, unsigned v2)
 sameGroup	CCVIL.h	/^	bool sameGroup(unsigned v1, unsigned v2);$/;"	p	class:CCVIL	access:protected	signature:(unsigned v1, unsigned v2)
 samplingInterval	RunParameter.h	/^	unsigned samplingInterval;$/;"	m	class:RunParameter	access:public
@@ -711,6 +726,7 @@ sphere	Benchmarks.h	/^	double sphere(double*x,int dim, int k);$/;"	p	class:Bench
 sum	CCVIL.cpp	/^double CCVIL::sum(vector<double> vec){$/;"	f	class:CCVIL	signature:(vector<double> vec)
 sum	CCVIL.h	/^	double sum(vector<double> vec);$/;"	p	class:CCVIL	access:protected	signature:(vector<double> vec)
 truncateArchive	Archive.cpp	/^void Archive::truncateArchive(){$/;"	f	class:Archive	signature:()
+truncateArchive	Archive.h	/^	void truncateArchive();$/;"	p	class:Archive	access:public	signature:()
 unique	Archive.cpp	/^PopulationT<double> Archive::unique(PopulationT<double> popAll){$/;"	f	class:Archive	signature:(PopulationT<double> popAll)
 unique	Archive.h	/^	PopulationT<double> unique(PopulationT<double> popAll);$/;"	p	class:Archive	access:public	signature:(PopulationT<double> popAll)
 updateArchive	Archive.h	/^	void updateArchive(PopulationT<double> popAll);$/;"	p	class:Archive	access:public	signature:(PopulationT<double> popAll)

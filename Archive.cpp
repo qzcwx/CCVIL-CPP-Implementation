@@ -48,6 +48,7 @@ void Archive::truncateArchive(){
 }
 
 PopulationT<double> Archive::unique(PopulationT<double> popAll){
+	if (popAll.size() > 0){
 	unsigned D = popAll[0][0].size();
 	printf("D = %d\n", D);
 	PopulationT<double> uniPopAll(0, ChromosomeT<double>(D));
@@ -73,4 +74,7 @@ PopulationT<double> Archive::unique(PopulationT<double> popAll){
 
 	printf("Size of popAll = %d, size of uniPopAll = %d\n", popAll.size(), uniPopAll.size());
 	return uniPopAll;
+	}else{
+		return popAll;
+	}
 }
