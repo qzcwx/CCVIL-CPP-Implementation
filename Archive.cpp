@@ -17,3 +17,60 @@ unsigned Archive::getNP(){
 PopulationT<double>* Archive::getPop(){
 	return pop;
 }
+
+/*
+ * Update the archive with input solutions
+    Step 1: Add new solution to the archive
+    Step 2: Remove duplicate elements
+    Step 3: If necessary, randomly remove some solutions to maintain the archive size
+ */
+void Archive::addToArchive(IndividualT<double> failIndiv){
+	// Step 1: Add new solution to the archive
+	pop->append(failIndiv); 
+}
+
+void Archive::removeDuplicateElem(){
+	// Step 2: Remove duplicate elements
+	(*pop) =  unique((*pop));
+}
+
+void Archive::truncateArchive(){
+	// Step 3: If necessary, randomly remove some solutions to maintain the archive size
+	if (pop->size()>MAX_NP){
+		unsigned numOfElemToRm =  pop->size() - MAX_NP;
+		printf("Number of Element to remove = %d\n", numOfElemToRm);
+		for (unsigned i=0; i< numOfElemToRm; i++){
+			printf("Before Remove, popSize = %d\n", pop->size());
+			pop->remove( floor(Rng::uni()*(pop->size())) );
+			printf("After Remove, popSize = %d\n", pop->size());
+		}
+	}
+}
+
+PopulationT<double> Archive::unique(PopulationT<double> popAll){
+	unsigned D = popAll[0][0].size();
+	printf("D = %d\n", D);
+	PopulationT<double> uniPopAll(0, ChromosomeT<double>(D));
+	bool alreadyExist = false;
+
+	for (unsigned i=0; i<popAll.size(); i++){
+		// check whether popAll[i] already has been in uniPopAll
+		alreadyExist = true;
+
+		for(unsigned j=0; j<uniPopAll.size(); j++){
+			for (unsigned k=0; k<D; k++){
+				if (uniPopAll[j][0][k] != popAll[i][0][k]){
+					alreadyExist = false;
+					break;
+				}
+			}
+		}
+
+		if (alreadyExist == false || uniPopAll.size()==0){
+			uniPopAll.append(popAll[i]);
+		}
+	}
+
+	printf("Size of popAll = %d, size of uniPopAll = %d\n", popAll.size(), uniPopAll.size());
+	return uniPopAll;
+}

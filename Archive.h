@@ -2,6 +2,7 @@
 #define _ARCHIVE_H
 
 #include <EALib/PopulationT.h>
+#include <Rng/Uniform.h>
 
 class Archive{
 protected:
@@ -14,6 +15,11 @@ public:
 	~Archive();
 
 	unsigned getNP();
+	void updateArchive(PopulationT<double> popAll);
+	void addToArchive(IndividualT<double> failIndiv);
+	void removeDuplicateElem();
+	void truncateArchive();
+	PopulationT<double> unique(PopulationT<double> popAll);
 	PopulationT<double>* getPop();
 };
 

@@ -12,12 +12,21 @@ Archive	Archive.h	/^class Archive{$/;"	c
 Archive::Archive	Archive.cpp	/^Archive::Archive(unsigned inNP, unsigned inD){$/;"	f	class:Archive	signature:(unsigned inNP, unsigned inD)
 Archive::Archive	Archive.h	/^	Archive(unsigned inNP, unsigned inD);$/;"	p	class:Archive	access:public	signature:(unsigned inNP, unsigned inD)
 Archive::MAX_NP	Archive.h	/^	unsigned MAX_NP;$/;"	m	class:Archive	access:protected
+Archive::addToArchive	Archive.cpp	/^void Archive::addToArchive(IndividualT<double> failIndiv){$/;"	f	class:Archive	signature:(IndividualT<double> failIndiv)
+Archive::addToArchive	Archive.h	/^	void addToArchive(IndividualT<double> failIndiv);$/;"	p	class:Archive	access:public	signature:(IndividualT<double> failIndiv)
 Archive::dimension	Archive.h	/^	unsigned dimension;$/;"	m	class:Archive	access:protected
 Archive::getNP	Archive.cpp	/^unsigned Archive::getNP(){$/;"	f	class:Archive	signature:()
 Archive::getNP	Archive.h	/^	unsigned getNP();$/;"	p	class:Archive	access:public	signature:()
 Archive::getPop	Archive.cpp	/^PopulationT<double>* Archive::getPop(){$/;"	f	class:Archive	signature:()
 Archive::getPop	Archive.h	/^	PopulationT<double>* getPop();$/;"	p	class:Archive	access:public	signature:()
 Archive::pop	Archive.h	/^	PopulationT<double>* pop;$/;"	m	class:Archive	access:protected
+Archive::removeDuplicateElem	Archive.cpp	/^void Archive::removeDuplicateElem(){$/;"	f	class:Archive	signature:()
+Archive::removeDuplicateElem	Archive.h	/^	void removeDuplicateElem();$/;"	p	class:Archive	access:public	signature:()
+Archive::runcateArchive	Archive.h	/^	void runcateArchive();$/;"	p	class:Archive	access:public	signature:()
+Archive::truncateArchive	Archive.cpp	/^void Archive::truncateArchive(){$/;"	f	class:Archive	signature:()
+Archive::unique	Archive.cpp	/^PopulationT<double> Archive::unique(PopulationT<double> popAll){$/;"	f	class:Archive	signature:(PopulationT<double> popAll)
+Archive::unique	Archive.h	/^	PopulationT<double> unique(PopulationT<double> popAll);$/;"	p	class:Archive	access:public	signature:(PopulationT<double> popAll)
+Archive::updateArchive	Archive.h	/^	void updateArchive(PopulationT<double> popAll);$/;"	p	class:Archive	access:public	signature:(PopulationT<double> popAll)
 Archive::~Archive	Archive.cpp	/^Archive::~Archive(){$/;"	f	class:Archive	signature:()
 Archive::~Archive	Archive.h	/^	~Archive();$/;"	p	class:Archive	access:public	signature:()
 Benchmarks	Benchmarks.cpp	/^Benchmarks::Benchmarks(RunParameter* runParam){$/;"	f	class:Benchmarks	signature:(RunParameter* runParam)
@@ -118,6 +127,8 @@ CCVIL::CCVIL	CCVIL.cpp	/^CCVIL::CCVIL(RunParameter* runParam){$/;"	f	class:CCVIL
 CCVIL::CCVIL	CCVIL.h	/^	CCVIL(RunParameter* runParam);$/;"	p	class:CCVIL	access:public	signature:(RunParameter* runParam)
 CCVIL::MaxFitEval	CCVIL.h	/^	unsigned MaxFitEval; \/\/ total fitness evaluation limitation for optimization$/;"	m	class:CCVIL	access:protected
 CCVIL::bestCand	CCVIL.h	/^	PopulationT<double>* bestCand;$/;"	m	class:CCVIL	access:protected
+CCVIL::boundConstrain	CCVIL.cpp	/^void CCVIL::boundConstrain(PopulationT<double> vi, PopulationT<double> offsprings, unsigned LB, unsigned UB, vector<unsigned> vecIndex){$/;"	f	class:CCVIL	signature:(PopulationT<double> vi, PopulationT<double> offsprings, unsigned LB, unsigned UB, vector<unsigned> vecIndex)
+CCVIL::boundConstrain	CCVIL.h	/^	void boundConstrain(PopulationT<double> vi, PopulationT<double> offsprings, unsigned LB, unsigned UB, vector<unsigned> vecIndex);$/;"	p	class:CCVIL	access:protected	signature:(PopulationT<double> vi, PopulationT<double> offsprings, unsigned LB, unsigned UB, vector<unsigned> vecIndex)
 CCVIL::captureInter	CCVIL.cpp	/^void CCVIL::captureInter(unsigned curDim, unsigned lastDim){$/;"	f	class:CCVIL	signature:(unsigned curDim, unsigned lastDim)
 CCVIL::captureInter	CCVIL.h	/^	void captureInter(unsigned curDim, unsigned lastDim);$/;"	p	class:CCVIL	access:protected	signature:(unsigned curDim, unsigned lastDim)
 CCVIL::cauchyRnd	CCVIL.cpp	/^double CCVIL::cauchyRnd(double mu, double delta){$/;"	f	class:CCVIL	signature:(double mu, double delta)
@@ -153,6 +164,8 @@ CCVIL::printArray	CCVIL.cpp	/^void CCVIL::printArray(double* a, unsigned D){$/;"
 CCVIL::printArray	CCVIL.cpp	/^void CCVIL::printArray(unsigned* a, unsigned D){$/;"	f	class:CCVIL	signature:(unsigned* a, unsigned D)
 CCVIL::printArray	CCVIL.h	/^	void printArray(double* a, unsigned D);$/;"	p	class:CCVIL	access:protected	signature:(double* a, unsigned D)
 CCVIL::printArray	CCVIL.h	/^	void printArray(unsigned* a, unsigned D);$/;"	p	class:CCVIL	access:protected	signature:(unsigned* a, unsigned D)
+CCVIL::printFitness	CCVIL.cpp	/^void CCVIL::printFitness(PopulationT<double> printPop){$/;"	f	class:CCVIL	signature:(PopulationT<double> printPop)
+CCVIL::printFitness	CCVIL.h	/^	void printFitness(PopulationT<double> printPop);$/;"	p	class:CCVIL	access:protected	signature:(PopulationT<double> printPop)
 CCVIL::printPopulation	CCVIL.cpp	/^void CCVIL::printPopulation(PopulationT<double> &printPop){$/;"	f	class:CCVIL	signature:(PopulationT<double> &printPop)
 CCVIL::printPopulation	CCVIL.h	/^	void printPopulation(PopulationT<double> &printPop);$/;"	p	class:CCVIL	access:protected	signature:(PopulationT<double> &printPop)
 CCVIL::printWholePop	CCVIL.cpp	/^void CCVIL::printWholePop(){$/;"	f	class:CCVIL	signature:()
@@ -404,24 +417,6 @@ MASK	Benchmarks.h	/^	int64_t MASK;$/;"	m	class:Benchmarks	access:protected
 MAX_NP	Archive.h	/^	unsigned MAX_NP;$/;"	m	class:Archive	access:protected
 MaxFitEval	CCVIL.h	/^	unsigned MaxFitEval; \/\/ total fitness evaluation limitation for optimization$/;"	m	class:CCVIL	access:protected
 MultiRotMatrix1D	Benchmarks.h	/^	double** MultiRotMatrix1D;$/;"	m	class:Benchmarks	access:protected
-MyParams	Configuration.cpp	/^    MyParams(int argc, char **argv) : Params(argc, argv)$/;"	f	class:MyParams	access:public	signature:(int argc, char **argv)
-MyParams	Configuration.cpp	/^class MyParams : public Params$/;"	c	file:	inherits:Params
-MyParams	Configuration.h	/^    MyParams(int argc, char **argv) : Params(argc, argv)$/;"	f	class:MyParams	access:public	signature:(int argc, char **argv)
-MyParams	Configuration.h	/^class MyParams : public Params$/;"	c	inherits:Params
-MyParams::MyParams	Configuration.cpp	/^    MyParams(int argc, char **argv) : Params(argc, argv)$/;"	f	class:MyParams	access:public	signature:(int argc, char **argv)
-MyParams::MyParams	Configuration.h	/^    MyParams(int argc, char **argv) : Params(argc, argv)$/;"	f	class:MyParams	access:public	signature:(int argc, char **argv)
-MyParams::d	Configuration.cpp	/^    double   d;$/;"	m	class:MyParams	file:	access:public
-MyParams::d	Configuration.h	/^    double   d;$/;"	m	class:MyParams	access:public
-MyParams::f	Configuration.cpp	/^    double   f;$/;"	m	class:MyParams	file:	access:public
-MyParams::f	Configuration.h	/^    double   f;$/;"	m	class:MyParams	access:public
-MyParams::io	Configuration.cpp	/^    void io(std::istream& is, std::ostream& os, FileUtil::iotype type)$/;"	f	class:MyParams	access:public	signature:(std::istream& is, std::ostream& os, FileUtil::iotype type)
-MyParams::io	Configuration.h	/^    void io(std::istream& is, std::ostream& os, FileUtil::iotype type)$/;"	f	class:MyParams	access:public	signature:(std::istream& is, std::ostream& os, FileUtil::iotype type)
-MyParams::monitor	Configuration.cpp	/^    void monitor(std::ostream &os) const$/;"	f	class:MyParams	access:public	signature:(std::ostream &os) const
-MyParams::monitor	Configuration.h	/^    void monitor(std::ostream &os) const$/;"	f	class:MyParams	access:public	signature:(std::ostream &os) const
-MyParams::n	Configuration.cpp	/^    unsigned n;$/;"	m	class:MyParams	file:	access:public
-MyParams::n	Configuration.h	/^    unsigned n;$/;"	m	class:MyParams	access:public
-MyParams::operator <<	Configuration.cpp	/^    friend std::ostream& operator <<(std::ostream &os, const MyParams &obj);$/;"	p	class:MyParams	file:	access:friend	signature:(std::ostream &os, const MyParams &obj)
-MyParams::operator <<	Configuration.h	/^    friend std::ostream& operator <<(std::ostream &os, const MyParams &obj);$/;"	p	class:MyParams	access:friend	signature:(std::ostream &os, const MyParams &obj)
 NP	RunParameter.h	/^	unsigned NP;$/;"	m	class:RunParameter	access:public
 OBJECTS	Makefile	/^OBJECTS=main.o RunParameter.o Benchmarks.o CCVIL.o Archive.o\\$/;"	m
 Ovector	Benchmarks.h	/^	double *Ovector;$/;"	m	class:Benchmarks	access:protected
@@ -480,10 +475,14 @@ ackley	Benchmarks.cpp	/^double Benchmarks::ackley(double *x, int dim, int k)$/;"
 ackley	Benchmarks.cpp	/^double Benchmarks::ackley(double*x,int dim){$/;"	f	class:Benchmarks	signature:(double*x,int dim)
 ackley	Benchmarks.h	/^	double ackley(double*x,int dim);$/;"	p	class:Benchmarks	access:protected	signature:(double*x,int dim)
 ackley	Benchmarks.h	/^	double ackley(double*x,int dim, int k);$/;"	p	class:Benchmarks	access:protected	signature:(double*x,int dim, int k)
+addToArchive	Archive.cpp	/^void Archive::addToArchive(IndividualT<double> failIndiv){$/;"	f	class:Archive	signature:(IndividualT<double> failIndiv)
+addToArchive	Archive.h	/^	void addToArchive(IndividualT<double> failIndiv);$/;"	p	class:Archive	access:public	signature:(IndividualT<double> failIndiv)
 anotherz	Benchmarks.h	/^	double* anotherz;$/;"	m	class:Benchmarks	access:protected
 anotherz1	Benchmarks.h	/^	double* anotherz1;$/;"	m	class:Benchmarks	access:protected
 anotherz2	Benchmarks.h	/^	double* anotherz2;$/;"	m	class:Benchmarks	access:protected
 bestCand	CCVIL.h	/^	PopulationT<double>* bestCand;$/;"	m	class:CCVIL	access:protected
+boundConstrain	CCVIL.cpp	/^void CCVIL::boundConstrain(PopulationT<double> vi, PopulationT<double> offsprings, unsigned LB, unsigned UB, vector<unsigned> vecIndex){$/;"	f	class:CCVIL	signature:(PopulationT<double> vi, PopulationT<double> offsprings, unsigned LB, unsigned UB, vector<unsigned> vecIndex)
+boundConstrain	CCVIL.h	/^	void boundConstrain(PopulationT<double> vi, PopulationT<double> offsprings, unsigned LB, unsigned UB, vector<unsigned> vecIndex);$/;"	p	class:CCVIL	access:protected	signature:(PopulationT<double> vi, PopulationT<double> offsprings, unsigned LB, unsigned UB, vector<unsigned> vecIndex)
 c	RunParameter.h	/^	double c;	$/;"	m	class:RunParameter	access:public
 captureInter	CCVIL.cpp	/^void CCVIL::captureInter(unsigned curDim, unsigned lastDim){$/;"	f	class:CCVIL	signature:(unsigned curDim, unsigned lastDim)
 captureInter	CCVIL.h	/^	void captureInter(unsigned curDim, unsigned lastDim);$/;"	p	class:CCVIL	access:protected	signature:(unsigned curDim, unsigned lastDim)
@@ -584,8 +583,6 @@ createRotMatrix1D	Benchmarks.h	/^	double* createRotMatrix1D(int dim);$/;"	p	clas
 createShiftVector	Benchmarks.cpp	/^double* Benchmarks::createShiftVector(int dim, double min,double max) {$/;"	f	class:Benchmarks	signature:(int dim, double min,double max)
 createShiftVector	Benchmarks.h	/^	double* createShiftVector(int dim, double min,double max);$/;"	p	class:Benchmarks	access:protected	signature:(int dim, double min,double max)
 curFitEval	CCVIL.h	/^	unsigned curFitEval; \/\/ current fitness evaluation limitation for optimization$/;"	m	class:CCVIL	access:protected
-d	Configuration.cpp	/^    double   d;$/;"	m	class:MyParams	file:	access:public
-d	Configuration.h	/^    double   d;$/;"	m	class:MyParams	access:public
 dimension	Archive.h	/^	unsigned dimension;$/;"	m	class:Archive	access:protected
 dimension	Benchmarks.h	/^	int dimension;$/;"	m	class:Benchmarks	access:protected
 dimension	RunParameter.h	/^	unsigned dimension;$/;"	m	class:RunParameter	access:public
@@ -595,8 +592,6 @@ elliptic	Benchmarks.cpp	/^double Benchmarks::elliptic(double*x, int dim, int k) 
 elliptic	Benchmarks.cpp	/^double Benchmarks::elliptic(double*x,int dim) {$/;"	f	class:Benchmarks	signature:(double*x,int dim)
 elliptic	Benchmarks.h	/^	double elliptic(double*x, int dim, int k);$/;"	p	class:Benchmarks	access:protected	signature:(double*x, int dim, int k)
 elliptic	Benchmarks.h	/^	double elliptic(double*x,int dim);$/;"	p	class:Benchmarks	access:protected	signature:(double*x,int dim)
-f	Configuration.cpp	/^    double   f;$/;"	m	class:MyParams	file:	access:public
-f	Configuration.h	/^    double   f;$/;"	m	class:MyParams	access:public
 failThreshold	RunParameter.h	/^	unsigned failThreshold;$/;"	m	class:RunParameter	access:public
 fes	CCVIL.h	/^	long fes;$/;"	m	class:CCVIL	access:protected
 findPbestIndex	CCVIL.cpp	/^void CCVIL::findPbestIndex(PopulationT<double> inPop, unsigned pNP, unsigned* indBest){$/;"	f	class:CCVIL	signature:(PopulationT<double> inPop, unsigned pNP, unsigned* indBest)
@@ -621,8 +616,6 @@ groupF	CCVIL.h	/^	double* groupF;$/;"	m	class:CCVIL	access:protected
 groupInfo	CCVIL.h	/^	vector< vector<unsigned> > groupInfo;$/;"	m	class:CCVIL	access:protected
 initRandomSeed	RunParameter.h	/^	int initRandomSeed;$/;"	m	class:RunParameter	access:public
 initialGroupSize	RunParameter.h	/^	unsigned initialGroupSize;$/;"	m	class:RunParameter	access:public
-io	Configuration.cpp	/^    void io(std::istream& is, std::ostream& os, FileUtil::iotype type)$/;"	f	class:MyParams	access:public	signature:(std::istream& is, std::ostream& os, FileUtil::iotype type)
-io	Configuration.h	/^    void io(std::istream& is, std::ostream& os, FileUtil::iotype type)$/;"	f	class:MyParams	access:public	signature:(std::istream& is, std::ostream& os, FileUtil::iotype type)
 learningStage	CCVIL.cpp	/^void CCVIL::learningStage(){$/;"	f	class:CCVIL	signature:()
 learningStage	CCVIL.h	/^	void learningStage();$/;"	p	class:CCVIL	access:protected	signature:()
 lookUpGroup	CCVIL.h	/^	unsigned* lookUpGroup;$/;"	m	class:CCVIL	access:protected
@@ -633,18 +626,12 @@ lowerThreshold	RunParameter.h	/^	unsigned lowerThreshold;$/;"	m	class:RunParamet
 m_havenextGaussian	Benchmarks.h	/^	bool  m_havenextGaussian;$/;"	m	class:Benchmarks	access:protected
 m_nextGaussian	Benchmarks.h	/^	double m_nextGaussian;$/;"	m	class:Benchmarks	access:protected
 m_seed	Benchmarks.h	/^	int64_t m_seed;$/;"	m	class:Benchmarks	access:protected
-main	Configuration.cpp	/^int main(int argc, char **argv)$/;"	f	signature:(int argc, char **argv)
-main	Configuration.h	/^int main(int argc, char **argv)$/;"	f	signature:(int argc, char **argv)
 main	main.cpp	/^int main(){$/;"	f	signature:()
 main	test.cpp	/^int main () {$/;"	f	signature:()
 maxX	Benchmarks.h	/^	int maxX;$/;"	m	class:Benchmarks	access:protected
 minX	Benchmarks.h	/^	int minX;$/;"	m	class:Benchmarks	access:protected
-monitor	Configuration.cpp	/^    void monitor(std::ostream &os) const$/;"	f	class:MyParams	access:public	signature:(std::ostream &os) const
-monitor	Configuration.h	/^    void monitor(std::ostream &os) const$/;"	f	class:MyParams	access:public	signature:(std::ostream &os) const
 multiply	Benchmarks.cpp	/^double* Benchmarks::multiply(double*vector, double*matrix,int dim){$/;"	f	class:Benchmarks	signature:(double*vector, double*matrix,int dim)
 multiply	Benchmarks.h	/^	double* multiply(double*vector, double*matrix,int dim);$/;"	p	class:Benchmarks	access:protected	signature:(double*vector, double*matrix,int dim)
-n	Configuration.cpp	/^    unsigned n;$/;"	m	class:MyParams	file:	access:public
-n	Configuration.h	/^    unsigned n;$/;"	m	class:MyParams	access:public
 next	Benchmarks.cpp	/^int Benchmarks::next(int bits) {$/;"	f	class:Benchmarks	signature:(int bits)
 next	Benchmarks.h	/^	int next(int bits);$/;"	p	class:Benchmarks	access:protected	signature:(int bits)
 nextDouble	Benchmarks.cpp	/^double Benchmarks::nextDouble(){$/;"	f	class:Benchmarks	signature:()
@@ -656,10 +643,6 @@ nextInt	Benchmarks.h	/^	int nextInt(int n);$/;"	p	class:Benchmarks	access:protec
 nonSeparableGroupSize	Benchmarks.h	/^	int nonSeparableGroupSize;$/;"	m	class:Benchmarks	access:protected
 nonSeparableGroupSize	RunParameter.h	/^	unsigned nonSeparableGroupSize;$/;"	m	class:RunParameter	access:public
 numOfRun	RunParameter.h	/^	unsigned numOfRun;$/;"	m	class:RunParameter	access:public
-operator <<	Configuration.cpp	/^    friend std::ostream& operator <<(std::ostream &os, const MyParams &obj);$/;"	p	class:MyParams	file:	access:friend	signature:(std::ostream &os, const MyParams &obj)
-operator <<	Configuration.cpp	/^std::ostream& operator <<(std::ostream &os, const MyParams &obj)$/;"	f	signature:(std::ostream &os, const MyParams &obj)
-operator <<	Configuration.h	/^    friend std::ostream& operator <<(std::ostream &os, const MyParams &obj);$/;"	p	class:MyParams	access:friend	signature:(std::ostream &os, const MyParams &obj)
-operator <<	Configuration.h	/^std::ostream& operator <<(std::ostream &os, const MyParams &obj)$/;"	f	signature:(std::ostream &os, const MyParams &obj)
 optimizationStage	CCVIL.h	/^	void optimizationStage();$/;"	p	class:CCVIL	access:protected	signature:()
 p	CCVIL.h	/^	unsigned* p; \/\/ random permutation$/;"	m	class:CCVIL	access:protected
 p	RunParameter.h	/^	double p;$/;"	m	class:RunParameter	access:public
@@ -675,6 +658,8 @@ printArray	CCVIL.cpp	/^void CCVIL::printArray(double* a, unsigned D){$/;"	f	clas
 printArray	CCVIL.cpp	/^void CCVIL::printArray(unsigned* a, unsigned D){$/;"	f	class:CCVIL	signature:(unsigned* a, unsigned D)
 printArray	CCVIL.h	/^	void printArray(double* a, unsigned D);$/;"	p	class:CCVIL	access:protected	signature:(double* a, unsigned D)
 printArray	CCVIL.h	/^	void printArray(unsigned* a, unsigned D);$/;"	p	class:CCVIL	access:protected	signature:(unsigned* a, unsigned D)
+printFitness	CCVIL.cpp	/^void CCVIL::printFitness(PopulationT<double> printPop){$/;"	f	class:CCVIL	signature:(PopulationT<double> printPop)
+printFitness	CCVIL.h	/^	void printFitness(PopulationT<double> printPop);$/;"	p	class:CCVIL	access:protected	signature:(PopulationT<double> printPop)
 printPopulation	CCVIL.cpp	/^void CCVIL::printPopulation(PopulationT<double> &printPop){$/;"	f	class:CCVIL	signature:(PopulationT<double> &printPop)
 printPopulation	CCVIL.h	/^	void printPopulation(PopulationT<double> &printPop);$/;"	p	class:CCVIL	access:protected	signature:(PopulationT<double> &printPop)
 printWholePop	CCVIL.cpp	/^void CCVIL::printWholePop(){$/;"	f	class:CCVIL	signature:()
@@ -689,6 +674,8 @@ rastrigin	Benchmarks.cpp	/^double Benchmarks::rastrigin(double *x, int dim, int 
 rastrigin	Benchmarks.cpp	/^double Benchmarks::rastrigin(double*x,int dim){$/;"	f	class:Benchmarks	signature:(double*x,int dim)
 rastrigin	Benchmarks.h	/^	double rastrigin(double *x, int dim, int k); $/;"	p	class:Benchmarks	access:protected	signature:(double *x, int dim, int k)
 rastrigin	Benchmarks.h	/^	double rastrigin(double*x,int dim);$/;"	p	class:Benchmarks	access:protected	signature:(double*x,int dim)
+removeDuplicateElem	Archive.cpp	/^void Archive::removeDuplicateElem(){$/;"	f	class:Archive	signature:()
+removeDuplicateElem	Archive.h	/^	void removeDuplicateElem();$/;"	p	class:Archive	access:public	signature:()
 rosenbrock	Benchmarks.cpp	/^double Benchmarks::rosenbrock(double*x,int dim){$/;"	f	class:Benchmarks	signature:(double*x,int dim)
 rosenbrock	Benchmarks.cpp	/^double Benchmarks::rosenbrock(double*x,int dim, int k){$/;"	f	class:Benchmarks	signature:(double*x,int dim, int k)
 rosenbrock	Benchmarks.h	/^	double rosenbrock(double*x,int dim);$/;"	p	class:Benchmarks	access:protected	signature:(double*x,int dim)
@@ -707,6 +694,7 @@ rot_rastrigin	Benchmarks.h	/^	double rot_rastrigin(double *x,int dim,int k);$/;"
 rot_rastrigin	Benchmarks.h	/^	double rot_rastrigin(double*x,int dim);$/;"	p	class:Benchmarks	access:protected	signature:(double*x,int dim)
 run	CCVIL.cpp	/^void CCVIL::run(){$/;"	f	class:CCVIL	signature:()
 run	CCVIL.h	/^	void run();$/;"	p	class:CCVIL	access:public	signature:()
+runcateArchive	Archive.h	/^	void runcateArchive();$/;"	p	class:Archive	access:public	signature:()
 sameGroup	CCVIL.cpp	/^bool CCVIL::sameGroup(unsigned v1, unsigned v2){$/;"	f	class:CCVIL	signature:(unsigned v1, unsigned v2)
 sameGroup	CCVIL.h	/^	bool sameGroup(unsigned v1, unsigned v2);$/;"	p	class:CCVIL	access:protected	signature:(unsigned v1, unsigned v2)
 samplingInterval	RunParameter.h	/^	unsigned samplingInterval;$/;"	m	class:RunParameter	access:public
@@ -722,6 +710,10 @@ sphere	Benchmarks.h	/^	double sphere(double*x,int dim);$/;"	p	class:Benchmarks	a
 sphere	Benchmarks.h	/^	double sphere(double*x,int dim, int k);$/;"	p	class:Benchmarks	access:protected	signature:(double*x,int dim, int k)
 sum	CCVIL.cpp	/^double CCVIL::sum(vector<double> vec){$/;"	f	class:CCVIL	signature:(vector<double> vec)
 sum	CCVIL.h	/^	double sum(vector<double> vec);$/;"	p	class:CCVIL	access:protected	signature:(vector<double> vec)
+truncateArchive	Archive.cpp	/^void Archive::truncateArchive(){$/;"	f	class:Archive	signature:()
+unique	Archive.cpp	/^PopulationT<double> Archive::unique(PopulationT<double> popAll){$/;"	f	class:Archive	signature:(PopulationT<double> popAll)
+unique	Archive.h	/^	PopulationT<double> unique(PopulationT<double> popAll);$/;"	p	class:Archive	access:public	signature:(PopulationT<double> popAll)
+updateArchive	Archive.h	/^	void updateArchive(PopulationT<double> popAll);$/;"	p	class:Archive	access:public	signature:(PopulationT<double> popAll)
 upperThreshold	CCVIL.h	/^	unsigned upperThreshold;$/;"	m	class:CCVIL	access:protected
 ~Archive	Archive.cpp	/^Archive::~Archive(){$/;"	f	class:Archive	signature:()
 ~Archive	Archive.h	/^	~Archive();$/;"	p	class:Archive	access:public	signature:()

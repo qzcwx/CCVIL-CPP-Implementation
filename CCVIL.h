@@ -49,11 +49,15 @@ protected:
 	void printArray(unsigned* a, unsigned D);
 	void printPopulation(PopulationT<double> &printPop);
 	void printWholePop();
+	void printFitness(PopulationT<double> printPop);
+	void printVector(vector<unsigned> v);
+	void printVector(vector<double> v);
 	double sum(vector<double> vec);
 	vector<double> dotMultiply(vector<double> v1, vector<double> v2);
 	void gnR1R2(unsigned NP1, unsigned NP2, unsigned *r1, unsigned *r2);
 	PopulationT<double> combinePopulation(PopulationT<double> p1, PopulationT<double> p2);
 	void findPbestIndex(PopulationT<double> inPop, unsigned pNP, unsigned* indBest);
+	void boundConstrain(PopulationT<double> &vi, PopulationT<double> offsprings, int LB, int UB, vector<unsigned> vecIndex);
 
 public:
 	CCVIL(RunParameter* runParam);
