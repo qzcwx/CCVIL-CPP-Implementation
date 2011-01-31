@@ -38,8 +38,6 @@ void CCVIL::run(){
 	optimizationStage();
 }
 
-/*
- * procedure of optimization stage, based on the 
 
 /* 
  * procedure of learning stage, update the "groupInfo"
@@ -53,7 +51,7 @@ void CCVIL::learningStage(){
 	bestCand = new IndividualT<double>(ChromosomeT<double>(param->dimension));
 	(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
 
-	popGenerate();
+	popGenerate(true);
 
 	while ( (learnStageFlag = !(cycle > upperThreshold 
 					|| (cycle > lowerThreshold && groupInfo.size() == param->dimension) 
@@ -101,18 +99,22 @@ void CCVIL::learningStage(){
 		}
 		cycle++;
 	}
+}
 
-	/*
-	// initialize population
-	for (unsigned i = 0; i < parents->size(); ++i) {
-		(*parents)[ i ][ 0 ].initialize(fp->getMinX(), fp->getMaxX());
-	}
+/*
+ * procedure of optimization stage, based on the groupInfo to group the entire population
+ */
+void CCVIL::optimizationStage(){
+	unsigned cycle = 0;
+	printf("Optimization Stage...");
 
-	for (unsigned i = 0; i < parents->size(); ++i){
-		printf("pop %d = %1.20E\n", i, fp->compute((*parents)[ i ][ 0 ]));
-		(*parents)[ i ].setFitness(fp->compute((*parents)[ i ][ 0 ]));
+	// re-Initialize the population according to groupInfo
+	
+	while (fes<MaxFitEval){
+		printf("Cycle = %d\n", ++cycle);
+
+//		for ()
 	}
-	*/
 }
 
 /* 
@@ -254,7 +256,6 @@ void CCVIL::JADECC(unsigned index, bool learnStageFlag){
 		
 		printf("Generation %d\n", g);
 
-		fes += NP;
 		offsprings = parents;
 
 		/*
@@ -360,6 +361,7 @@ void CCVIL::JADECC(unsigned index, bool learnStageFlag){
 		printf("Selection\n");
 		for (unsigned i=0; i<NP; i++){
 			ui[i].setFitness(fp->compute(ui[i][0]));
+			fes += NP;
 			if (offsprings[i].fitnessValue() > ui[i].fitnessValue()){
 				// improved mutation is saved to offspring, archive the failed solution
 				archive->addToArchive(offsprings[i]);
@@ -749,14 +751,26 @@ double CCVIL::cauchyRnd(double mu, double delta){
 	return ( mu + delta * tan(PI * uniRnd()) );
 }
 
-void CCVIL::popGenerate(){
-	for (unsigned i=0; i<param->dimension; i++){
-		PopulationT<double> tempPop(param->NP, ChromosomeT<double>(param->initialGroupSize));
-		tempPop.setMinimize();
-		pop.push_back(tempPop);
+void CCVIL::popGenerate(bool learnStageFlag){
+	if (learnStageFlag == true){
+		for (unsigned i=0; i<param->dimension; i++){
+			PopulationT<double> tempPop(param->NP, ChromosomeT<double>(param->initialGroupSize));
+			tempPop.setMinimize();
+			pop.push_back(tempPop);
+		}
+	}else{
+		for (unsigned i=0; i<groupInfo.size(); i++){
+			unsigned NP = groupInfo[i].size()+10;
+			PopulationT<double> tempPop(NP, ChromosomeT<double>(groupInfo[i].size()));
+			tempPop.setMinimize();
+			pop.push_back(tempPop);
+		}
 	}
 }
 
+/*
+ * Initialize the population
+ */
 void CCVIL::popInit(){
 	for (unsigned i=0; i<pop.size(); i++){
 		for(unsigned j=0; j<pop[i].size(); j++){
