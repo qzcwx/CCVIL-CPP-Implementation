@@ -10,7 +10,7 @@ F11.o F12.o F13.o F14.o F15.o F16.o F17.o F18.o F19.o F20.o
 #OBJECTS = main.o RunParameter.o F2.o Benchmarks.o
 
 main: $(OBJECTS)
-#$(CC) $(CXXFLAGS) -o main $(OBJECTS) $(LDLIBS)
+	$(CC) $(CXXFLAGS) -o main.out $(OBJECTS) $(LDLIBS)
 
 main.o: main.cpp Header.h RunParameter.h Benchmarks.h CCVIL.h Archive.h\
 F1.h F2.h F3.h F4.h F5.h F6.h F7.h F8.h F9.h F10.h\
@@ -91,4 +91,4 @@ F20.o: F20.h Benchmarks.h F20.cpp
 
 .PHONY : clean
 clean:
-	rm -f main out $(OBJECTS)
+	rm -f main main.out $(OBJECTS)
