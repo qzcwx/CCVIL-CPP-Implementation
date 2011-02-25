@@ -1,3 +1,23 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  CCVIL.cpp
+ *
+ *    Description:  The main source file of CCVIL algorithm's implementation, it includes
+ *    				two stages:
+ *    					1) Learning Stage
+ *    					2) Optimization Stage
+ *
+ *        Version:  1.0
+ *        Created:  02/24/2011 07:56:20 PM
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  Wenxiang Chen (http://cs-chen.net), chenwx.ustc@gmail.com
+ *        Company:  Nature Inspired Computation and Application Laboratory (NICAL), USTC
+ *
+ * =====================================================================================
+ */
 #include "CCVIL.h"
 
 CCVIL::CCVIL(RunParameter* runParam){
@@ -98,6 +118,8 @@ void CCVIL::learningStage(){
 			}
 		}
 		cycle++;
+		printf("F %d, Learning Cycle =%d, GroupAmount = %d, BestVal = %.6e \n",
+			fp->getID(), 	cycle, 			groupInfo.size(), bestCand->fitnessValue());
 	}
 }
 
@@ -105,20 +127,44 @@ void CCVIL::learningStage(){
  * procedure of optimization stage, based on the groupInfo to group the entire population
  */
 void CCVIL::optimizationStage(){
-	unsigned cycle = 0;
-	printf("Optimization Stage...");
+	unsigned cycle = 0, groupAmount = groupInfo.size();
+	bool learnStageFlag = false;
+	printf("Optimization Stage...\n");
 
-	// re-Initialize the population according to groupInfo
-	
+	//	learnStageFlag = false, generate new population with regard to the groupInfo
+	popGenerate(learnStageFlag);
+
 	while (fes<MaxFitEval){
 		printf("Cycle = %d\n", ++cycle);
 
-//		for ()
+	
+		for (unsigned i=0; i<groupAmount; i++ ) {
+
+			if ( cycle==0 ) {
+				//	initialization for the first cycle of optimization stage		
+				groupCR = new double[groupAmount];
+				groupF = new double[groupAmount];
+			}
+			//left for restart strategy in optimization stage
+			else {
+				// <-ELSE PART->
+			}
+
+			JADECC(i,learnStageFlag);
+
+		}
+
+		printf("F %d, Optimization Cycle =%d, GroupAmount = %d, BestVal = %.6e \n",
+			fp->getID(), 	cycle, 			groupInfo.size(), bestCand->fitnessValue());
+
 	}
+
+	delete[] groupCR;
+	delete[] groupF;
 }
 
 /* 
- * rJADECC: the internal optimizer of CCVIL
+ * JADECC: the internal optimizer of CCVIL
  * Optimize on one specific dimension for each run
  *
  * index: the ID of group
@@ -166,7 +212,6 @@ void CCVIL::JADECC(unsigned index, bool learnStageFlag){
 	}
 
 	// printf("LB = %d, UB = %d, D = %d, NP = %d, G = %d\n", LB, UB, D, NP, G);
-
 	if ( learnStageFlag == true ){
 		Fm = 0.5;
 		CRm = 0.95;
@@ -246,7 +291,7 @@ void CCVIL::JADECC(unsigned index, bool learnStageFlag){
 	printFitness(parents);
 
 	unsigned bestIndex = parents.bestIndex();
-	printf(" Best Index = %d, Value =  %f\n",parents.bestIndex(), parents.best().fitnessValue());
+	printf("Best Index = %d, Value =  %f\n", parents.bestIndex(), parents.best().fitnessValue());
 	
 	g = 1;
 	fes = fes + NP;
@@ -751,6 +796,13 @@ double CCVIL::cauchyRnd(double mu, double delta){
 	return ( mu + delta * tan(PI * uniRnd()) );
 }
 
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  popGenerate
+ *  Description:  generate the basic structure of the entire population, the pre-process
+ *  for population initialization
+ * =====================================================================================
+ */
 void CCVIL::popGenerate(bool learnStageFlag){
 	if (learnStageFlag == true){
 		for (unsigned i=0; i<param->dimension; i++){
@@ -759,6 +811,7 @@ void CCVIL::popGenerate(bool learnStageFlag){
 			pop.push_back(tempPop);
 		}
 	}else{
+		//		population generation in optimization stage
 		for (unsigned i=0; i<groupInfo.size(); i++){
 			unsigned NP = groupInfo[i].size()+10;
 			PopulationT<double> tempPop(NP, ChromosomeT<double>(groupInfo[i].size()));

@@ -20,6 +20,7 @@ F12::F12(RunParameter* runParam):Benchmarks(runParam){
 	Ovector = NULL;
 	minX = -100;
 	maxX = 100;
+	ID = 12;
 }
 
 F12::~F12(){

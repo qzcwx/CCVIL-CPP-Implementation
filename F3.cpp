@@ -19,6 +19,7 @@ F3::F3(RunParameter* runParam):Benchmarks(runParam){
 	Ovector = NULL;
 	minX = -32;
 	maxX = 32;
+	ID = 3;
 }
 
 F3::~F3(){

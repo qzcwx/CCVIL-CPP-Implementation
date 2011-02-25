@@ -19,6 +19,7 @@ F2::F2(RunParameter* runParam):Benchmarks(runParam){
 	Ovector = NULL;
 	minX = -5;
 	maxX = 5;
+	ID = 2;
 }
 
 F2::~F2(){

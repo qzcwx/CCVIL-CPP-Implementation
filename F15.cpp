@@ -20,6 +20,7 @@ F15::F15(RunParameter* runParam):Benchmarks(runParam){
 	Ovector = NULL;
 	minX = -5;
 	maxX = 5;
+	ID = 15;
 }
 
 F15::~F15(){

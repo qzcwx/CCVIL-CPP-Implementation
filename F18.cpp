@@ -20,6 +20,7 @@ F18::F18(RunParameter* runParam):Benchmarks(runParam){
 	Ovector = NULL;
 	minX = -100;
 	maxX = 100;
+	ID = 18;
 }
 
 F18::~F18(){

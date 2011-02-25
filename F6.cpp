@@ -20,6 +20,7 @@ F6::F6(RunParameter* runParam):Benchmarks(runParam){
 	Ovector = NULL;
 	minX = -32;
 	maxX = 32;
+	ID = 6;
 }
 
 F6::~F6(){

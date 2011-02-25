@@ -20,6 +20,7 @@ F20::F20(RunParameter* runParam):Benchmarks(runParam){
 	Ovector = NULL;
 	minX = -100;
 	maxX = 100;
+	ID = 20;
 }
 
 F20::~F20(){

@@ -16,6 +16,7 @@ protected:
 	int nextInt(int n);
 	double nextDouble();
 	double nextGaussian();
+	unsigned ID;
 	double* createShiftVector(int dim, double min,double max);
 	int* createPermVector(int dim);
 	double** createRotMatrix(int dim);
@@ -76,6 +77,7 @@ public:
 	
 	int getMinX();
 	int getMaxX();
+	unsigned getID();
 };
 
 #endif

@@ -152,7 +152,6 @@ double** Benchmarks::createRotMatrix(int dim){
 	}
 
 loop:
-
 	for (;;) {
 		for (i = (dim - 1); i >= 0; i--) {
 			for (j = (dim - 1); j >= 0; j--) {
@@ -276,6 +275,10 @@ double Benchmarks::elliptic(double*x,int dim) {
 
 	delete[] lookup;
 	return(result);
+}
+
+unsigned Benchmarks::getID(){
+	return ID;
 }
 
 // elliptic function for F9 ~ 

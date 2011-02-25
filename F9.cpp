@@ -20,6 +20,7 @@ F9::F9(RunParameter* runParam):Benchmarks(runParam){
 	Ovector = NULL;
 	minX = -100;
 	maxX = 100;
+	ID = 9;
 }
 
 F9::~F9(){

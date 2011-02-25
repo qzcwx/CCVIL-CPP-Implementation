@@ -20,6 +20,7 @@ F4::F4(RunParameter* runParam):Benchmarks(runParam){
 	Ovector = NULL;
 	minX = -100;
 	maxX = 100;
+	ID = 4;
 }
 
 F4::~F4(){

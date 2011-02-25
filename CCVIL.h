@@ -1,3 +1,19 @@
+/*
+ * =====================================================================================
+ *
+ *       Filename:  CCVIL.h
+ *
+ *
+ *        Version:  1.0
+ *        Created:  02/24/2011 08:37:11 PM
+ *       Revision:  none
+ *       Compiler:  gcc
+ *
+ *         Author:  Wenxiang Chen (http://cs-chen.net), chenwx.ustc@gmail.com
+ *        Company:  Nature Inspired Computation and Application Laboratory (NICAL), USTC
+ *
+ * =====================================================================================
+ */
 #ifndef _CCVIL_H
 #define _CCVIL_H
 
@@ -9,7 +25,6 @@
 #include <climits>
 #include <Rng/Normal.h>
 #include <Rng/Uniform.h>
-//#include <GlobalRng.h>
 
 #include "Benchmarks.h"
 #include "Archive.h"
@@ -27,6 +42,7 @@ protected:
 	unsigned* lookUpGroup;
 	unsigned MaxFitEval; // total fitness evaluation limitation for optimization
 	unsigned curFitEval; // current fitness evaluation limitation for optimization
+
 	unsigned* randPerm(unsigned N);
 	unsigned lowerThreshold;
 	unsigned upperThreshold;

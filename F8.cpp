@@ -20,6 +20,7 @@ F8::F8(RunParameter* runParam):Benchmarks(runParam){
 	Ovector = NULL;
 	minX = -100;
 	maxX = 100;
+	ID = 8;
 }
 
 F8::~F8(){
