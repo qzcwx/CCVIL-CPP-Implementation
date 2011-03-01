@@ -15,6 +15,7 @@ public:
 	~Archive();
 
 	unsigned getNP();
+	unsigned getCapacity();
 	void updateArchive(PopulationT<double> popAll);
 	void addToArchive(IndividualT<double> failIndiv);
 	void removeDuplicateElem();

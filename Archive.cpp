@@ -78,3 +78,16 @@ PopulationT<double> Archive::unique(PopulationT<double> popAll){
 		return popAll;
 	}
 }
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Archive::getCapacity()
+ *  Description:  return the maximun size of archive
+ * =====================================================================================
+ */
+	unsigned	
+Archive::getCapacity() 
+{
+	return MAX_NP;
+}		/* -----  end of function Archive::getCapacity()  ----- */
