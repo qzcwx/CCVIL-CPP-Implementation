@@ -42,6 +42,7 @@ protected:
 	unsigned* lookUpGroup;
 	unsigned MaxFitEval; // total fitness evaluation limitation for optimization
 	unsigned curFitEval; // current fitness evaluation limitation for optimization
+	unsigned cycle; 
 
 	unsigned* randPerm(unsigned N);
 	unsigned lowerThreshold;
