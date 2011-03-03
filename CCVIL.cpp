@@ -80,7 +80,7 @@ void CCVIL::learningStage(){
 		printf("===================================================\n===================================================\n");
 		printf("Cycle = %d\n", cycle);
 		for (unsigned i=0; i<param->dimension; i++) {
-			printf("====================================================================\nPhase = %d, Cycle = %d\n",i, cycle);
+			printf("=========================================================================\nPhase = %d, Cycle = %d\n",i, cycle);
 			if (i == 0){
 				// start a new phase for each cycle, each phase checking one dimension, i.e., p[i]
 				//	printf("Population Re-initialization & Issue Random Permutation\n");
@@ -100,7 +100,7 @@ void CCVIL::learningStage(){
 			}
 
 			if (lastCycleIndex == -1 || isSameGroup == false){
-//				printf("i = %d, p[i] = %d\n", i, p[i]);
+				//				printf("i = %d, p[i] = %d\n", i, p[i]);
 				// if current dimension and last optimized index are in the different group, then optimize on current dimension
 				JADECC(p[i], true /*learnStage = true*/);
 			} else{
@@ -151,7 +151,7 @@ void CCVIL::optimizationStage(){
 			}
 			//left for restart strategy in optimization stage
 			else {
-				// <-ELSE PART->
+				// 
 			}
 
 			JADECC(i,learnStageFlag);
@@ -233,8 +233,12 @@ void CCVIL::JADECC(unsigned index, bool learnStageFlag){
 
 	/***************************** Population Initialization and evaluation **************************/
 	PopulationT<double> parents(NP, ChromosomeT<double>(param->dimension));
+	printf ( "Finish parents init\n" );
 	PopulationT<double> offsprings(NP, ChromosomeT<double>(param->dimension));
+	printf ( "Finish offsprings init\n" );
 	PopulationT<double> popAll(0, ChromosomeT<double>(param->dimension));
+	printf ( "Finish popAll init\n" );
+
 	parents.setMinimize();
 	offsprings.setMinimize();
 
@@ -311,7 +315,7 @@ void CCVIL::JADECC(unsigned index, bool learnStageFlag){
 
 		// Generate CR according to a normal distribution with mean CRm, and std 0.1
 		// Generate F according to a cauchy distribution with location parameter Fm & scale parameter 0.1
-		printf ( "randFCF\n" );
+		printf ( "randFCR\n" );
 		randFCR(NP, CRm, 0.1, Fm, 0.1, F, CR);
 		popAll.insert(popAll.size(),offsprings);
 
@@ -713,8 +717,6 @@ void CCVIL::printVector(vector<double> v){
 }
 
 void CCVIL::randFCR(unsigned NP, double CRm, double CRsigma, double Fm, double Fsigma, double* &F, double* &CR){
-	//	norRnd->mean(NP);
-	//	norRnd->variance(1);
 	Normal norRnd;
 	for (unsigned i=0; i<NP; i++){
 		CR[i] = CRm + CRsigma * (norRnd)(); 
@@ -742,6 +744,8 @@ void CCVIL::randFCR(unsigned NP, double CRm, double CRsigma, double Fm, double F
 
 	while ( !pos1.empty() || !pos2.empty() ) {
 
+		printf ( "Re-generate F\n" );
+
 		for (unsigned i=0; i<pos1.size(); i++){
 			F[pos1[i]] = cauchyRnd(Fm, Fsigma);
 			F[pos1[i]] = min(1.0, F[pos1[i]]); // truncated to [-INF, 1]
@@ -752,8 +756,10 @@ void CCVIL::randFCR(unsigned NP, double CRm, double CRsigma, double Fm, double F
 			F[pos2[i]] = min(1.0, F[pos2[i]]); // truncated to [-INF, 1]
 		}
 
+		printf ( "size of pos1 = %d, pos2 = %d, before clear\n", (int)pos1.size() , (int)pos2.size());
 		pos1.clear();
 		pos2.clear();
+		printf ( "size of pos1 = %d, pos2 = %d, after clear\n", (int)pos1.size() , (int)pos2.size());
 
 		for (unsigned i=0; i<NP; i++){
 			if (F[i]<=0){
@@ -775,7 +781,7 @@ void CCVIL::randFCR(unsigned NP, double CRm, double CRsigma, double Fm, double F
 
 double CCVIL::cauchyRnd(double mu, double delta){
 	Uniform uniRnd;
-	return ( mu + delta * tan(PI * uniRnd()) );
+	return (mu + delta * tan(PI * (uniRnd()-0.5)));
 }
 
 /* 
@@ -843,26 +849,28 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 	if (randIndiv.getFitness()<bestCand->getFitness()){
 		printf("Interaction Detected\n");
 		unsigned group1, group2;
-		vector<unsigned> rmVec;
+//		vector<unsigned> rmVec;
 
 		printf("============= Before Merge =============\n");
 		//		printf("Look Up Group Table:\n");
 		//		printArray(lookUpGroup, param->dimension);
 		//		printf("groupInfo:\n");
 		//		print2Dvector(groupInfo);
-
 		group1 = lookUpGroup[curDim];
 		group2 = lookUpGroup[lastDim];
-		//		printf("group1 = %d, group2 =%d\n", group1, group2);
+		printf("group1 = %d, group2 =%d\n", group1, group2);
 
 		// through comparison, always join the latter one into the previous
 		if(group1 < group2){
 			// join group2 into group1
-			rmVec = groupInfo[group2];
-			groupInfo.erase(groupInfo.begin() + group2);
-			for (unsigned i=0; i<rmVec.size(); i++){
-				groupInfo[group1].push_back(rmVec[i]);
+//			rmVec = groupInfo[group2];
+			for (unsigned i=0; i<groupInfo[group2].size(); i++){
+//				groupInfo[group1].push_back(rmVec[i]);
+				groupInfo[group1].push_back(groupInfo[group2][i]);
 			}
+//			groupInfo[group2].clear();
+			groupInfo.erase(groupInfo.begin() + group2);
+
 			lookUpGroup[lastDim] = group1;
 
 			for (unsigned i=0; i<param->dimension; i++){
@@ -872,11 +880,14 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 			}
 		}else{// group2 < group1
 			// join group1 into group2
-			rmVec = groupInfo[group1];
-			groupInfo.erase(groupInfo.begin() + group1);
-			for (unsigned i=0; i<rmVec.size(); i++){
-				groupInfo[group2].push_back(rmVec[i]);
+			// rmVec = groupInfo[group1];
+			for (unsigned i=0; i<groupInfo[group1].size(); i++){
+				groupInfo[group2].push_back(groupInfo[group1][i]);
+				//		groupInfo[group2].push_back(rmVec[i]);
 			}
+			//	groupInfo[group1].clear();
+			groupInfo.erase(groupInfo.begin() + group1);
+
 			lookUpGroup[curDim] = group2;
 
 			for (unsigned i=0; i<param->dimension; i++){

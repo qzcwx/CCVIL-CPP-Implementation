@@ -40,9 +40,9 @@ void Archive::truncateArchive(){
 		unsigned numOfElemToRm =  pop->size() - MAX_NP;
 		printf("Number of Element to remove = %d\n", numOfElemToRm);
 		for (unsigned i=0; i< numOfElemToRm; i++){
-			printf("Before Remove, popSize = %d\n", pop->size());
+//			printf(", popSize = %d\n", pop->size());
 			pop->remove( floor(Rng::uni()*(pop->size())) );
-			printf("After Remove, popSize = %d\n", pop->size());
+//			printf("After Remove, popSize = %d\n", pop->size());
 		}
 	}
 }
@@ -72,7 +72,7 @@ PopulationT<double> Archive::unique(PopulationT<double> popAll){
 		}
 	}
 
-	printf("Size of popAll = %d, size of uniPopAll = %d\n", popAll.size(), uniPopAll.size());
+//	printf("Size of popAll = %d, size of uniPopAll = %d\n", popAll.size(), uniPopAll.size());
 	return uniPopAll;
 	}else{
 		return popAll;
