@@ -19,12 +19,12 @@
 
 #include <EALib/PopulationT.h>
 #include <EALib/IndividualT.h>
+#include <Rng/Normal.h>
+#include <Rng/Uniform.h>
 #include <vector>
 #include <iostream>
 #include <algorithm>
 #include <climits>
-#include <Rng/Normal.h>
-#include <Rng/Uniform.h>
 
 #include "Benchmarks.h"
 #include "Archive.h"

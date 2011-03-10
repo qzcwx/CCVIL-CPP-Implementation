@@ -43,6 +43,7 @@ CCVIL::CCVIL(RunParameter* runParam){
 		groupInfo.push_back(tempVec);
 	}
 	printf("Finish Initialization on Group");
+	
 
 	fes = 0;
 }
@@ -77,10 +78,10 @@ void CCVIL::learningStage(){
 					|| (cycle > lowerThreshold && groupInfo.size() == param->dimension) 
 					|| groupInfo.size() == 1))==true ){
 		// start a new cycle
-		printf("===================================================\n===================================================\n");
-		printf("Cycle = %d\n", cycle);
+//		printf("===================================================\n===================================================\n");
+//		printf("Cycle = %d\n", cycle);
 		for (unsigned i=0; i<param->dimension; i++) {
-			printf("=========================================================================\nPhase = %d, Cycle = %d\n",i, cycle);
+//			printf("=========================================================================\nPhase = %d, Cycle = %d\n",i, cycle);
 			if (i == 0){
 				// start a new phase for each cycle, each phase checking one dimension, i.e., p[i]
 				//	printf("Population Re-initialization & Issue Random Permutation\n");
@@ -131,23 +132,31 @@ void CCVIL::learningStage(){
 void CCVIL::optimizationStage(){
    unsigned	groupAmount = groupInfo.size();
 	bool learnStageFlag = false;
-	printf("Optimization Stage, groupAmount = %d\n", groupAmount);
+	printf("\n\n\nOptimization Stage, groupAmount = %d\n", groupAmount);
 
 	cycle = 0;
 	//	learnStageFlag = false, generate new population with regard to the groupInfo
 	popGenerate(learnStageFlag);
 	popInit();
 
+	groupCR = new double[groupAmount];
+	groupF = new double[groupAmount];
+
+	// initialize the control parameters for each group
+	for (unsigned i = 0; i< groupAmount; i++){
+		groupF[i] = 0.5;
+		groupCR[i] = 0.9;
+	}
+
 	while (fes<MaxFitEval){
-		printf("===================================================\n===================================================\n");
+//		printf("===================================================\n\n\n\n===================================================\n");
+
 		printf("Cycle = %d\n", ++cycle);
 	
 		for (unsigned i=0; i<groupAmount; i++ ) {
 //			printf ( "Phase = %d\n" , i);
 			if ( cycle==1 ) {
 				//	initialization for the first cycle of optimization stage		
-				groupCR = new double[groupAmount];
-				groupF = new double[groupAmount];
 			}
 			//left for restart strategy in optimization stage
 			else {
@@ -158,8 +167,8 @@ void CCVIL::optimizationStage(){
 
 		}
 
-		printf("F %d, Optimization Cycle =%d, GroupAmount = %d, BestVal = %.6e \n",
-			fp->getID(), 	cycle, 			(int)groupInfo.size(), bestCand->fitnessValue());
+		printf("F %d, Optimization Cycle =%d, GroupAmount = %d, fes = %ld, BestVal = %.6e\n",
+			fp->getID(), 	cycle, 			(int)groupInfo.size(), fes, bestCand->fitnessValue());
 
 	}
 
@@ -199,6 +208,7 @@ void CCVIL::JADECC(unsigned index, bool learnStageFlag){
 		G = min(D+5, (unsigned)500);
 	}
 
+
 	//  build up the vector of index, depending on whether it is learning stage or not
 	if (learnStageFlag == true){
 		vecIndex.push_back(index);
@@ -233,11 +243,8 @@ void CCVIL::JADECC(unsigned index, bool learnStageFlag){
 
 	/***************************** Population Initialization and evaluation **************************/
 	PopulationT<double> parents(NP, ChromosomeT<double>(param->dimension));
-	printf ( "Finish parents init\n" );
 	PopulationT<double> offsprings(NP, ChromosomeT<double>(param->dimension));
-	printf ( "Finish offsprings init\n" );
 	PopulationT<double> popAll(0, ChromosomeT<double>(param->dimension));
-	printf ( "Finish popAll init\n" );
 
 	parents.setMinimize();
 	offsprings.setMinimize();
@@ -303,32 +310,28 @@ void CCVIL::JADECC(unsigned index, bool learnStageFlag){
 
 	/***************************** Iterations **************************/
 	while ( g<=G && fes < MaxFitEval){
-		printf("***************************** Iterations **************************\n");
-		printf("Generation %d\n", g);
+//		printf("***************************** Iterations **************************\n");
+//		printf("Generation %d\n", g);
 
 		offsprings = parents;
 
-		/*
-		   CRm = (1-c)*CRm+c*sum(goodCR)/goodCR.size();
-		   Fm = (1-c)*Fm + c*sum(goodF)/goodF.size();     // Lehmer mean
-		   */
-
 		// Generate CR according to a normal distribution with mean CRm, and std 0.1
 		// Generate F according to a cauchy distribution with location parameter Fm & scale parameter 0.1
-		printf ( "randFCR\n" );
+//		printf ( "randFCR\n" );
 		randFCR(NP, CRm, 0.1, Fm, 0.1, F, CR);
 		popAll.insert(popAll.size(),offsprings);
 
 
-		printf ( "gnR1R2\n" );
+//		printf ( "gnR1R2\n" );
 		if (param->Afactor == 0){
 			// without archive (it is actually a special case of JADE with archive)
 			gnR1R2(NP, NP, r1, r2);
 		} else {
 			// with archive
-			popAll.insert(popAll.size(),*(archive->getPop()));
+			for (unsigned i=0; i<archive->getNP(); i++){
+				popAll.append((*archive->getPop())[i]);
+			}
 			gnR1R2(NP, (int)(NP + archive->getNP()), r1, r2);
-//			printf("To see the archive entire size, NP = %d, NP+Archive.NP = %d\n",NP,archive->getNP());
 		}
 
 
@@ -340,7 +343,7 @@ void CCVIL::JADECC(unsigned index, bool learnStageFlag){
 //		printPopulation(popAll);
 
 		// Find the p-best solutions
-		printf("Find the p-best solutions\n");
+//		printf("Find the p-best solutions\n");
 		unsigned pNP = max(round(p*NP), 2.0);
 		unsigned* randIndex = new unsigned[NP];
 		unsigned* indBest = new unsigned[pNP];
@@ -362,7 +365,7 @@ void CCVIL::JADECC(unsigned index, bool learnStageFlag){
 		printPopulation(pBestIndiv);
 		*/
 
-		printf("Begin Mutation\n");
+//		printf("Begin Mutation\n");
 		//************************************ Mutation ************************************//
 		PopulationT<double> vi(NP, ChromosomeT<double>(param->dimension));
 		vi = offsprings;
@@ -380,7 +383,7 @@ void CCVIL::JADECC(unsigned index, bool learnStageFlag){
 		boundConstrain(vi, offsprings, LB, UB, vecIndex);
 
 		//************************************ Crossover ************************************//
-		printf("Crossover\n");
+//		printf("Crossover\n");
 		PopulationT<double> ui(NP, ChromosomeT<double>(param->dimension));
 		ui.setMinimize();
 		for (unsigned i=0; i<NP; i++){
@@ -394,7 +397,7 @@ void CCVIL::JADECC(unsigned index, bool learnStageFlag){
 		}
 
 		//************************************ Selection ************************************//
-		printf("Selection\n");
+//		printf("Selection\n");
 		for (unsigned i=0; i<NP; i++){
 			ui[i].setFitness(fp->compute(ui[i][0]));
 			if (parents[i].fitnessValue() > ui[i].fitnessValue()){
@@ -416,17 +419,23 @@ void CCVIL::JADECC(unsigned index, bool learnStageFlag){
 
 		// update CRm and Fm
 //		printf("update CRm and Fm, goodCR size = %d, goodF size = %d\n", (int)goodCR.size(), (int)goodF.size());
-		CRm = (1-c)*CRm + c*sum(goodCR)/goodCR.size();
-		Fm = (1-c)*Fm + c*sum(dotMultiply(goodF, goodF))/sum(goodF);  // Lehmer Mean 
+
+//		printf("CRm = %f, Fm = %f\n", CRm, Fm);
+		if (goodCR.size()>0 && sum(goodF)>0){
+			CRm = (1-c)*CRm + c*sum(goodCR)/goodCR.size();
+			Fm = (1-c)*Fm + c*sum(dotMultiply(goodF, goodF))/sum(goodF);
+		}
+
+//		printf ( "CRm = %f, Fm = %f\n", CRm, Fm );
 
 //		printf("Population after Mutation, population size of it = %d \n", ui.size());
 //		printFitness(ui);
 
-		if ( learnStageFlag == true ) {
-			printf("LearningStage, GroupAmount =%d, BestIndex = %d, Cycle = %d, G = %d, fet = %ld, Best Fitness = %f \n", (int)groupInfo.size(), parents.bestIndex(), cycle, g, fes, parents.best().fitnessValue() );
-		}else{
-			printf("OptimizationStage, GroupAmount =%d, BestIndex = %d, Cycle = %d, G = %d, fet = %ld, Best Fitness = %f \n", (int)groupInfo.size(), parents.bestIndex(), cycle, g, fes, parents.best().fitnessValue());
-		}
+//		if ( learnStageFlag == true ) {
+//			printf("LearningStage, GroupAmount =%d, groupIndex = %d, Cycle = %d, G = %d, fet = %ld, Best Fitness = %.6e \n", (int)groupInfo.size(), index, cycle, g, fes, parents.best().fitnessValue() );
+//		}else{
+//			printf("OptimizationStage, GroupAmount =%d, groupIndex = %d, Cycle = %d, G = %d, fet = %ld, Best Fitness = %.6e \n", (int)groupInfo.size(), index, cycle, g, fes, parents.best().fitnessValue());
+//		}
 
 		delete[] randIndex;
 		delete[] indBest;
@@ -435,6 +444,14 @@ void CCVIL::JADECC(unsigned index, bool learnStageFlag){
 	}// iterations
 
 	/***************************** After Iterations Process **************************/
+
+//		if ( learnStageFlag == true ) {
+//			printf("LearningStage, GroupAmount =%d, groupIndex = %d, Cycle = %d, fet = %ld, Best Fitness = %.6e \n", (int)groupInfo.size(), index, cycle, fes, parents.best().fitnessValue() );
+//		}else{
+//			printf("OptimizationStage, GroupAmount =%d, groupIndex = %d, Cycle = %d, fet = %ld, Best Fitness = %.6e \n", (int)groupInfo.size(), index, cycle, fes, parents.best().fitnessValue());
+//		}
+//	printf("goodCR size = %d, goodF size = %d\n", (int)goodCR.size(), (int)goodF.size());
+
 	// update the optimized optimized dimensions to bestCand and pop simultaneously
 	if (learnStageFlag == true) {
 		for (unsigned j=0; j<offsprings[0][0].size(); j++){
@@ -455,10 +472,12 @@ void CCVIL::JADECC(unsigned index, bool learnStageFlag){
 				(pop[index])[i][0][j] = offsprings[i][0][I];
 			}
 		}
+		groupCR[index] = CRm ;
+		groupF[index] = Fm;
 	}
 
-//	printf("Best Candidate after update\n");
-//	printPopulation(*bestCand);
+	//	printf("Best Candidate after update\n");
+	//	printPopulation(*bestCand);
 	bestCand->setFitness(offsprings.best().getFitness());
 
 	delete[] F;
@@ -744,22 +763,22 @@ void CCVIL::randFCR(unsigned NP, double CRm, double CRsigma, double Fm, double F
 
 	while ( !pos1.empty() || !pos2.empty() ) {
 
-		printf ( "Re-generate F\n" );
-
 		for (unsigned i=0; i<pos1.size(); i++){
-			F[pos1[i]] = cauchyRnd(Fm, Fsigma);
-			F[pos1[i]] = min(1.0, F[pos1[i]]); // truncated to [-INF, 1]
+//			F[pos1[i]] = cauchyRnd(Fm, Fsigma);
+//			F[pos1[i]] = min(1.0, F[pos1[i]]); // truncated to [-INF, 1]
+			F[pos1[i]] = min(1.0, cauchyRnd(Fm, Fsigma)); // truncated to [-INF, 1]
 		}
 
 		for (unsigned i=0; i<pos2.size(); i++){
-			F[pos2[i]] = cauchyRnd(Fm, Fsigma);
-			F[pos2[i]] = min(1.0, F[pos2[i]]); // truncated to [-INF, 1]
+//			F[pos2[i]] = cauchyRnd(Fm, Fsigma);
+//			F[pos2[i]] = min(1.0, F[pos2[i]]); // truncated to [-INF, 1]
+			double R = cauchyRnd(Fm, Fsigma);
+			F[pos2[i]] = min(1.0, R); // truncated to [-INF, 1]
 		}
 
-		printf ( "size of pos1 = %d, pos2 = %d, before clear\n", (int)pos1.size() , (int)pos2.size());
+//		printf ( "size of pos1 = %d, pos2 = %d, before clear\n", size1, size2);
 		pos1.clear();
 		pos2.clear();
-		printf ( "size of pos1 = %d, pos2 = %d, after clear\n", (int)pos1.size() , (int)pos2.size());
 
 		for (unsigned i=0; i<NP; i++){
 			if (F[i]<=0){
@@ -781,7 +800,8 @@ void CCVIL::randFCR(unsigned NP, double CRm, double CRsigma, double Fm, double F
 
 double CCVIL::cauchyRnd(double mu, double delta){
 	Uniform uniRnd;
-	return (mu + delta * tan(PI * (uniRnd()-0.5)));
+//	return (mu + delta * tan(PI * (uniRnd()-0.5)));
+	return (mu + delta * tan(PI * (uniRnd())));
 }
 
 /* 
@@ -827,9 +847,9 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 //	double bestCandValue = bestCand->getFitness();
 	unsigned NP = pop[lastDim].size(), randi, counter=0;
 	IndividualT<double> randIndiv = (*bestCand);
-	printf("Capture Interaction Between %d & %d\n", curDim, lastDim);
+//	printf("Capture Interaction Between %d & %d\n", curDim, lastDim);
 //	printf("The population size of last optimized dimension = %d\n", NP);
-	
+
 	while (true) {
 		randi = Rng::uni()*NP;
 		if ( pop[lastDim][randi][0][0] != (*bestCand)[0][lastDim] ){
@@ -837,7 +857,7 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 		}else if(counter > 1000){
 			printf("ERROR: Fail to generate random index within 1000 trying\n");	
 		}else{
-			printf("Re-generate random index\n");
+//			printf("Re-generate random index\n");
 		}
 	}
 
@@ -851,14 +871,15 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 		unsigned group1, group2;
 //		vector<unsigned> rmVec;
 
-		printf("============= Before Merge =============\n");
+//		printf("============= Before Merge =============\n");
 		//		printf("Look Up Group Table:\n");
 		//		printArray(lookUpGroup, param->dimension);
-		//		printf("groupInfo:\n");
-		//		print2Dvector(groupInfo);
+		
 		group1 = lookUpGroup[curDim];
 		group2 = lookUpGroup[lastDim];
-		printf("group1 = %d, group2 =%d\n", group1, group2);
+//		print2Dvector(groupInfo);
+//		printf("groupInfo:\n");
+//		printf("group1 = %d, group2 =%d\ncurrent D = %d, last D = %d\n", group1, group2, curDim, lastDim);
 
 		// through comparison, always join the latter one into the previous
 		if(group1 < group2){
@@ -869,10 +890,12 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 				groupInfo[group1].push_back(groupInfo[group2][i]);
 			}
 //			groupInfo[group2].clear();
+
+			for (unsigned i = 0; i<groupInfo[group2].size(); i++){
+				lookUpGroup[groupInfo[group2][i]] = group1;
+			}
+
 			groupInfo.erase(groupInfo.begin() + group2);
-
-			lookUpGroup[lastDim] = group1;
-
 			for (unsigned i=0; i<param->dimension; i++){
 				if (lookUpGroup[i]>group2){
 					lookUpGroup[i]--;
@@ -886,9 +909,12 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 				//		groupInfo[group2].push_back(rmVec[i]);
 			}
 			//	groupInfo[group1].clear();
-			groupInfo.erase(groupInfo.begin() + group1);
 
-			lookUpGroup[curDim] = group2;
+			for (unsigned i = 0; i<groupInfo[group1].size(); i++){
+				lookUpGroup[groupInfo[group1][i]] = group2;
+			}
+
+			groupInfo.erase(groupInfo.begin() + group1);
 
 			for (unsigned i=0; i<param->dimension; i++){
 				if (lookUpGroup[i]>group1){
@@ -897,11 +923,12 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 			}
 		}
 
-		printf("============= After Merge =============\n");
+//		printf("============= After Merge =============\n");
 		//		printf("Look Up Group Table:\n");
 		//		printArray(lookUpGroup, param->dimension);
-		//		printf("groupInfo:\n");
-		//		print2Dvector(groupInfo); 
+//		print2Dvector(groupInfo); 
+//		printf("groupInfo:\n");
+//		printf("group1 = %d, group2 =%d\ncurrent D = %d, last D = %d\n", lookUpGroup[curDim], lookUpGroup[lastDim], curDim, lastDim);
 	}
 }
 

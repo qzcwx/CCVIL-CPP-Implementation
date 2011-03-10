@@ -14,7 +14,7 @@ unsigned Archive::getNP(){
 	return (*pop).size();
 }
 
-PopulationT<double>* Archive::getPop(){
+PopulationT<double> *Archive::getPop(){
 	return pop;
 }
 
@@ -38,11 +38,11 @@ void Archive::truncateArchive(){
 	// Step 3: If necessary, randomly remove some solutions to maintain the archive size
 	if (pop->size()>MAX_NP){
 		unsigned numOfElemToRm =  pop->size() - MAX_NP;
-		printf("Number of Element to remove = %d\n", numOfElemToRm);
+//		printf("Number of Element to remove = %d\n", numOfElemToRm);
 		for (unsigned i=0; i< numOfElemToRm; i++){
-//			printf(", popSize = %d\n", pop->size());
+			//			printf(", popSize = %d\n", pop->size());
 			pop->remove( floor(Rng::uni()*(pop->size())) );
-//			printf("After Remove, popSize = %d\n", pop->size());
+			//			printf("After Remove, popSize = %d\n", pop->size());
 		}
 	}
 }
@@ -50,7 +50,6 @@ void Archive::truncateArchive(){
 PopulationT<double> Archive::unique(PopulationT<double> popAll){
 	if (popAll.size() > 0){
 	unsigned D = popAll[0][0].size();
-	printf("D = %d\n", D);
 	PopulationT<double> uniPopAll(0, ChromosomeT<double>(D));
 	bool alreadyExist = false;
 

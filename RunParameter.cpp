@@ -54,9 +54,11 @@ RunParameter::RunParameter(){
 						}else if (strcmp(confType.c_str(), "lowerThreshold")==0){
 							lowerThreshold = atoi (strArray);
 						}else if (strcmp(confType.c_str(), "c")==0){
-							c = atoi (strArray);
+							c = atof (strArray);
+							printf ( "assign c = %f\n", c );
 						}else if (strcmp(confType.c_str(), "p")==0){
-							p = atoi (strArray);
+							p = atof (strArray);
+							printf ( "assign p = %f\n", p );
 						}else if (strcmp(confType.c_str(), "failThreshold")==0){
 							failThreshold = atoi (strArray);
 						}else if (strcmp(confType.c_str(), "Afactor")==0){

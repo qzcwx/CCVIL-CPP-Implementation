@@ -21,7 +21,7 @@ public:
 	void removeDuplicateElem();
 	void truncateArchive();
 	PopulationT<double> unique(PopulationT<double> popAll);
-	PopulationT<double>* getPop();
+	PopulationT<double> *getPop();
 };
 
 #endif
