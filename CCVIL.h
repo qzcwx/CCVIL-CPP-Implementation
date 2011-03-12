@@ -59,6 +59,7 @@ protected:
 	void JADECC(unsigned index, bool learnStageFlag);
 	void captureInter(unsigned curDim, unsigned lastDim);
 	void popInit();
+	void popInitZeros ( );
 	void popGenerate(bool learnStageFlag);
 	void randFCR(unsigned NP, double CRm, double CRsigma, double Fm, double Fsigma, double *&F, double *&CR);
 	double cauchyRnd(double mu, double delta);

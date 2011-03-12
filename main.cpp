@@ -5,7 +5,7 @@ int main(){
 	RunParameter* runParam;
 //	double* X;
 	unsigned funcIndex;
-	Benchmarks* fp;
+	Benchmarks* fp=NULL;
 
 	runParam = new RunParameter();
 	vector<unsigned> funcToRun=runParam->functionToRun;

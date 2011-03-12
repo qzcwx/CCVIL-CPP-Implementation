@@ -31,7 +31,29 @@ void Archive::addToArchive(IndividualT<double> failIndiv){
 
 void Archive::removeDuplicateElem(){
 	// Step 2: Remove duplicate elements
-	(*pop) =  unique((*pop));
+	if (pop->size() > 1){
+		unsigned D = (*pop)[0][0].size();
+		bool duplicateIndiv; 
+
+		for (unsigned i=0; i<pop->size(); i++){
+			for(unsigned j=pop->size()-1; j>=i+1; j--){
+
+				duplicateIndiv = true;
+
+				for (unsigned k=0; k<D; k++){
+					if ((*pop)[j][0][k] != (*pop)[i][0][k]){
+						duplicateIndiv = false;
+						break;
+					}
+				}
+
+				if (duplicateIndiv == true){
+					pop->remove(j);
+				}
+
+			}
+		}
+	}
 }
 
 void Archive::truncateArchive(){
@@ -49,30 +71,30 @@ void Archive::truncateArchive(){
 
 PopulationT<double> Archive::unique(PopulationT<double> popAll){
 	if (popAll.size() > 0){
-	unsigned D = popAll[0][0].size();
-	PopulationT<double> uniPopAll(0, ChromosomeT<double>(D));
-	bool alreadyExist = false;
+		unsigned D = popAll[0][0].size();
+		PopulationT<double> uniPopAll(0, ChromosomeT<double>(D));
+		bool alreadyExist = false;
 
-	for (unsigned i=0; i<popAll.size(); i++){
-		// check whether popAll[i] already has been in uniPopAll
-		alreadyExist = true;
+		for (unsigned i=0; i<popAll.size(); i++){
+			// check whether popAll[i] already has been in uniPopAll
+			alreadyExist = true;
 
-		for(unsigned j=0; j<uniPopAll.size(); j++){
-			for (unsigned k=0; k<D; k++){
-				if (uniPopAll[j][0][k] != popAll[i][0][k]){
-					alreadyExist = false;
-					break;
+			for(unsigned j=0; j<uniPopAll.size(); j++){
+				for (unsigned k=0; k<D; k++){
+					if (uniPopAll[j][0][k] != popAll[i][0][k]){
+						alreadyExist = false;
+						break;
+					}
 				}
+			}
+
+			if (alreadyExist == false || uniPopAll.size()==0){
+				uniPopAll.append(popAll[i]);
 			}
 		}
 
-		if (alreadyExist == false || uniPopAll.size()==0){
-			uniPopAll.append(popAll[i]);
-		}
-	}
-
-//	printf("Size of popAll = %d, size of uniPopAll = %d\n", popAll.size(), uniPopAll.size());
-	return uniPopAll;
+		//	printf("Size of popAll = %d, size of uniPopAll = %d\n", popAll.size(), uniPopAll.size());
+		return uniPopAll;
 	}else{
 		return popAll;
 	}
