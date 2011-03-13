@@ -51,16 +51,18 @@ protected:
 	double lastBestValue;
 	double* groupCR;
 	double* groupF;
+	unsigned* failCounter;
 	long fes;
 
 	void learningStage();
 	void optimizationStage();
 	bool sameGroup(unsigned v1, unsigned v2);
-	void JADECC(unsigned index, bool learnStageFlag);
+	unsigned JADECC(unsigned index, bool learnStageFlag);
 	void captureInter(unsigned curDim, unsigned lastDim);
 	void popInit();
 	void popInitZeros ( );
 	void popGenerate(bool learnStageFlag);
+	void popSizeVary ( double factor );
 	void randFCR(unsigned NP, double CRm, double CRsigma, double Fm, double Fsigma, double *&F, double *&CR);
 	double cauchyRnd(double mu, double delta);
 	void printArray(double* a, unsigned D);
@@ -73,6 +75,7 @@ protected:
 	void printVector(vector<unsigned> v);
 	void printVector(vector<double> v);
 	double sum(vector<double> vec);
+	unsigned sum ( unsigned* arr, unsigned N );
 	vector<double> dotMultiply(vector<double> v1, vector<double> v2);
 	void gnR1R2(unsigned NP1, unsigned NP2, unsigned *r1, unsigned *r2);
 	PopulationT<double> combinePopulation(PopulationT<double> p1, PopulationT<double> p2);

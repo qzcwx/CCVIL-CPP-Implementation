@@ -54,12 +54,11 @@ double F11::compute(double*x){
 	for(k=1;k<=dimension/(2*nonSeparableGroupSize);k++)
 	{
 		result+=rot_ackley(anotherz,nonSeparableGroupSize,k);
-
 	}
-	printf("Rot Ackley = %1.16E\n", result);
+//	printf("Rot Ackley = %1.16E\n", result);
 
 	double sepSum = ackley(anotherz,dimension,2);
-	printf("Separable Ackley = %1.16E\n", sepSum);
+//	printf("Separable Ackley = %1.16E\n", sepSum);
 
 	result+=sepSum;
 	return(result);
@@ -87,10 +86,10 @@ double F11::compute(vector<double> x){
 		result+=rot_ackley(anotherz,nonSeparableGroupSize,k);
 
 	}
-	printf("Rot Ackley = %1.16E\n", result);
+//	printf("Rot Ackley = %1.16E\n", result);
 
 	double sepSum = ackley(anotherz,dimension,2);
-	printf("Separable Ackley = %1.16E\n", sepSum);
+//	printf("Separable Ackley = %1.16E\n", sepSum);
 
 	result+=sepSum;
 	return(result);

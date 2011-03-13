@@ -78,8 +78,8 @@ double F4::compute(double*x){
   result = rot_elliptic(anotherz1,nonSeparableGroupSize) * 1e6 + elliptic(
     anotherz2,dimension - nonSeparableGroupSize);
 
-  printf("Rotated Part = %1.16E\n", rot_elliptic(anotherz1,nonSeparableGroupSize) * 1e6);
-  printf("Separable Part = %1.16E\n", elliptic(anotherz2,dimension - nonSeparableGroupSize));
+//  printf("Rotated Part = %1.16E\n", rot_elliptic(anotherz1,nonSeparableGroupSize) * 1e6);
+//  printf("Separable Part = %1.16E\n", elliptic(anotherz2,dimension - nonSeparableGroupSize));
 
   return(result);
 }
@@ -132,8 +132,8 @@ double F4::compute(vector<double> x){
   result = rot_elliptic(anotherz1,nonSeparableGroupSize) * 1e6 + elliptic(
     anotherz2,dimension - nonSeparableGroupSize);
 
-  printf("Rotated Part = %1.16E\n", rot_elliptic(anotherz1,nonSeparableGroupSize) * 1e6);
-  printf("Separable Part = %1.16E\n", elliptic(anotherz2,dimension - nonSeparableGroupSize));
+//  printf("Rotated Part = %1.16E\n", rot_elliptic(anotherz1,nonSeparableGroupSize) * 1e6);
+//  printf("Separable Part = %1.16E\n", elliptic(anotherz2,dimension - nonSeparableGroupSize));
 
   return(result);
 }

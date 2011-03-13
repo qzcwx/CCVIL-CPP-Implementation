@@ -37,10 +37,10 @@ double F8::compute(double* x){
 	if(Ovector == NULL) {
 		Ovector = createShiftVector(dimension,minX,maxX-1);
 
-		printf("\n\n\nO vector\n\n\n");
-		for (i = 0; i<dimension; i++){
-			printf("%f\t",Ovector[i]);
-		}
+//		printf("\n\n\nO vector\n\n\n");
+//		for (i = 0; i<dimension; i++){
+//			printf("%f\t",Ovector[i]);
+//		}
 
 		Pvector = createPermVector(dimension);
 		/*
@@ -64,8 +64,8 @@ double F8::compute(double* x){
 	}
 	result = rosenbrock(anotherz1,m) * 1e6 + sphere(anotherz2,dimension - m);
 
-	printf("Rosenbrock Part = %1.16E\n", rosenbrock(anotherz1,m) * 1e6);
-	printf("Sphere Part = %1.16E\n", sphere(anotherz2,dimension - m));
+//	printf("Rosenbrock Part = %1.16E\n", rosenbrock(anotherz1,m) * 1e6);
+//	printf("Sphere Part = %1.16E\n", sphere(anotherz2,dimension - m));
 
 	return(result);
 }
@@ -79,10 +79,10 @@ double F8::compute(vector<double> x){
 	if(Ovector == NULL) {
 		Ovector = createShiftVector(dimension,minX,maxX-1);
 
-		printf("\n\n\nO vector\n\n\n");
-		for (i = 0; i<dimension; i++){
-			printf("%f\t",Ovector[i]);
-		}
+//		printf("\n\n\nO vector\n\n\n");
+//		for (i = 0; i<dimension; i++){
+//			printf("%f\t",Ovector[i]);
+//		}
 
 		Pvector = createPermVector(dimension);
 		/*
@@ -106,8 +106,8 @@ double F8::compute(vector<double> x){
 	}
 	result = rosenbrock(anotherz1,m) * 1e6 + sphere(anotherz2,dimension - m);
 
-	printf("Rosenbrock Part = %1.16E\n", rosenbrock(anotherz1,m) * 1e6);
-	printf("Sphere Part = %1.16E\n", sphere(anotherz2,dimension - m));
+//	printf("Rosenbrock Part = %1.16E\n", rosenbrock(anotherz1,m) * 1e6);
+//	printf("Sphere Part = %1.16E\n", sphere(anotherz2,dimension - m));
 
 	return(result);
 }

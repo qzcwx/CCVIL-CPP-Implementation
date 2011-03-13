@@ -54,7 +54,7 @@ double F10::compute(double*x){
 		result+=rot_rastrigin(anotherz,nonSeparableGroupSize,k);
 	}
 
-	printf("Rot Rastrigin = %1.16E\n", result);
+//	printf("Rot Rastrigin = %1.16E\n", result);
 	
 	result+=rastrigin(anotherz, dimension, 2);
 	return(result);
@@ -79,7 +79,7 @@ double F10::compute(vector<double> x){
 		result+=rot_rastrigin(anotherz,nonSeparableGroupSize,k);
 	}
 
-	printf("Rot Rastrigin = %1.16E\n", result);
+//	printf("Rot Rastrigin = %1.16E\n", result);
 	
 	result+=rastrigin(anotherz, dimension, 2);
 	return(result);

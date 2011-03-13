@@ -16,10 +16,10 @@ int main(){
 	for (funcIndex = 0; funcIndex < runParam->functionToRun.size(); funcIndex++ ){
 		fp = generateFuncObj(runParam, funcToRun[funcIndex]);
 		algo->setObjFunc(fp);
+		algo->run();
 	}
 
 
-	algo->run();
 	/*
 	X = new double[runParam->dimension];
 

@@ -49,8 +49,8 @@ double F13::compute(double*x){
 		result+=rosenbrock(anotherz,nonSeparableGroupSize,k);
 	}
 
-	printf("Rosenbrock = %1.16E\n", result);
-	printf("Sphere = %1.16E\n", sphere(anotherz, dimension, 2));
+//	printf("Rosenbrock = %1.16E\n", result);
+//	printf("Sphere = %1.16E\n", sphere(anotherz, dimension, 2));
 
 	result+=sphere(anotherz, dimension, 2);
 	return(result);
@@ -76,8 +76,8 @@ double F13::compute(vector<double> x){
 		result+=rosenbrock(anotherz,nonSeparableGroupSize,k);
 	}
 
-	printf("Rosenbrock = %1.16E\n", result);
-	printf("Sphere = %1.16E\n", sphere(anotherz, dimension, 2));
+//	printf("Rosenbrock = %1.16E\n", result);
+//	printf("Sphere = %1.16E\n", sphere(anotherz, dimension, 2));
 
 	result+=sphere(anotherz, dimension, 2);
 	return(result);
