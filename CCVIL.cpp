@@ -1277,7 +1277,7 @@ CCVIL::itos ( int i )
 	void
 CCVIL::sampleInfo (  )
 {
-	if (fes>=samplingPoints.front()){
+	if (!samplingPoints.empty()&& fes>=samplingPoints.front()){
 		samplingPoints.erase(samplingPoints.begin());
 		groupRec.push_back(groupInfo.size());
 		fesRec.push_back(fes);

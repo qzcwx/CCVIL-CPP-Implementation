@@ -91,6 +91,9 @@ F19.o: F19.h Benchmarks.h F19.cpp
 F20.o: F20.h Benchmarks.h F20.cpp
 	$(CC) $(CXXFLAGS) -c F20.cpp
 
-.PHONY : clean
+.PHONY : clean clrout
 clean:
 	rm -f main main.out $(OBJECTS)
+
+clrout:
+	rm -fr result trace out outout
