@@ -17,14 +17,22 @@
 #ifndef _CCVIL_H
 #define _CCVIL_H
 
-#include <EALib/PopulationT.h>
-#include <EALib/IndividualT.h>
-#include <Rng/Normal.h>
-#include <Rng/Uniform.h>
-#include <vector>
-#include <iostream>
-#include <algorithm>
-#include <climits>
+#include	<EALib/PopulationT.h>
+#include	<EALib/IndividualT.h>
+#include	<Rng/Normal.h>
+#include	<Rng/Uniform.h>
+#include	<vector>
+#include	<iostream>
+#include	<algorithm>
+#include	<climits>
+#include	<sys/stat.h>
+#include	<sys/types.h>
+#include	<fcntl.h>
+#include	<string>
+#include	<sstream>
+#include	<ctime>
+#include	<cfloat>
+
 
 #include "Benchmarks.h"
 #include "Archive.h"
@@ -35,6 +43,7 @@ class CCVIL{
 protected:
 	vector< PopulationT<double> > pop;
 	vector< vector<unsigned> > groupInfo;
+	vector<unsigned> samplingPoints;
 
 	IndividualT<double>* bestCand;
 	Benchmarks* fp;
@@ -53,6 +62,21 @@ protected:
 	double* groupF;
 	unsigned* failCounter;
 	long fes;
+	double bestFit;
+
+	// in result folder
+	FILE *resultFP;
+	vector<double> resultRec;
+	FILE *timeFP;
+	vector<double> timeRec;
+
+	// in trace folder
+	FILE *groupFP; 
+	vector<unsigned> groupRec;
+	FILE *fesFP;
+	vector<unsigned> fesRec;
+	FILE *valFP;
+	vector<double> valRec;
 
 	void learningStage();
 	void optimizationStage();
@@ -81,6 +105,8 @@ protected:
 	PopulationT<double> combinePopulation(PopulationT<double> p1, PopulationT<double> p2);
 	void findPbestIndex(PopulationT<double> inPop, unsigned pNP, unsigned* indBest);
 	void boundConstrain(PopulationT<double> &vi, PopulationT<double> offsprings, int LB, int UB, vector<unsigned> vecIndex);
+	string itos ( int i );
+	void sampleInfo (  );
 
 public:
 	CCVIL(RunParameter* runParam);

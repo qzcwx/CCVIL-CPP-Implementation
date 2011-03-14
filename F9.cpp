@@ -105,7 +105,7 @@ double F9::compute(vector<double> x){
 	}
 	delete[] lookup;
 
-	printf("Rotated Part = %1.20E\n", result);
+//	printf("Rotated Part = %1.20E\n", result);
 
 	result+=elliptic(anotherz, dimension, 2);
 	return(result);

@@ -7,6 +7,7 @@
 #include <cstring>
 #include <cstdlib>
 #include <iostream>
+#include	<cmath>
 
 using namespace std;
 
@@ -25,6 +26,9 @@ public:
 	unsigned initialGroupSize;
 
 
+	// The number of Sampling points for plotting the convergence curve
+	unsigned samplingPoint;
+
 	// Sampling interval for plotting the convergence curve
 	unsigned samplingInterval;
 
@@ -33,6 +37,7 @@ public:
 
 	// group size for non-separable part of function
 	unsigned nonSeparableGroupSize;
+
 	// Fitness check point
 	vector<unsigned> fitnessCheckPoint;
 
@@ -43,7 +48,7 @@ public:
 	unsigned lowerThreshold;
 
 	// Runtime Parameter for rJADE
-	double c;	
+	 double c;	
 
 	double p;
 

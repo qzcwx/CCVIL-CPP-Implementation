@@ -45,8 +45,9 @@ RunParameter::RunParameter(){
 //							cout<<"Check point = "<<strtod(strArray)<<endl;
 							fitnessCheckPoint.push_back(atoi (strArray));
 //							fitnessCheckPoint.push_back(strtod(strArray));
-						}else if (strcmp(confType.c_str(), "samplingInterval")==0){
-							samplingInterval = atoi (strArray);
+						}else if (strcmp(confType.c_str(), "samplingPoint")==0){
+							samplingPoint = atoi (strArray);
+							printf ( "The number of sampling points = %d\n", samplingPoint );
 						}else if (strcmp(confType.c_str(), "initRandomSeed")==0){
 							initRandomSeed = atoi (strArray);
 						}else if (strcmp(confType.c_str(), "nonSeparableGroupSize")==0){
@@ -80,6 +81,8 @@ RunParameter::RunParameter(){
 		cout<<"Fail to open configFile.ini file"<<endl;
 		configFile.close();
 	}
+	samplingInterval =round(fitnessCheckPoint.back()/samplingPoint); 
+	printf ( "Sampling Interval = %d\n", samplingInterval );
 }
 
 // default destructor

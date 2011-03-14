@@ -3,9 +3,10 @@
 int main(){
 
 	RunParameter* runParam;
-//	double* X;
 	unsigned funcIndex;
 	Benchmarks* fp=NULL;
+	
+//	double* X;
 
 	runParam = new RunParameter();
 	vector<unsigned> funcToRun=runParam->functionToRun;

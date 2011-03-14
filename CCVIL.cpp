@@ -35,6 +35,12 @@ CCVIL::CCVIL(RunParameter* runParam){
 	upperThreshold = min(round(MaxFitEval*0.6/(runParam->dimension*((1+1)*(3)+1))), 800.0);
 	cout<<"Lower threshold = "<<lowerThreshold<<", Upper threshold = "<<upperThreshold<<endl;
 
+	samplingPoints.clear();
+//	printf ( "Sampling Points\n" );
+	for (unsigned i=0 ; i<= param->samplingPoint ; i++){
+		samplingPoints.push_back(i*param->samplingInterval);
+		//		printf("%d\n",samplingPoints.back());
+	}
 }
 
 CCVIL::~CCVIL(){
@@ -44,7 +50,10 @@ CCVIL::~CCVIL(){
 }
 
 void CCVIL::run(){
+	double startT, stopT, runTime;
 
+	groupInfo.clear();
+	
 	// initialize the groupInfo
 	for (unsigned i = 0; i<param->dimension; i++){
 		vector<unsigned> tempVec;
@@ -52,20 +61,122 @@ void CCVIL::run(){
 		lookUpGroup[i] = i;
 		groupInfo.push_back(tempVec);
 	}
-	printf("Finish Initialization on Group");
 
-//	printf ( "groupInfo\n" );
-//	print2Dvector(groupInfo);
-//
-//	printf ( "lookUpGroup\n" );
-//	printArray(lookUpGroup, runParam->dimension);
+	//	printf ( "groupInfo\n" );
+	//	print2Dvector(groupInfo);
+	//
+	//	printf ( "lookUpGroup\n" );
+	//	printArray(lookUpGroup, runParam->dimension);
+
+	// check if folders "result" and "trace" exist or not
+	mkdir ("result", O_CREAT|S_IRWXU|S_IRWXG|S_IROTH|S_IXOTH);
+	mkdir ("trace", O_CREAT|S_IRWXU|S_IRWXG|S_IROTH|S_IXOTH);
+
+	// in result folder
+	string resultStr("result/resF");
+	resultStr += itos(fp->getID());
+	resultStr += ".txt";
+	printf("resultStr = %s", resultStr.c_str());
+	printf("\n");
+	resultFP = fopen(resultStr.c_str(), "w");
+
+	string timeStr("result/timeF");
+	timeStr += itos(fp->getID());
+	timeStr += ".txt";
+	printf("timeStr = %s", timeStr.c_str());
+	printf("\n");
+	timeFP = fopen(timeStr.c_str(), "w");
 	
-	fes = 0;
-	learningStage();
-	optimizationStage();
+
+	for (unsigned i=0; i < param->numOfRun; i++){
+		printf ( "\n\n\n========================== F %d, Run %d ========================\n\n\n", fp->getID(), i+1 );
+
+		/************************* in trace folder *************************/
+		
+		// store grouping information
+		string groupStr("trace/groupF");
+		groupStr += itos(fp->getID());
+		groupStr += "-";
+		groupStr += itos(i+1);
+		groupStr += ".txt";
+		printf("groupStr = %s", groupStr.c_str());
+		printf("\n");
+		groupFP = fopen(groupStr.c_str(), "w");
+		
+
+		string fesStr("trace/fesF");
+		fesStr += itos(fp->getID());
+		fesStr += "-";
+		fesStr += itos(i+1);
+		fesStr += ".txt";
+		printf("fesStr = %s", fesStr.c_str());
+		printf("\n");
+		fesFP = fopen(fesStr.c_str(), "w");
+
+		string valStr("trace/valF");
+		valStr += itos(fp->getID());
+		valStr += "-";
+		valStr += itos(i+1);
+		valStr += ".txt";
+		printf("valStr = %s", valStr.c_str());
+		printf("\n");
+		valFP = fopen(valStr.c_str(), "w");
+
+
+
+		/* algorithm runing part: start */
+		startT = clock();
+		fes = 0;
+		bestFit = DBL_MAX;
+		learningStage();
+		optimizationStage();
+		stopT = clock();
+		/* algorithm runing part: end */
+
+
+		runTime = (stopT - startT)/CLOCKS_PER_SEC;
+		printf ( "Result = %f, Running Time = %fs\n", bestFit, runTime );
+
+		resultRec.push_back(bestFit);
+		timeRec.push_back(runTime);
+
+		printf ( "\n\n\n========================================================\n\n\n" );
+
+		for (unsigned i=0; i<groupRec.size(); i++){
+			fprintf(groupFP, "%d\n", groupRec[i]);
+		}
+		fclose(groupFP);
+		groupRec.clear();
+
+		for (unsigned i=0; i<fesRec.size(); i++){
+			fprintf(fesFP, "%d\n", fesRec[i]);
+		}
+		fclose(fesFP);
+		fesRec.clear();
+
+		for (unsigned i=0; i<valRec.size(); i++){
+			fprintf(valFP, "%.8e\n", valRec[i]);
+		}
+		fclose(valFP);
+		valRec.clear();
+	}
+
+	// delete all file pointers
+	
+	// result
+	for (unsigned i=0; i<resultRec.size(); i++){
+		fprintf(resultFP, "%.8e\n", resultRec[i]);
+	}
+	fclose(resultFP);
+	resultRec.clear();
+
+	// time
+	for (unsigned i=0; i<timeRec.size(); i++){
+		fprintf(timeFP, "%.8e\n", timeRec[i]);
+	}
+	fclose(timeFP);
+	timeRec.clear();
 }
-
-
 /* 
  * procedure of learning stage, update the "groupInfo"
  */
@@ -145,7 +256,7 @@ void CCVIL::learningStage(){
 void CCVIL::optimizationStage(){
    unsigned	groupAmount = groupInfo.size();
 	bool learnStageFlag = false;
-	printf("\n\n\nOptimization Stage, groupAmount = %d\n", groupAmount);
+	printf("\nOptimization Stage, groupAmount = %d\n", groupAmount);
 
 	cycle = 0;
 	//	learnStageFlag = false, generate new population with regard to the groupInfo
@@ -161,7 +272,9 @@ void CCVIL::optimizationStage(){
 	for (unsigned i = 0; i< groupAmount; i++){
 		groupF[i] = 0.5;
 		groupCR[i] = 0.9;
+		failCounter[i] = 0;
 	}
+
 
 	double lastCycleBestVal = 0;
 	while (fes<MaxFitEval){
@@ -178,6 +291,7 @@ void CCVIL::optimizationStage(){
 				printf ( "*** Restart as no group can be optimized ***\n" );
 				popSizeVary(3.0);
 				popInit();
+				(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
 				for (unsigned j = 0; j<groupAmount; j++){
 					failCounter[j] = 0;
 				}
@@ -192,6 +306,7 @@ void CCVIL::optimizationStage(){
 			printf ( "*** Restart as non-improvement ***\n" );
 			popSizeVary(3.0);
 			popInit();
+			(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
 		}
 
 		lastCycleBestVal = bestCand->fitnessValue();
@@ -352,9 +467,15 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 //	printf("Best Index = %d, Value =  %f\n", parents.bestIndex(), parents.best().fitnessValue());
 	
 	preBestVal = parents.best().fitnessValue();
+	if (preBestVal < bestFit){
+		// improve on bestFit
+		bestFit = preBestVal;
+	}
 	
 	g = 1;
 	fes = fes + NP;
+	sampleInfo();
+	
 
 	/***************************** Iterations **************************/
 	while ( g<=G && fes < MaxFitEval){
@@ -376,7 +497,7 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 //		printArray(F, NP);
 //		printf ( "CR array:\n" );
 //		printArray(CR, NP);
-//
+
 //		printf ( "\ngnR1R2\n" );
 		if (param->Afactor == 0){
 			// without archive (it is actually a special case of JADE with archive)
@@ -485,7 +606,12 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 			}
 		}
 
+		if (parents.best().getFitness() < bestFit){
+			// improve on bestFit
+			bestFit = parents.best().getFitness();
+		}
 		fes += NP;
+		sampleInfo();
 
 //		printf("Update Archive...\n");
 //		printf("Remove Duplicate Elememt\n");
@@ -1125,3 +1251,37 @@ unsigned* CCVIL::randPerm(unsigned N)
 	}
 	return p;
 }
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  itos
+ *  Description:  
+ * =====================================================================================
+ */
+	string
+CCVIL::itos ( int i )
+{
+	stringstream s;
+	s << i;
+	return s.str();
+}		/* -----  end of function itos  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  sampleInfo
+ *  Description:  
+ * =====================================================================================
+ */
+	void
+CCVIL::sampleInfo (  )
+{
+	if (fes>=samplingPoints.front()){
+		samplingPoints.erase(samplingPoints.begin());
+		groupRec.push_back(groupInfo.size());
+		fesRec.push_back(fes);
+		valRec.push_back(bestFit);
+	}
+}
+/* -----  end of function sampleInfo  ----- */
