@@ -280,7 +280,6 @@ void CCVIL::optimizationStage(){
 	unsigned innerImprove;
 	while (fes<MaxFitEval){
 		//		printf("===================================================\n\n\n\n===================================================\n");
-
 		printf("\nCycle = %d\n", ++cycle);
 		for (unsigned i=0; i<groupAmount; i++ ) {
 			//			printf ( "Phase = %d\n" , i);
@@ -370,7 +369,7 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 	int LB = fp->getMinX(), UB = fp->getMaxX();
 	double Fm, CRm, c = param->c, p = param->p, preBestVal;
 	double *F, *CR;
-	vector<double> goodCR, goodF;
+	// f_rec stands for the fitness value improvement, which is necessary for the adaptation strategy in rJADE
 	vector<unsigned> vecIndex;
 	Archive* archive = NULL;
 
@@ -487,6 +486,8 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 	while ( g<=G && fes < MaxFitEval){
 //		printf("***************************** Iterations **************************\n");
 //		printf("Generation %d, fes %ld\n", g, fes);
+	vector<double> goodCR, goodF; 
+//	vector<double> goodCR, goodF, f_rec; 
 
 		offsprings = parents;
 		PopulationT<double> popAll(parents);
@@ -601,14 +602,15 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 		for (unsigned i=0; i<NP; i++){
 			ui[i].setFitness(fp->compute(ui[i][0]));
 			if (parents[i].fitnessValue() > ui[i].fitnessValue()){
+				// save CR & F & f_rec
+				goodCR.push_back(CR[i]);
+				goodF.push_back(F[i]);
+//				f_rec.push_back(parents[i].fitnessValue() - ui[i].fitnessValue());
+
 				// improved mutation is saved to offspring, archive the failed solution
 //				printf ( "NP %d, Improved and Updated\n", i );
 				archive->addToArchive(parents[i]);
 				parents.replace(i, ui[i]);
-
-				// save CR & F
-				goodCR.push_back(CR[i]);
-				goodF.push_back(F[i]);
 			}
 		}
 
