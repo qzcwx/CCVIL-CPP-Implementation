@@ -62,6 +62,12 @@ double F8::compute(double* x){
 	for(i = m; i < dimension; i++) {
 		anotherz2[i - m] = anotherz[Pvector[i]];
 	}
+
+//	printf("\n\n\nanotherz1\n\n\n");
+//	for (i = 0; i<m; i++){
+//		printf("%f\t",anotherz1[i]);
+//	}
+
 	result = rosenbrock(anotherz1,m) * 1e6 + sphere(anotherz2,dimension - m);
 
 //	printf("Rosenbrock Part = %1.16E\n", rosenbrock(anotherz1,m) * 1e6);

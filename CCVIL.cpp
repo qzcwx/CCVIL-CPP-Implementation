@@ -36,7 +36,7 @@ CCVIL::CCVIL(RunParameter* runParam){
 	cout<<"Lower threshold = "<<lowerThreshold<<", Upper threshold = "<<upperThreshold<<endl;
 
 	samplingPoints.clear();
-//	printf ( "Sampling Points\n" );
+	//	printf ( "Sampling Points\n" );
 	for (unsigned i=0 ; i<= param->samplingPoint ; i++){
 		samplingPoints.push_back(i*param->samplingInterval);
 		//		printf("%d\n",samplingPoints.back());
@@ -53,7 +53,7 @@ void CCVIL::run(){
 	double startT, stopT, runTime;
 
 	groupInfo.clear();
-	
+
 	// initialize the groupInfo
 	for (unsigned i = 0; i<param->dimension; i++){
 		vector<unsigned> tempVec;
@@ -86,13 +86,13 @@ void CCVIL::run(){
 	printf("timeStr = %s", timeStr.c_str());
 	printf("\n");
 	timeFP = fopen(timeStr.c_str(), "w");
-	
+
 
 	for (unsigned i=0; i < param->numOfRun; i++){
 		printf ( "\n\n\n========================== F %d, Run %d ========================\n\n\n", fp->getID(), i+1 );
 
 		/************************* in trace folder *************************/
-		
+
 		// store grouping information
 		string groupStr("trace/groupF");
 		groupStr += itos(fp->getID());
@@ -102,7 +102,7 @@ void CCVIL::run(){
 		printf("groupStr = %s", groupStr.c_str());
 		printf("\n");
 		groupFP = fopen(groupStr.c_str(), "w");
-		
+
 
 		string fesStr("trace/fesF");
 		fesStr += itos(fp->getID());
@@ -162,7 +162,7 @@ void CCVIL::run(){
 	}
 
 	// delete all file pointers
-	
+
 	// result
 	for (unsigned i=0; i<resultRec.size(); i++){
 		fprintf(resultFP, "%.8e\n", resultRec[i]);
@@ -183,49 +183,49 @@ void CCVIL::run(){
 void CCVIL::learningStage(){
 	cout<<"Learning Stage ... "<<endl;
 	cycle = 1; 
- 	int lastCycleIndex = -1;
+	int lastCycleIndex = -1;
 	bool learnStageFlag, needCapture, isSameGroup = false, separableFunc = true; // assume every benchmark function is separable at the first beginning
 
 	bestCand = new IndividualT<double>(ChromosomeT<double>(param->dimension));
 	(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
 
-//	printf ( "Best Cand\n" );
-//	printPopulation((*bestCand));
+	//	printf ( "Best Cand\n" );
+	//	printPopulation((*bestCand));
 
 	popGenerate(true);
 
-//	printf ( "Compute Learn Stage Flag = %d\n", !(cycle > upperThreshold || (cycle > lowerThreshold && groupInfo.size() == param->dimension) || groupInfo.size() == 1));
+	//	printf ( "Compute Learn Stage Flag = %d\n", !(cycle > upperThreshold || (cycle > lowerThreshold && groupInfo.size() == param->dimension) || groupInfo.size() == 1));
 
 	while ( (learnStageFlag = !(cycle > upperThreshold 
 					|| (cycle > lowerThreshold && groupInfo.size() == param->dimension) 
 					|| groupInfo.size() == 1))==true ){
 		// start a new cycle
-//		printf("===================================================\n===================================================\n");
+		//		printf("===================================================\n===================================================\n");
 		printf("Cycle = %d\n", cycle);
-		
+
 		for (unsigned i=0; i<param->dimension; i++) {
-//			printf("=========================================================================\nPhase = %d, Cycle = %d\n",i, cycle);
+			//			printf("=========================================================================\nPhase = %d, Cycle = %d\n",i, cycle);
 			if (i == 0){
 				// start a new phase for each cycle, each phase checking one dimension, i.e., p[i]
 				//	printf("Population Re-initialization & Issue Random Permutation\n");
 				popInit();
 				p = randPerm(param->dimension);
-//				printf("Random Permutation p:\n");
-//				printArray(p, param->dimension);
+				//				printf("Random Permutation p:\n");
+				//				printArray(p, param->dimension);
 				lastCycleIndex = -1;
 			}
 
 			needCapture = groupInfo.size()!=1 && ((cycle<= lowerThreshold) ||(separableFunc == false && cycle <= upperThreshold)) && lastCycleIndex!=-1;
-//			printf("Need Capture ? %d: between %d and %d\n", needCapture, p[i], lastCycleIndex);
-			
+			//			printf("Need Capture ? %d: between %d and %d\n", needCapture, p[i], lastCycleIndex);
+
 			if (lastCycleIndex!=-1){
 				//	to decide whether current dimesion are in the same group with last dimension
 				isSameGroup = sameGroup(p[i], lastCycleIndex);
-//				printf("In the Same group? %d\n", isSameGroup);
+				//				printf("In the Same group? %d\n", isSameGroup);
 			}
 
 			if (lastCycleIndex == -1 || isSameGroup == false){
-//				printf("i = %d, p[i] = %d\n", i, p[i]);
+				//				printf("i = %d, p[i] = %d\n", i, p[i]);
 				// if current dimension and last optimized index are in the different group, then optimize on current dimension
 				JADECC(p[i], true); 	/*learnStage = true*/
 			} else{
@@ -246,7 +246,7 @@ void CCVIL::learningStage(){
 		}
 		cycle++;
 		printf("F %d, Learning Cycle =%d, GroupAmount = %d, BestVal = %.8e \n",
-			fp->getID(), 	cycle, 			(int)groupInfo.size(), bestCand->fitnessValue());
+				fp->getID(), 	cycle, 			(int)groupInfo.size(), bestCand->fitnessValue());
 	}
 }
 
@@ -254,7 +254,7 @@ void CCVIL::learningStage(){
  * procedure of optimization stage, based on the groupInfo to group the entire population
  */
 void CCVIL::optimizationStage(){
-   unsigned	groupAmount = groupInfo.size();
+	unsigned	groupAmount = groupInfo.size();
 	bool learnStageFlag = false;
 	printf("\nOptimization Stage, groupAmount = %d\n", groupAmount);
 
@@ -262,7 +262,7 @@ void CCVIL::optimizationStage(){
 	//	learnStageFlag = false, generate new population with regard to the groupInfo
 	popGenerate(learnStageFlag);
 	popInit();
-//	popInitZeros();
+	//	popInitZeros();
 
 	groupCR = new double[groupAmount];
 	groupF = new double[groupAmount];
@@ -277,15 +277,21 @@ void CCVIL::optimizationStage(){
 
 
 	double lastCycleBestVal = 0;
+	unsigned innerImprove;
 	while (fes<MaxFitEval){
-//		printf("===================================================\n\n\n\n===================================================\n");
+		//		printf("===================================================\n\n\n\n===================================================\n");
 
 		printf("\nCycle = %d\n", ++cycle);
 		for (unsigned i=0; i<groupAmount; i++ ) {
-//			printf ( "Phase = %d\n" , i);
+			//			printf ( "Phase = %d\n" , i);
 			if (failCounter[i] <= param->failThreshold){
-//				only optimize on current group, if no a single improvement in the past "failThreshold" successive cycle
-				failCounter[i] += JADECC(i,learnStageFlag);
+				//only optimize on current group, if no a single improvement in the past "failThreshold" successive cycle
+					innerImprove = JADECC(i,learnStageFlag);
+				if (innerImprove==0){
+					failCounter[i] = 0;
+				}else{
+					failCounter[i] += innerImprove;
+				}
 			}
 			if (sum(failCounter,groupAmount)>=((param->failThreshold+1)*groupAmount)){
 				printf ( "*** Restart as no group can be optimized ***\n" );
@@ -299,7 +305,7 @@ void CCVIL::optimizationStage(){
 		}
 
 		printf("F %d, Optimization Cycle =%d, GroupAmount = %d, fes = %ld, BestVal = %.8e\n",
-			fp->getID(), 	cycle, 			(int)groupInfo.size(), fes, bestCand->fitnessValue());
+				fp->getID(), 	cycle, 			(int)groupInfo.size(), fes, bestCand->fitnessValue());
 
 		printf ( "Improved FES = %f\n",  abs((lastCycleBestVal-bestCand->fitnessValue())/bestCand->fitnessValue()));
 		if (cycle>1 && abs((lastCycleBestVal-bestCand->fitnessValue())/bestCand->fitnessValue())<0.01){
@@ -1125,17 +1131,21 @@ CCVIL::popInitZeros ()
 		}
 	}
 
-	//	TODO: Remove Begin
-	printf ( "Print the entire population\n" );
-	print2Dvector(pop);
+//	//	TODO: Remove Begin
+//	printf ( "Print the entire population\n" );
+//	print2Dvector(pop);
 
 	for (unsigned i = 0; i < (*bestCand)[0].size(); i++){
 		(*bestCand)[0][i] = 0;
 	}
 
-	printf ( "Print the best Candidate\n" );
-	printPopulation(*bestCand);
-	//	TODO: Remove End
+	bestCand->setFitness(fp->compute((*bestCand)[0]));
+
+	printf ( "Fitness of bestCand = %f\n", bestCand->getFitness());
+
+//	printf ( "Print the best Candidate\n" );
+//	printPopulation(*bestCand);
+//	//	TODO: Remove End
 		
 }		/* -----  end of function popInitZeros  ----- */
 

@@ -6,7 +6,6 @@ int main(){
 	unsigned funcIndex;
 	Benchmarks* fp=NULL;
 	
-//	double* X;
 
 	runParam = new RunParameter();
 	vector<unsigned> funcToRun=runParam->functionToRun;
@@ -21,28 +20,28 @@ int main(){
 	}
 
 
-	/*
-	X = new double[runParam->dimension];
+	/*  Test the population template */
+//	parents->setMinimize();
+//	offsprings->setMinimize();
+//
+//	for (i = 0; (unsigned int)i < parents.size(); ++i) {
+//		parents[ i ][ 0 ]->initialize(fp->getMinX(), fp->getMaxX());
+//	}
+//
+//	for (i = 0;(unsigned int)i < parents.size(); ++i){
+//		printf("pop %d = %1.20E\n", i, fp->compute(parents[ i ][ 0 ]));
+//		parents[ i ]->setFitness(fp->compute(parents[ i ][ 0 ]));
+//	}
 
-	for (i=0; i<runParam->dimension; i++){
-		X[i]=0;
-	}
 
-	parents->setMinimize();
-	offsprings->setMinimize();
-
-	for (i = 0; (unsigned int)i < parents.size(); ++i) {
-		parents[ i ][ 0 ]->initialize(fp->getMinX(), fp->getMaxX());
-	}
-
-	for (i = 0;(unsigned int)i < parents.size(); ++i){
-		printf("pop %d = %1.20E\n", i, fp->compute(parents[ i ][ 0 ]));
-		parents[ i ]->setFitness(fp->compute(parents[ i ][ 0 ]));
-	}
-
-	//printf("function value = %1.20E\n", fp->compute(X));
-
-	*/
+//	double* X;
+//	unsigned i;
+//	X = new double[runParam->dimension];
+//	for ( i=0; i<runParam->dimension; i++){
+//		X[i]=0;
+//	}
+//	fp = generateFuncObj(runParam, funcToRun[funcIndex]);
+//	printf("function F %d value = %1.20E\n", fp->getID(), fp->compute(X));
 
 	delete fp;
 	delete algo;
