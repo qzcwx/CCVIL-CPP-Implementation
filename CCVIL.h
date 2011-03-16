@@ -34,7 +34,7 @@
 #include	<cfloat>
 
 
-#include "Benchmarks.h"
+#include "benchmark/Benchmarks.h"
 #include "Archive.h"
 
 using namespace std;
