@@ -486,8 +486,8 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 	while ( g<=G && fes < MaxFitEval){
 //		printf("***************************** Iterations **************************\n");
 //		printf("Generation %d, fes %ld\n", g, fes);
-	vector<double> goodCR, goodF; 
-//	vector<double> goodCR, goodF, f_rec; 
+	// vector<double> goodCR, goodF; 
+		vector<double> goodCR, goodF, f_rec; 
 
 		offsprings = parents;
 		PopulationT<double> popAll(parents);
@@ -601,11 +601,12 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 		//************************************ Selection ************************************//
 		for (unsigned i=0; i<NP; i++){
 			ui[i].setFitness(fp->compute(ui[i][0]));
-			if (parents[i].fitnessValue() > ui[i].fitnessValue()){
+			double fitImprv = parents[i].fitnessValue() - ui[i].fitnessValue();
+			if ( fitImprv > 0){
 				// save CR & F & f_rec
 				goodCR.push_back(CR[i]);
 				goodF.push_back(F[i]);
-//				f_rec.push_back(parents[i].fitnessValue() - ui[i].fitnessValue());
+				f_rec.push_back(fitImprv);
 
 				// improved mutation is saved to offspring, archive the failed solution
 //				printf ( "NP %d, Improved and Updated\n", i );
@@ -629,15 +630,23 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 		archive->truncateArchive();
 
 		// update CRm and Fm
-		//		printf("update CRm and Fm, goodCR size = %d, goodF size = %d\n", (int)goodCR.size(), (int)goodF.size());
+		//printf("update CRm and Fm, goodCR size = %d, goodF size = %d\n", (int)goodCR.size(), (int)goodF.size());
 
-//		printf("CRm = %f, Fm = %f\n", CRm, Fm);
+//		/* Adaptation in original JADE */
+////		printf("CRm = %f, Fm = %f\n", CRm, Fm);
+//		if (goodCR.size()>0 && sum(goodF)>0){
+//			CRm = (1-c)*CRm + c*sum(goodCR)/goodCR.size();
+//			Fm = (1-c)*Fm + c*sum(dotMultiply(goodF, goodF))/sum(goodF);
+////			printf ( "after adaptation, CRm = %f, Fm = %f\n", CRm, Fm );
+//		}
+
+		/* Adaptation in rJADE by [Fei Peng al. et. CEC 2009] */
+//		printf("rJADE adaptation: CRm = %f, Fm = %f\n", CRm, Fm);
 		if (goodCR.size()>0 && sum(goodF)>0){
-			CRm = (1-c)*CRm + c*sum(goodCR)/goodCR.size();
+			CRm = (1-c)*CRm + c*sum(dotMultiply(f_rec,goodCR))/sum(f_rec);
 			Fm = (1-c)*Fm + c*sum(dotMultiply(goodF, goodF))/sum(goodF);
 //			printf ( "after adaptation, CRm = %f, Fm = %f\n", CRm, Fm );
 		}
-
 
 		//		printf("Population after Mutation, population size of it = %d \n", ui.size());
 		//		printPopulation(ui);
