@@ -106,7 +106,7 @@ protected:
 	void findPbestIndex(PopulationT<double> inPop, unsigned pNP, unsigned* indBest);
 	void boundConstrain(PopulationT<double> &vi, PopulationT<double> offsprings, int LB, int UB, vector<unsigned> vecIndex);
 	string itos ( int i );
-	void sampleInfo (  );
+	void sampleInfo ( double curFit   );
 
 public:
 	CCVIL(RunParameter* runParam);

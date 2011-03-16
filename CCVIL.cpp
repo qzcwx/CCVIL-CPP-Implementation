@@ -35,12 +35,6 @@ CCVIL::CCVIL(RunParameter* runParam){
 	upperThreshold = min(round(MaxFitEval*0.6/(runParam->dimension*((1+1)*(3)+1))), 800.0);
 	cout<<"Lower threshold = "<<lowerThreshold<<", Upper threshold = "<<upperThreshold<<endl;
 
-	samplingPoints.clear();
-	//	printf ( "Sampling Points\n" );
-	for (unsigned i=0 ; i<= param->samplingPoint ; i++){
-		samplingPoints.push_back(i*param->samplingInterval);
-		//		printf("%d\n",samplingPoints.back());
-	}
 }
 
 CCVIL::~CCVIL(){
@@ -91,8 +85,15 @@ void CCVIL::run(){
 	for (unsigned i=0; i < param->numOfRun; i++){
 		printf ( "\n\n\n========================== F %d, Run %d ========================\n\n\n", fp->getID(), i+1 );
 
-		/************************* in trace folder *************************/
+		/************************* re-initialize the sampling points *************************/
+		samplingPoints.clear();
+		//	printf ( "Sampling Points\n" );
+		for (unsigned j=0 ; j<= param->samplingPoint; j++){
+			samplingPoints.push_back(j*param->samplingInterval);
+			//		printf("%d\n",samplingPoints.back());
+		}
 
+		/************************* in trace folder *************************/
 		// store grouping information
 		string groupStr("trace/groupF");
 		groupStr += itos(fp->getID());
@@ -479,7 +480,7 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 	
 	g = 1;
 	fes = fes + NP;
-	sampleInfo();
+	sampleInfo(preBestVal);
 	
 
 	/***************************** Iterations **************************/
@@ -620,7 +621,7 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 			bestFit = parents.best().getFitness();
 		}
 		fes += NP;
-		sampleInfo();
+		sampleInfo(parents.best().getFitness());
 
 //		printf("Update Archive...\n");
 //		printf("Remove Duplicate Elememt\n");
@@ -1296,13 +1297,13 @@ CCVIL::itos ( int i )
  * =====================================================================================
  */
 	void
-CCVIL::sampleInfo (  )
+CCVIL::sampleInfo ( double curFit )
 {
 	if (!samplingPoints.empty()&& fes>=samplingPoints.front()){
 		samplingPoints.erase(samplingPoints.begin());
 		groupRec.push_back(groupInfo.size());
 		fesRec.push_back(fes);
-		valRec.push_back(bestFit);
+		valRec.push_back(curFit);
 	}
 }
 /* -----  end of function sampleInfo  ----- */
