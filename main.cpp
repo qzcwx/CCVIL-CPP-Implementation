@@ -17,6 +17,7 @@ int main(){
 		fp = generateFuncObj(runParam, funcToRun[funcIndex]);
 		algo->setObjFunc(fp);
 		algo->run();
+		delete fp;
 	}
 
 
@@ -45,9 +46,6 @@ int main(){
 	//	printf("function F %d value = %1.20E\n", fp->getID(), fp->compute(X));
 	//	delete X;
 
-	if (fp){
-		delete fp;
-	}
 	delete algo;
 	delete runParam;
 

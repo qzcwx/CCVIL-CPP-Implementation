@@ -34,7 +34,6 @@ CCVIL::CCVIL(RunParameter* runParam){
 	lowerThreshold = runParam->lowerThreshold;
 	upperThreshold = min(round(MaxFitEval*0.6/(runParam->dimension*((1+1)*(3)+1))), 800.0);
 	cout<<"Lower threshold = "<<lowerThreshold<<", Upper threshold = "<<upperThreshold<<endl;
-
 }
 
 CCVIL::~CCVIL(){
