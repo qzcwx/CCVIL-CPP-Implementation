@@ -45,18 +45,7 @@ CCVIL::~CCVIL(){
 void CCVIL::run(){
 	double startT, stopT, runTime;
 
-	groupInfo.clear();
 
-	// initialize the groupInfo
-	for (unsigned i = 0; i<param->dimension; i++){
-		vector<unsigned> tempVec;
-		tempVec.push_back(i);
-		lookUpGroup[i] = i;
-		groupInfo.push_back(tempVec);
-	}
-
-	//	printf ( "groupInfo\n" );
-	//	print2Dvector(groupInfo);
 	//
 	//	printf ( "lookUpGroup\n" );
 	//	printArray(lookUpGroup, runParam->dimension);
@@ -85,6 +74,17 @@ void CCVIL::run(){
 		printf ( "\n\n\n========================== F %d, Run %d ========================\n\n\n", fp->getID(), i+1 );
 
 		/************************* re-initialize the sampling points *************************/
+		groupInfo.clear();
+		// initialize the groupInfo
+		for (unsigned j = 0; j<param->dimension; j++){
+			vector<unsigned> tempVec;
+			tempVec.push_back(j);
+			lookUpGroup[j] = j;
+			groupInfo.push_back(tempVec);
+		}
+//		printf ( "groupInfo\n" );
+//		print2Dvector(groupInfo);
+
 		samplingPoints.clear();
 		//	printf ( "Sampling Points\n" );
 		for (unsigned j=0 ; j<= param->samplingPoint; j++){
@@ -261,6 +261,10 @@ void CCVIL::optimizationStage(){
 	cycle = 0;
 	//	learnStageFlag = false, generate new population with regard to the groupInfo
 	popGenerate(learnStageFlag);
+	printf ( "Size of population\n" );
+	for (unsigned i=0; i<pop.size(); i++){
+		printf ( "%d\n", pop[i].size() );
+	}
 	popInit();
 	//	popInitZeros();
 
