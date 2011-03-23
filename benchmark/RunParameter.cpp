@@ -9,6 +9,11 @@ RunParameter::RunParameter(){
 	string tempStr;
 	char* strArray;
 
+	//	initialize the random seed to be associated with time,
+	//		if there is no specification in configure.ini, 
+	//			then take a complete random number
+	initRandomSeed = (unsigned)time(0);
+
 	if (configFile.is_open()){
 		while(configFile.good()){
 			getline(configFile, tempStr);
@@ -83,6 +88,7 @@ RunParameter::RunParameter(){
 	}
 	samplingInterval =round(fitnessCheckPoint.back()/samplingPoint); 
 	printf ( "Sampling Interval = %d\n", samplingInterval );
+	printf("Initial Random Seed = %d\n", initRandomSeed);
 }
 
 // default destructor

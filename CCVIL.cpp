@@ -261,10 +261,10 @@ void CCVIL::optimizationStage(){
 	cycle = 0;
 	//	learnStageFlag = false, generate new population with regard to the groupInfo
 	popGenerate(learnStageFlag);
-	printf ( "Size of population\n" );
-	for (unsigned i=0; i<pop.size(); i++){
-		printf ( "%d\n", pop[i].size() );
-	}
+
+	printf ( "Group info\n" );
+	print2Dvector(groupInfo);
+
 	popInit();
 	//	popInitZeros();
 
@@ -280,16 +280,24 @@ void CCVIL::optimizationStage(){
 	}
 
 
-	double lastCycleBestVal = 0;
+	double lastCycleBestVal = 0, improveRate=0;
 	unsigned innerImprove;
+
 	while (fes<MaxFitEval){
 		//		printf("===================================================\n\n\n\n===================================================\n");
-		printf("\nCycle = %d\n", ++cycle);
+		++cycle;
+
+		for (unsigned i=0; i<pop.size(); i++){
+			printf("%d:\tGroupSize = %d,\tPopSize = %d\n", i, groupInfo[i].size(), pop[i].size());
+		}
+		printf("F %d, Optimization Cycle =%d, GroupAmount = %d, fes = %ld, Improved FES = %f, BestVal = %.8e\n",
+				fp->getID(), 	cycle, 			(int)groupInfo.size(), fes, improveRate, bestCand->fitnessValue());
+
 		for (unsigned i=0; i<groupAmount; i++ ) {
 			//			printf ( "Phase = %d\n" , i);
 			if (failCounter[i] <= param->failThreshold){
 				//only optimize on current group, if no a single improvement in the past "failThreshold" successive cycle
-					innerImprove = JADECC(i,learnStageFlag);
+				innerImprove = JADECC(i,learnStageFlag);
 				if (innerImprove==0){
 					failCounter[i] = 0;
 				}else{
@@ -307,11 +315,11 @@ void CCVIL::optimizationStage(){
 			}
 		}
 
-		printf("F %d, Optimization Cycle =%d, GroupAmount = %d, fes = %ld, BestVal = %.8e\n",
-				fp->getID(), 	cycle, 			(int)groupInfo.size(), fes, bestCand->fitnessValue());
+		improveRate = abs((lastCycleBestVal-bestCand->fitnessValue())/bestCand->fitnessValue());
 
-		printf ( "Improved FES = %f\n",  abs((lastCycleBestVal-bestCand->fitnessValue())/bestCand->fitnessValue()));
-		if (cycle>1 && abs((lastCycleBestVal-bestCand->fitnessValue())/bestCand->fitnessValue())<0.01){
+		printf("F %d, Optimization Cycle =%d, GroupAmount = %d, fes = %ld, Improved FES = %f, BestVal = %.8e\n",
+				fp->getID(), 	cycle, 			(int)groupInfo.size(), fes, improveRate, bestCand->fitnessValue());
+		if (cycle>1 && improveRate<0.01){
 			printf ( "*** Restart as non-improvement ***\n" );
 			popSizeVary(3.0);
 			popInit();
