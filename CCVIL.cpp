@@ -135,7 +135,7 @@ void CCVIL::run(){
 
 
 		runTime = (stopT - startT)/CLOCKS_PER_SEC;
-		printf ( "Result = %f, Running Time = %fs\n", bestFit, runTime );
+		printf ( "Result = %.8e, Running Time = %fs\n", bestFit, runTime );
 
 		resultRec.push_back(bestFit);
 		timeRec.push_back(runTime);
@@ -293,6 +293,7 @@ void CCVIL::optimizationStage(){
 	while (fes<MaxFitEval){
 		//		printf("===================================================\n\n\n\n===================================================\n");
 		++cycle;
+		printf ( "Cycle %d\n", cycle );
 
 //		for (unsigned i=0; i<pop.size(); i++){
 //			printf("%d:\tGroupSize = %d,\tPopSize = %d\n", i, groupInfo[i].size(), pop[i].size());
@@ -335,6 +336,10 @@ void CCVIL::optimizationStage(){
 		}
 
 		improveRate = abs((lastCycleBestVal-bestCand->fitnessValue())/bestCand->fitnessValue());
+
+		if (bestFit==0){
+			printf ( "Reach Optmal\n" );
+		}
 
 		printf("F %d, Optimization Cycle =%d, GroupAmount = %d, fes = %ld, Improved FES = %f, BestVal = %.8e\n",
 				fp->getID(), 	cycle, 			(int)groupInfo.size(), fes, improveRate, bestCand->fitnessValue());
@@ -703,9 +708,9 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 
 		if (g % (20000/vecIndex.size()) == 0){
 			if ( learnStageFlag == true ) {
-				printf("LearningStage, GroupNum = %d, D = %d, groupIndex = %d, Cycle = %d, G = %d, fet = %ld, Best Fitness = %.8e \n", (int)groupInfo.size(), (int)vecIndex.size(), index, cycle, g, fes, parents.best().fitnessValue() );
+				printf("LearningStage, GroupNum = %d, D = %d, groupIndex = %d, Cycle = %d, G = %d, fes = %ld, Best Fitness = %.8e\n", (int)groupInfo.size(), (int)vecIndex.size(), index, cycle, g, fes, parents.best().fitnessValue() );
 			}else{
-				printf("OptimizationStage, GroupNum = %d, D = %d, groupIndex = %d, Cycle = %d, G = %d, fet = %ld, Best Fitness = %.8e \n", (int)groupInfo.size(), (int)vecIndex.size(), index, cycle, g, fes, parents.best().fitnessValue());
+				printf("OptimizationStage, GroupNum = %d, D = %d, groupIndex = %d, Cycle = %d, G = %d, fes = %ld, Best Fitness = %.8e\n", (int)groupInfo.size(), (int)vecIndex.size(), index, cycle, g, fes, parents.best().fitnessValue());
 			}
 		}
 		delete[] randIndex;
