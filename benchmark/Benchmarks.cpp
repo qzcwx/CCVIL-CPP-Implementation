@@ -22,7 +22,7 @@ Benchmarks::Benchmarks(RunParameter* runParam){
 
 	functionInitRandomSeed = L(runParam->initRandomSeed);
 	m_seed= functionInitRandomSeed;
-	M  = 0x5DEECE66D;
+	M = 0x5DEECE66D;
 	A  = 0xB;
 
 	minX = -100;

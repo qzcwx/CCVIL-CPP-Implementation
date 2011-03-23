@@ -187,7 +187,7 @@ void CCVIL::learningStage(){
 	bool learnStageFlag, needCapture, isSameGroup = false, separableFunc = true; // assume every benchmark function is separable at the first beginning
 
 	bestCand = new IndividualT<double>(ChromosomeT<double>(param->dimension));
-	(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
+//	(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
 
 	//	printf ( "Best Cand\n" );
 	//	printPopulation((*bestCand));
@@ -209,6 +209,13 @@ void CCVIL::learningStage(){
 				// start a new phase for each cycle, each phase checking one dimension, i.e., p[i]
 				//	printf("Population Re-initialization & Issue Random Permutation\n");
 				popInit();
+//				printf ( "beforeInitBestCand\n" );
+//				print2Dvector(pop);
+//				printPopulation((*bestCand));
+				initBestCand();
+//				printf ( "afterInitBestCand\n" );
+//				print2Dvector(pop);
+//				printPopulation((*bestCand));
 				p = randPerm(param->dimension);
 				//				printf("Random Permutation p:\n");
 				//				printArray(p, param->dimension);
@@ -262,8 +269,8 @@ void CCVIL::optimizationStage(){
 	//	learnStageFlag = false, generate new population with regard to the groupInfo
 	popGenerate(learnStageFlag);
 
-	printf ( "Group info\n" );
-	print2Dvector(groupInfo);
+//	printf ( "Group info\n" );
+//	print2Dvector(groupInfo);
 
 	popInit();
 	//	popInitZeros();
@@ -287,11 +294,12 @@ void CCVIL::optimizationStage(){
 		//		printf("===================================================\n\n\n\n===================================================\n");
 		++cycle;
 
-		for (unsigned i=0; i<pop.size(); i++){
-			printf("%d:\tGroupSize = %d,\tPopSize = %d\n", i, groupInfo[i].size(), pop[i].size());
-		}
-		printf("F %d, Optimization Cycle =%d, GroupAmount = %d, fes = %ld, Improved FES = %f, BestVal = %.8e\n",
-				fp->getID(), 	cycle, 			(int)groupInfo.size(), fes, improveRate, bestCand->fitnessValue());
+//		for (unsigned i=0; i<pop.size(); i++){
+//			printf("%d:\tGroupSize = %d,\tPopSize = %d\n", i, groupInfo[i].size(), pop[i].size());
+//		}
+
+//		printf("F %d, Optimization Cycle =%d, GroupAmount = %d, fes = %ld, Improved FES = %f, BestVal = %.8e\n",
+//				fp->getID(), 	cycle, 			(int)groupInfo.size(), fes, improveRate, bestCand->fitnessValue());
 
 		for (unsigned i=0; i<groupAmount; i++ ) {
 			//			printf ( "Phase = %d\n" , i);
@@ -308,9 +316,20 @@ void CCVIL::optimizationStage(){
 				printf ( "*** Restart as no group can be optimized ***\n" );
 				popSizeVary(3.0);
 				popInit();
-				(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
-				for (unsigned j = 0; j<groupAmount; j++){
-					failCounter[j] = 0;
+//				(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
+//				printf ( "beforeInitBestCand\n" );
+//				print2Dvector(pop);
+//				printPopulation((*bestCand));
+				initBestCand();
+//				printf ( "afterInitBestCand\n" );
+//				print2Dvector(pop);
+//				printPopulation((*bestCand));
+
+				// initialize the control parameters for each group
+				for (unsigned i = 0; i< groupAmount; i++){
+					groupF[i] = 0.5;
+					groupCR[i] = 0.9;
+					failCounter[i] = 0;
 				}
 			}
 		}
@@ -319,11 +338,26 @@ void CCVIL::optimizationStage(){
 
 		printf("F %d, Optimization Cycle =%d, GroupAmount = %d, fes = %ld, Improved FES = %f, BestVal = %.8e\n",
 				fp->getID(), 	cycle, 			(int)groupInfo.size(), fes, improveRate, bestCand->fitnessValue());
+
 		if (cycle>1 && improveRate<0.01){
 			printf ( "*** Restart as non-improvement ***\n" );
 			popSizeVary(3.0);
 			popInit();
-			(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
+//			(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());	
+//			printf ( "beforeInitBestCand\n" );
+//				print2Dvector(pop);
+//			printPopulation((*bestCand));
+			initBestCand();
+//			printf ( "afterInitBestCand\n" );
+//				print2Dvector(pop);
+//			printPopulation((*bestCand));
+
+			// initialize the control parameters for each group
+			for (unsigned i = 0; i< groupAmount; i++){
+				groupF[i] = 0.5;
+				groupCR[i] = 0.9;
+				failCounter[i] = 0;
+			}
 		}
 
 		lastCycleBestVal = bestCand->fitnessValue();
@@ -1318,3 +1352,24 @@ CCVIL::sampleInfo ( double curFit )
 	}
 }
 /* -----  end of function sampleInfo  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  initBestCand
+ *  Description:  
+ * =====================================================================================
+ */
+	void
+CCVIL::initBestCand (  )
+{
+	unsigned curDim=0, randi = 0;
+	// assign bestCand from pop in a group by group fashion
+	for (unsigned i=0; i<groupInfo.size(); i++){
+		for (unsigned j=0; j<groupInfo[i].size(); j++){
+			curDim = groupInfo[i][j];
+			randi = Rng::uni()*pop[curDim].size();
+			(*bestCand)[0][curDim] = pop[curDim][randi][0][0] ;
+		}
+	}
+}		/* -----  end of function initBestCand  ----- */
