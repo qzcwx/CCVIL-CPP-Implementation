@@ -48,7 +48,14 @@ double F8::compute(double* x){
 //			printf("%f\t",Ovector[i]);
 //		}
 
-		Pvector = createPermVector(dimension);
+		//TODO: Neeed to change back to random one ****************************************************************************
+		//		Pvector = createPermVector(dimension);
+		
+		Pvector = (int*)malloc(sizeof(int) * dimension);
+		for (i = 0; i<dimension; i++){
+			Pvector[i] = i;	
+		}
+
 		/*
 		printf("\n\n\nP vector\n\n\n");
 		for (i = 0; i<dimension; i++){
@@ -89,6 +96,7 @@ double F8::compute(vector<double> x){
 	double result;
 
 	if(Ovector == NULL) {
+
 		Ovector = createShiftVector(dimension,minX,maxX-1);
 
 //		printf("\n\n\nO vector\n\n\n");
@@ -96,13 +104,22 @@ double F8::compute(vector<double> x){
 //			printf("%f\t",Ovector[i]);
 //		}
 
-		Pvector = createPermVector(dimension);
-		/*
+		//TODO: Neeed to change back to random one ****************************************************************************
+		//		Pvector = createPermVector(dimension);
+		
+		Pvector = (int*)malloc(sizeof(int) * dimension);
+		for (i = 0; i<dimension; i++){
+			Pvector[i] = i;	
+		}
+
 		printf("\n\n\nP vector\n\n\n");
 		for (i = 0; i<dimension; i++){
 			printf("%d\t",Pvector[i]);
 		}
-		*/
+		printf ( "\n" );
+
+		printf ( "dimension = %d\n", dimension );
+		printf ( "m = %d\n", m );
 	}
 
 	for(i = 0; i < dimension; i++) {
@@ -116,7 +133,10 @@ double F8::compute(vector<double> x){
 	for(i = m; i < dimension; i++) {
 		anotherz2[i - m] = anotherz[Pvector[i]];
 	}
+		
+	//TODO: Test code, remove rosenbrock part
 	result = rosenbrock(anotherz1,m) * 1e6 + sphere(anotherz2,dimension - m);
+//	result = sphere(anotherz2,dimension - m);
 
 //	printf("Rosenbrock Part = %1.16E\n", rosenbrock(anotherz1,m) * 1e6);
 //	printf("Sphere Part = %1.16E\n", sphere(anotherz2,dimension - m));

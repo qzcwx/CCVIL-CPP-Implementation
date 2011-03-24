@@ -107,7 +107,7 @@ protected:
 	void boundConstrain(PopulationT<double> &vi, PopulationT<double> offsprings, int LB, int UB, vector<unsigned> vecIndex);
 	string itos ( int i );
 	void sampleInfo ( double curFit   );
-	void initBestCand (  );
+	void initBestCand (bool learnStageFlag );
 
 public:
 	CCVIL(RunParameter* runParam);
