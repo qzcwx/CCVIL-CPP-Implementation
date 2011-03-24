@@ -14,7 +14,6 @@
  */
 
 F5::F5(RunParameter* runParam):Benchmarks(runParam){
-	cout<<"F5 Class initialization"<<endl;
 	dimension = runParam->dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
@@ -24,7 +23,6 @@ F5::F5(RunParameter* runParam):Benchmarks(runParam){
 }
 
 F5::F5():Benchmarks(){
-	cout<<"F5 Class initialization"<<endl;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -5;
@@ -36,7 +34,6 @@ F5::~F5(){
  	delete[] Ovector;
  	delete[] Pvector;
  	delete[] RotMatrix;
-	cout<<"F5 Class destroyed"<<endl;
 }
 
 double F5::compute(double*x){

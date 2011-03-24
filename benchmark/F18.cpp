@@ -14,7 +14,6 @@
  */
 
 F18::F18(RunParameter* runParam):Benchmarks(runParam){
-	cout<<"F18 Class initialization"<<endl;
 	dimension = runParam->dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
@@ -24,7 +23,6 @@ F18::F18(RunParameter* runParam):Benchmarks(runParam){
 }
 
 F18::F18():Benchmarks(){
-	cout<<"F18 Class initialization"<<endl;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -100;
@@ -35,7 +33,6 @@ F18::F18():Benchmarks(){
 F18::~F18(){
 	delete[] Ovector;
 	delete[] Pvector;
-	cout<<"F18 Class destroyed"<<endl;
 }
 
 double F18::compute(double*x){

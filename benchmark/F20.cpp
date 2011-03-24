@@ -14,7 +14,6 @@
  */
 
 F20::F20(RunParameter* runParam):Benchmarks(runParam){
-	cout<<"F20 Class initialization"<<endl;
 	dimension = runParam->dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
@@ -24,7 +23,6 @@ F20::F20(RunParameter* runParam):Benchmarks(runParam){
 }
 
 F20::F20():Benchmarks(){
-	cout<<"F20 Class initialization"<<endl;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -100;
@@ -34,7 +32,6 @@ F20::F20():Benchmarks(){
 
 F20::~F20(){
 	delete[] Ovector;
-	cout<<"F20 Class destroyed"<<endl;
 }
 
 double F20::compute(double*x){

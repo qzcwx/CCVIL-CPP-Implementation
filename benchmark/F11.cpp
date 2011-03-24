@@ -14,7 +14,6 @@
  */
 
 F11::F11(RunParameter* runParam):Benchmarks(runParam){
-	cout<<"F11 Class initialization"<<endl;
 	dimension = runParam->dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
@@ -24,7 +23,6 @@ F11::F11(RunParameter* runParam):Benchmarks(runParam){
 }
 
 F11::F11():Benchmarks(){
-	cout<<"F11 Class initialization"<<endl;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -32;
@@ -41,7 +39,6 @@ F11::~F11(){
 		delete[] MultiRotMatrix1D[i];
 	}
 	delete[] MultiRotMatrix1D;
-	cout<<"F11 Class destroyed"<<endl;
 }
 
 double F11::compute(double*x){

@@ -14,40 +14,42 @@
  */
 
 F9::F9(RunParameter* runParam):Benchmarks(runParam){
-	cout<<"F9 Class initialization"<<endl;
 	dimension = runParam->dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -100;
 	maxX = 100;
 	ID = 9;
+	lookup = lookupprepare(nonSeparableGroupSize);
+	lookup2 = lookupprepare(dimension/2);
 }
 
 F9::F9():Benchmarks(){
-	cout<<"F9 Class initialization"<<endl;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -100;
 	maxX = 100;
 	ID = 9;
+	lookup = lookupprepare(nonSeparableGroupSize);
+	lookup2 = lookupprepare(dimension/2);
 }
 
 F9::~F9(){
 	delete[] Ovector;
 	delete[] Pvector;
+	delete[] lookup;
+	delete[] lookup2;
 	// delete 2D array
 	int i;
 	for(i=0;i<dimension/(2*nonSeparableGroupSize);i++){
 		delete[] MultiRotMatrix1D[i];
 	}
 	delete[] MultiRotMatrix1D;
-	cout<<"F9 Class destroyed"<<endl;
 }
 
 double F9::compute(double*x){
-	int i,k;
+	int k, i;
 	double result=0.0;
-	double* lookup;
 
 	if(Ovector==NULL){
 		Ovector=createShiftVector(dimension,minX,maxX);
@@ -66,26 +68,31 @@ double F9::compute(double*x){
 		 */
 	}
 
-	for(i=0;i<dimension;i++){
+	for( i=0;i<dimension;i++){
 		anotherz[i]=x[i]-Ovector[i];
 	}
 
-	lookup = lookupprepare(nonSeparableGroupSize);
+	//
+	//	printf ( "Pvector\n" );
+	//	for(i=0;i<dimension;i++){
+	//		printf ( "%d\n", Pvector[i] );
+	//	}
+
 	for(k=1;k<=dimension/(2*nonSeparableGroupSize);k++){
-		result+=rot_elliptic(anotherz,nonSeparableGroupSize,k,lookup);
+		result+=rot_elliptic(anotherz,nonSeparableGroupSize,k);
 	}
-	delete[] lookup;
 
 //	printf("Rotated Part = %1.20E\n", result);
+//	printf("Non-Rotated Part = %1.20E\n", elliptic(anotherz, dimension, 2));
 
 	result+=elliptic(anotherz, dimension, 2);
+
 	return(result);
 }
 
 double F9::compute(vector<double> x){
 	int i,k;
 	double result=0.0;
-	double* lookup;
 
 	if(Ovector==NULL){
 		Ovector=createShiftVector(dimension,minX,maxX);
@@ -108,11 +115,9 @@ double F9::compute(vector<double> x){
 		anotherz[i]=x[i]-Ovector[i];
 	}
 
-	lookup = lookupprepare(nonSeparableGroupSize);
 	for(k=1;k<=dimension/(2*nonSeparableGroupSize);k++){
-		result+=rot_elliptic(anotherz,nonSeparableGroupSize,k,lookup);
+		result+=rot_elliptic(anotherz,nonSeparableGroupSize,k);
 	}
-	delete[] lookup;
 
 //	printf("Rotated Part = %1.20E\n", result);
 

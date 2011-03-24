@@ -14,7 +14,6 @@
  */
 
 F16::F16(RunParameter* runParam):Benchmarks(runParam){
-	cout<<"F16 Class initialization"<<endl;
 	dimension = runParam->dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
@@ -24,7 +23,6 @@ F16::F16(RunParameter* runParam):Benchmarks(runParam){
 }
 
 F16::F16():Benchmarks(){
-	cout<<"F16 Class initialization"<<endl;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -32;
@@ -41,7 +39,6 @@ F16::~F16(){
 		delete[] MultiRotMatrix1D[i];
 	}
 	delete[] MultiRotMatrix1D;
-	cout<<"F16 Class destroyed"<<endl;
 }
 
 double F16::compute(double*x){

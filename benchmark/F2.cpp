@@ -13,7 +13,6 @@
  */
 
 F2::F2(RunParameter* runParam):Benchmarks(runParam){
-	cout<<"F2 Class initialization"<<endl;
 	dimension = runParam->dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
@@ -23,7 +22,6 @@ F2::F2(RunParameter* runParam):Benchmarks(runParam){
 }
 
 F2::F2():Benchmarks(){
-	cout<<"F2 Class initialization"<<endl;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -5;
@@ -33,7 +31,6 @@ F2::F2():Benchmarks(){
 
 F2::~F2(){
  	delete[] Ovector;
-	cout<<"F2 Class destroyed"<<endl;
 }
 
 

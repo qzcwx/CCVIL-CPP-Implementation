@@ -14,7 +14,6 @@
  */
 
 F10::F10(RunParameter* runParam):Benchmarks(runParam){
-	cout<<"F10 Class initialization"<<endl;
 	dimension = runParam->dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
@@ -24,7 +23,6 @@ F10::F10(RunParameter* runParam):Benchmarks(runParam){
 }
 
 F10::F10():Benchmarks(){
-	cout<<"F10 Class initialization"<<endl;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -5;
@@ -35,7 +33,6 @@ F10::F10():Benchmarks(){
 F10::~F10(){
 	delete[] Ovector;
 	delete[] Pvector;
-	cout<<"F10 Class destroyed"<<endl;
 	// delete 2D array
 	int i;
 	for(i=0;i<dimension/(2*nonSeparableGroupSize);i++){

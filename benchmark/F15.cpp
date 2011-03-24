@@ -14,7 +14,6 @@
  */
 
 F15::F15(RunParameter* runParam):Benchmarks(runParam){
-	cout<<"F15 Class initialization"<<endl;
 	dimension = runParam->dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
@@ -24,7 +23,6 @@ F15::F15(RunParameter* runParam):Benchmarks(runParam){
 }
 
 F15::F15():Benchmarks(){
-	cout<<"F15 Class initialization"<<endl;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -5;
@@ -41,8 +39,6 @@ F15::~F15(){
 		delete[] MultiRotMatrix1D[i];
 	}
 	delete[] MultiRotMatrix1D;
-
-	cout<<"F15 Class destroyed"<<endl;
 }
 
 double F15::compute(double*x){

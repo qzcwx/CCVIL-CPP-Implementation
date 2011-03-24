@@ -14,29 +14,34 @@
  */
 
 F4::F4(RunParameter* runParam):Benchmarks(runParam){
-	cout<<"F4 Class initialization"<<endl;
 	dimension = runParam->dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -100;
 	maxX = 100;
 	ID = 4;
+
+	lookup2 = lookupprepare(nonSeparableGroupSize);
+	lookup = lookupprepare(dimension - nonSeparableGroupSize);
 }
 
 F4::F4():Benchmarks(){
-	cout<<"F4 Class initialization"<<endl;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -100;
 	maxX = 100;
 	ID = 4;
+
+	lookup2 = lookupprepare(nonSeparableGroupSize);
+	lookup = lookupprepare(dimension - nonSeparableGroupSize);
 }
 
 F4::~F4(){
  	delete[] Ovector;
  	delete[] Pvector;
  	delete[] RotMatrix;
-	cout<<"F4 Class destroyed"<<endl;
+	delete[] lookup;
+	delete[] lookup2;
 }
 
 double F4::compute(double*x){

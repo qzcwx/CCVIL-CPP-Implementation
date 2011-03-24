@@ -34,7 +34,7 @@ protected:
 	double ackley(double*x,int dim);
 	double ackley(double*x,int dim, int k);
 	double rot_elliptic(double*x,int dim);
-	double rot_elliptic(double*x,int dim, int k, double *lookup);
+	double rot_elliptic(double*x,int dim, int k);
 	double rot_rastrigin(double*x,int dim);
 	double rot_rastrigin(double *x,int dim,int k);
 	double rot_ackley(double*x,int dim);
@@ -60,6 +60,8 @@ protected:
 	int*    Pvector;
 	double* RotMatrix;
 	double** MultiRotMatrix1D;
+	double *lookup;
+	double *lookup2;
 
 	double* anotherz;
 	double* anotherz1;
@@ -71,6 +73,7 @@ protected:
 	int dimension;
 	int nonSeparableGroupSize;
 	int64_t functionInitRandomSeed;
+
 public:
 	Benchmarks(RunParameter* runParam);
 	Benchmarks();

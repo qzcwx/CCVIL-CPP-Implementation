@@ -13,7 +13,6 @@
  */
 
 F3::F3(RunParameter* runParam):Benchmarks(runParam){
-	cout<<"F3 Class initialization"<<endl;
 	dimension = runParam->dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
@@ -23,7 +22,6 @@ F3::F3(RunParameter* runParam):Benchmarks(runParam){
 }
 
 F3::F3():Benchmarks(){
-	cout<<"F3 Class initialization"<<endl;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -32;
@@ -33,7 +31,6 @@ F3::F3():Benchmarks(){
 
 F3::~F3(){
  	delete[] Ovector;
-	cout<<"F3 Class destroyed"<<endl;
 }
 
 

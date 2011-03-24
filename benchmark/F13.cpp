@@ -14,7 +14,6 @@
  */
 
 F13::F13(RunParameter* runParam):Benchmarks(runParam){
-	cout<<"F13 Class initialization"<<endl;
 	dimension = runParam->dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
@@ -24,7 +23,6 @@ F13::F13(RunParameter* runParam):Benchmarks(runParam){
 }
 
 F13::F13():Benchmarks(){
-	cout<<"F13 Class initialization"<<endl;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -100;
@@ -35,7 +33,6 @@ F13::F13():Benchmarks(){
 F13::~F13(){
 	delete[] Ovector;
 	delete[] Pvector;
-	cout<<"F13 Class destroyed"<<endl;
 }
 
 double F13::compute(double*x){

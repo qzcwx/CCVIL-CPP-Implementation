@@ -1362,7 +1362,7 @@ CCVIL::sampleInfo ( double curFit )
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  initBestCand
- *  Description:  
+ *  Description:  initialize the best candidate according to global population
  * =====================================================================================
  */
 	void
@@ -1373,8 +1373,8 @@ CCVIL::initBestCand (  )
 	for (unsigned i=0; i<groupInfo.size(); i++){
 		for (unsigned j=0; j<groupInfo[i].size(); j++){
 			curDim = groupInfo[i][j];
-			randi = Rng::uni()*pop[curDim].size();
-			(*bestCand)[0][curDim] = pop[curDim][randi][0][0] ;
+			randi = Rng::uni()*pop[i].size();
+			(*bestCand)[0][curDim] = pop[i][randi][0][j] ;
 		}
 	}
 }		/* -----  end of function initBestCand  ----- */

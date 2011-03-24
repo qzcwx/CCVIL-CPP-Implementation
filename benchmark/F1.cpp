@@ -13,27 +13,27 @@
  */
 
 F1::F1(RunParameter* runParam):Benchmarks(runParam){
-	cout<<"F1 Class initialization"<<endl;
 	dimension = runParam->dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -100;
 	maxX = 100;
 	ID = 1;
+	lookup = lookupprepare(dimension);
 }
 
 F1::F1():Benchmarks(){
-	cout<<"F1 Class initialization"<<endl;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -100;
 	maxX = 100;
 	ID = 1;
+	lookup = lookupprepare(dimension);
 }
 
 F1::~F1(){
  	delete[] Ovector;
-	cout<<"F1 Class destroyed"<<endl;
+	delete[] lookup;
 }
 
 double F1::compute(double* x) {

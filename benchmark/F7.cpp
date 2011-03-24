@@ -14,7 +14,6 @@
  */
 
 F7::F7(RunParameter* runParam):Benchmarks(runParam){
-	cout<<"F7 Class initialization"<<endl;
 	dimension = runParam->dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
@@ -24,7 +23,6 @@ F7::F7(RunParameter* runParam):Benchmarks(runParam){
 }
 
 F7::F7():Benchmarks(){
-	cout<<"F7 Class initialization"<<endl;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -100;
@@ -35,7 +33,6 @@ F7::F7():Benchmarks(){
 F7::~F7(){
 	delete[] Ovector;
 	delete[] Pvector;
-	cout<<"F7 Class destroyed"<<endl;
 }
 
 

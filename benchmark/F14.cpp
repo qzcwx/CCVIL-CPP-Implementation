@@ -14,37 +14,34 @@
  */
 
 F14::F14(RunParameter* runParam):Benchmarks(runParam){
-	cout<<"F14 Class initialization"<<endl;
 	dimension = runParam->dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -100;
 	maxX = 100;
 	ID = 14;
+	lookup = lookupprepare(nonSeparableGroupSize);
 }
 
 F14::F14():Benchmarks(){
-	cout<<"F14 Class initialization"<<endl;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -100;
 	maxX = 100;
 	ID = 14;
+	lookup = lookupprepare(nonSeparableGroupSize);
 }
 
 F14::~F14(){
-	cout<<"F14 Class destroyed 0"<<endl;
 	delete[] Ovector;
 	delete[] Pvector;
-	cout<<"F14 Class destroyed 1"<<endl;
+	delete[] lookup;
 	// delete 2D array
 	int i;
 	for(i=0;i<dimension/(nonSeparableGroupSize);i++){
 		delete[] MultiRotMatrix1D[i];
 	}
 	delete[] MultiRotMatrix1D;
-
-	cout<<"F14 Class destroyed 2"<<endl;
 }
 
 double F14::compute(double*x){
@@ -55,21 +52,16 @@ double F14::compute(double*x){
 		Ovector=createShiftVector(dimension,minX,maxX);
 		Pvector=createPermVector(dimension);
 		MultiRotMatrix1D=createMultiRotateMatrix1D(nonSeparableGroupSize,dimension/(nonSeparableGroupSize));
-		//	preparelookup(dimension/2);
-		//	preparelookup2(nonSeparableGroupSize);
 	}
 
 	for(i=0;i<dimension;i++){
 		anotherz[i]=x[i]-Ovector[i];
 	}
 
-	double* lookup = lookupprepare(nonSeparableGroupSize);
-
 	for(k=1;k<=dimension/(nonSeparableGroupSize);k++){
-		result+=rot_elliptic(anotherz,nonSeparableGroupSize,k, lookup);
+		result+=rot_elliptic(anotherz,nonSeparableGroupSize,k);
 	}
 
-	delete[] lookup;
 	return(result);
 }
 
@@ -81,20 +73,16 @@ double F14::compute(vector<double> x){
 		Ovector=createShiftVector(dimension,minX,maxX);
 		Pvector=createPermVector(dimension);
 		MultiRotMatrix1D=createMultiRotateMatrix1D(nonSeparableGroupSize,dimension/(nonSeparableGroupSize));
-		//	preparelookup(dimension/2);
-		//	preparelookup2(nonSeparableGroupSize);
 	}
 
 	for(i=0;i<dimension;i++){
 		anotherz[i]=x[i]-Ovector[i];
 	}
 
-	double* lookup = lookupprepare(nonSeparableGroupSize);
 
 	for(k=1;k<=dimension/(nonSeparableGroupSize);k++){
-		result+=rot_elliptic(anotherz,nonSeparableGroupSize,k, lookup);
+		result+=rot_elliptic(anotherz,nonSeparableGroupSize,k);
 	}
 
-	delete[] lookup;
 	return(result);
 }

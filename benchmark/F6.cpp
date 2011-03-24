@@ -14,7 +14,6 @@
  */
 
 F6::F6(RunParameter* runParam):Benchmarks(runParam){
-	cout<<"F6 Class initialization"<<endl;
 	dimension = runParam->dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
@@ -24,7 +23,6 @@ F6::F6(RunParameter* runParam):Benchmarks(runParam){
 }
 
 F6::F6():Benchmarks(){
-	cout<<"F6 Class initialization"<<endl;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -32;
@@ -36,7 +34,6 @@ F6::~F6(){
 	delete[] Ovector;
 	delete[] Pvector;
 	delete[] RotMatrix;
-	cout<<"F6 Class destroyed"<<endl;
 }
 
 double F6::compute(double*x){

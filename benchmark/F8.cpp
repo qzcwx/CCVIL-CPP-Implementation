@@ -14,7 +14,6 @@
  */
 
 F8::F8(RunParameter* runParam):Benchmarks(runParam){
-	cout<<"F8 Class initialization"<<endl;
 	dimension = runParam->dimension;
 	m_havenextGaussian=0;
 	Ovector = NULL;
@@ -24,7 +23,6 @@ F8::F8(RunParameter* runParam):Benchmarks(runParam){
 }
 
 F8::F8():Benchmarks(){
-	cout<<"F8 Class initialization"<<endl;
 	m_havenextGaussian=0;
 	Ovector = NULL;
 	minX = -100;
@@ -35,7 +33,6 @@ F8::F8():Benchmarks(){
 F8::~F8(){
 	delete[] Ovector;
 	delete[] Pvector;
-	cout<<"F8 Class destroyed"<<endl;
 }
 
 double F8::compute(double* x){
