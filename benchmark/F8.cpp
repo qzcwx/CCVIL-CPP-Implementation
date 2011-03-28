@@ -99,10 +99,10 @@ double F8::compute(vector<double> x){
 
 		Ovector = createShiftVector(dimension,minX,maxX-1);
 
-//		printf("\n\n\nO vector\n\n\n");
-//		for (i = 0; i<dimension; i++){
-//			printf("%f\t",Ovector[i]);
-//		}
+		printf("\n\n\nO vector\n\n\n");
+		for (i = 0; i<dimension; i++){
+			printf("%f\t",Ovector[i]);
+		}
 
 		//TODO: Neeed to change back to random one ****************************************************************************
 		//		Pvector = createPermVector(dimension);
