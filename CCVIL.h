@@ -61,8 +61,10 @@ protected:
 	double* groupCR;
 	double* groupF;
 	unsigned* failCounter;
-	long fes;
+	unsigned long fes;
 	double bestFit;
+	bool* impreciseGroup;
+
 
 	// in result folder
 	FILE *resultFP;
@@ -108,6 +110,7 @@ protected:
 	string itos ( int i );
 	void sampleInfo ( double curFit   );
 	void initBestCand (bool learnStageFlag );
+	void eliminateError ( PopulationT<double> population, unsigned index);
 
 public:
 	CCVIL(RunParameter* runParam);

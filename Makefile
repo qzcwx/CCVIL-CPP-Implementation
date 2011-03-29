@@ -3,8 +3,8 @@ SHARKLIB=/usr/local/lib/
 SHARKINC=/usr/local/include/
 LDLIBS=-lshark
 LDFLAGS=-L${SHARKLIB} -Wl,-rpath,${SHARKLIB}
-#CXXFLAGS=-Wall -pedantic -I${SHARKINC} -O4
-CXXFLAGS=-Wall -pedantic -I${SHARKINC} -ggdb -DDEBUG
+CXXFLAGS=-Wall -pedantic -I${SHARKINC} -O4
+#CXXFLAGS=-Wall -pedantic -I${SHARKINC} -ggdb -DDEBUG
 
 OBJECTS=main.o RunParameter.o Benchmarks.o CCVIL.o Archive.o\
 F1.o F2.o F3.o F4.o F5.o F6.o F7.o F8.o F9.o F10.o\

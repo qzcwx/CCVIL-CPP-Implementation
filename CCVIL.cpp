@@ -27,6 +27,7 @@ CCVIL::CCVIL(RunParameter* runParam){
 	Rng::seed(param->initRandomSeed);
 
 	lookUpGroup = new unsigned[param->dimension];
+	impreciseGroup = new bool[param->dimension];
 
 	MaxFitEval = runParam->fitnessCheckPoint[(*runParam).fitnessCheckPoint.size()-1];
 	cout<<"Max Fitness Evaluation = "<<MaxFitEval<<endl;
@@ -39,6 +40,7 @@ CCVIL::CCVIL(RunParameter* runParam){
 CCVIL::~CCVIL(){
 	delete bestCand;
 	delete[] p;
+	delete[] impreciseGroup;
 	delete[] lookUpGroup;
 }
 
@@ -125,7 +127,7 @@ void CCVIL::run(){
 		fes = 0;
 		bestFit = DBL_MAX;
 		learningStage();
-		//		optimizationStage();
+		optimizationStage();
 		stopT = clock();
 		/* algorithm runing part: end */
 
@@ -199,7 +201,7 @@ void CCVIL::learningStage(){
 		printf("===================================================\n===================================================\n");
 
 		for (unsigned i=0; i<param->dimension; i++) {
-			printf("=========================================================================\nPhase = %d, Cycle = %d\n",i, cycle);
+			//			printf("=========================================================================\nPhase = %d, Cycle = %d, impresice in last cycle: %d\n",i, cycle, impreciseGroup[lastCycleIndex]);
 			if (i == 0){
 				// start a new phase for each cycle, each phase checking one dimension, i.e., p[i]
 				//	printf("Population Re-initialization & Issue Random Permutation\n");
@@ -215,9 +217,16 @@ void CCVIL::learningStage(){
 				//				printPopulation((*bestCand));
 
 				p = randPerm(param->dimension);
-				printf("Random Permutation p:\n");
-				printArray(p, param->dimension);
+
+				//				printf("Random Permutation p:\n");
+				//				printArray(p, param->dimension);
+
 				lastCycleIndex = -1;
+
+				// re-initialize the vector to all false, when starting a new cycle
+				for (unsigned j=0; j<param->dimension; j++){
+					impreciseGroup[j] = false;
+				}
 			}
 
 
@@ -232,7 +241,7 @@ void CCVIL::learningStage(){
 
 			if (lastCycleIndex == -1 || isSameGroup == false){
 				// if current dimension and last optimized index are in the different group, then optimize on current dimension
-				printf ( "Index = %d\n", p[i] );
+				//				printf ( "Index = %d\n", p[i] );
 				JADECC(p[i], true); 	/*learnStage = true*/
 			} else {
 				needCapture = false;
@@ -240,9 +249,13 @@ void CCVIL::learningStage(){
 
 			// begin interaction capture process
 			// TODO: Need to deal with possible inaccurate fitness value influencing the capturing result
-			if (needCapture == true){
-				captureInter(p[i],lastCycleIndex);
+			if ( needCapture == true  && impreciseGroup[lastCycleIndex] == false){
+				captureInter( p[i],lastCycleIndex );
 				separableFunc = false;
+			}
+			
+			if (impreciseGroup[lastCycleIndex] == true){
+				printf ( "Imprecise value in lastCycleIndex %d\n", lastCycleIndex);
 			}
 
 			// record last optimized dimension
@@ -257,7 +270,6 @@ void CCVIL::learningStage(){
 
 	printf ( "Group info\n" );
 	print2Dvector(groupInfo);
-
 }
 
 /*
@@ -266,7 +278,7 @@ void CCVIL::learningStage(){
 void CCVIL::optimizationStage(){
 	unsigned	groupAmount = groupInfo.size();
 	bool learnStageFlag = false;
-	printf("\nOptimization Stage, groupAmount = %d\n", groupAmount);
+	//	printf("\nOptimization Stage, groupAmount = %d\n", groupAmount);
 
 	cycle = 0;
 	//	learnStageFlag = false, generate new population with regard to the groupInfo
@@ -294,7 +306,7 @@ void CCVIL::optimizationStage(){
 	while (fes<MaxFitEval){
 		//		printf("===================================================\n\n\n\n===================================================\n");
 		++cycle;
-		printf ( "Cycle %d\n", cycle );
+		//		printf ( "Cycle %d\n", cycle );
 
 		//		for (unsigned i=0; i<pop.size(); i++){
 		//			printf("%d:\tGroupSize = %d,\tPopSize = %d\n", i, groupInfo[i].size(), pop[i].size());
@@ -314,6 +326,7 @@ void CCVIL::optimizationStage(){
 					failCounter[i] += innerImprove;
 				}
 			}
+
 			if (sum(failCounter,groupAmount)>=((param->failThreshold+1)*groupAmount)){
 				printf ( "*** Restart as no group can be optimized ***\n" );
 				popSizeVary(3.0);
@@ -512,18 +525,19 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 		}
 	}
 
-	printf("Parents Population\n");
-	printPopulation(parents);
+//	printf("Parents Population\n");
+//	printPopulation(parents);
 
 	for (unsigned i=0; i<parents.size(); i++){
 		parents[i].setFitness( fp->compute(parents[i][0]) );
 	}
 
-	printf ( "Fitness of Parents\n" );
-	printFitness(parents);
+//	printf ( "Fitness of Parents\n" );
+//	printFitness(parents);
 
 	unsigned bestIndex = parents.bestIndex();
-	printf("Best Index = %d, Value =  %f\n", parents.bestIndex(), parents.best().fitnessValue());
+
+//	printf("Best Index = %d, Value =  %f\n", parents.bestIndex(), parents.best().fitnessValue());
 
 	preBestVal = parents.best().fitnessValue();
 	if (preBestVal < bestFit){
@@ -726,7 +740,6 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 
 	/***************************** After Iterations Process **************************/
 
-	//	printf ( "After Interactions Process\n" );
 
 	//	printf("goodCR size = %d, goodF size = %d\n", (int)goodCR.size(), (int)goodF.size());
 
@@ -779,17 +792,19 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 		groupF[index] = Fm;
 	}
 
-	printf("Parents Population\n");
-	printPopulation(parents);
-
-	printf ( "Fitness of Parents, bestIndex = %d\n", parents.bestIndex() );
-	printFitness(parents);
-
-	printf("The whole population\n");
-	print2Dvector(pop);
-
-	printf("Best Candidate after update\n");
-	printPopulation(*bestCand);
+//	printf ( "================After Interactions Process================\n" );
+//
+//	printf("Parents Population\n");
+//	printPopulation(parents);
+//
+//	printf ( "Fitness of Parents, bestIndex = %d\n", parents.bestIndex() );
+//	printFitness(parents);
+//
+//	printf("The whole population\n");
+//	print2Dvector(pop);
+//
+//	printf("Best Candidate after update\n");
+//	printPopulation(*bestCand);
 
 	bestCand->setFitness(parents.best().getFitness());
 
@@ -801,6 +816,12 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 	if (param->Afactor > 0){
 		delete archive;
 	}
+
+	if (learnStageFlag == true){
+		//	elimintation for the fitness value at the end of running 
+		eliminateError(parents, index);
+	}
+
 
 	if (preBestVal - parents.best().getFitness()>0){
 		return 0;
@@ -1238,11 +1259,11 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 	randIndiv.setFitness(fp->compute(randIndiv[0]));
 	fes++;
 
-	printf ( "randindiv\n" );
-	printPopulation(randIndiv);
-
-	printf ( "Fitness of randindiv == %f\n", randIndiv.getFitness());
-	printf ( "Fitness of bestCand == %f\n", (*bestCand).getFitness());
+	//	printf ( "randindiv\n" );
+	//	printPopulation(randIndiv);
+	//
+	//	printf ( "Fitness of randindiv == %f\n", randIndiv.getFitness());
+	//	printf ( "Fitness of bestCand == %f\n", (*bestCand).getFitness());
 
 	// if there is any interaction detected, combine the groupInfo
 	if (randIndiv.getFitness()<bestCand->getFitness()){
@@ -1336,7 +1357,6 @@ unsigned* CCVIL::randPerm(unsigned N)
 	return p;
 }
 
-
 /* 
  * ===  FUNCTION  ======================================================================
  *         Name:  itos
@@ -1397,3 +1417,21 @@ CCVIL::initBestCand (bool learnStageFlag )
 		}
 	}
 }		/* -----  end of function initBestCand  ----- */
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  eliminateError
+ *  Description:  
+ * =====================================================================================
+ */
+	void
+CCVIL::eliminateError ( PopulationT<double> population, unsigned index)
+{
+	double bestFitVal = population.best().getFitness();
+	for (unsigned i=0; i<population.size(); i++){
+		if (bestFitVal == population[i].getFitness() && i!=population.bestIndex()){
+			impreciseGroup[index] = true;
+			break;
+		}
+	}
+}		/* -----  end of function eliminateError  ----- */
