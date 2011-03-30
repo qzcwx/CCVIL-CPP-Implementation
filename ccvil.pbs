@@ -3,6 +3,12 @@
 #PBS -q batch
 cd /home/chenwx/qsub
 echo Running on hosts `hostname`
+
+if [ ! -d CCVIL ]; then  
+	mkdir CCVIL  
+fi  
+
+tar xpfz pkg.tgz -C ./CCVIL
 cd CCVIL
 echo Directory is $PWD
 make

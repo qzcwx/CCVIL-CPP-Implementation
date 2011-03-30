@@ -45,8 +45,9 @@ CCVIL::~CCVIL(){
 }
 
 void CCVIL::run(){
-	double startT, stopT, runTime;
-
+	struct timeval start, end;
+	long seconds, useconds;    
+	double mtime;
 	//	printf ( "lookUpGroup\n" );
 	//	printArray(lookUpGroup, runParam->dimension);
 
@@ -123,19 +124,22 @@ void CCVIL::run(){
 		valFP = fopen(valStr.c_str(), "w");
 
 		/* algorithm runing part: start */
-		startT = clock();
+		gettimeofday(&start, NULL);
 		fes = 0;
 		bestFit = DBL_MAX;
 		learningStage();
-		//		optimizationStage();
-		stopT = clock();
+		optimizationStage();
+		gettimeofday(&end, NULL);
 		/* algorithm runing part: end */
 
-		runTime = (stopT - startT)/CLOCKS_PER_SEC;
-		printf ( "Result = %.8e, Running Time = %fs\n", bestFit, runTime );
+		seconds  = end.tv_sec  - start.tv_sec;
+		useconds = end.tv_usec - start.tv_usec;
+
+		mtime = (((seconds) * 1000 + useconds/1000.0) + 0.5)/1000;
+		printf ( "Result = %.8e, Running Time = %fs\n", bestFit, mtime);
 
 		resultRec.push_back(bestFit);
-		timeRec.push_back(runTime);
+		timeRec.push_back(mtime);
 
 		printf ( "\n\n\n========================================================\n\n\n" );
 
@@ -199,7 +203,7 @@ void CCVIL::learningStage(){
 					|| (cycle > lowerThreshold && groupInfo.size() == param->dimension) 
 					|| groupInfo.size() == 1))==true ){
 		// start a new cycle
-		printf("===================================================\n=================== New Cycle %d ===================\n===================================================\n", cycle);
+//		printf("===================================================\n=================== New Cycle %d ===================\n===================================================\n", cycle);
 
 		for (unsigned i=0; i<param->dimension; i++) {
 			//			printf("\n=========================================================================\nPhase = %d, Cycle = %d, impresice in last cycle: %d\n",i, cycle, impreciseGroup[lastCycleIndex]);
@@ -252,19 +256,8 @@ void CCVIL::learningStage(){
 
 			// begin interaction capture process
 			if ( needCapture == true && impreciseGroup[lastCycleIndex] == false ){
-				if (innerImprove == 1 )
-				{
-					//		printf ( "Phase %d: %d & %d\n", i, p[i], lastCycleIndex );
-					captureInter( p[i],lastCycleIndex );
-					separableFunc = false;
-				}else{
-					printf ( "No Inner Update for bestCand\n" );
-				}
-
-			}
-
-			if (impreciseGroup[lastCycleIndex] == true){
-				printf ( "Imprecise value in lastCycleIndex %d\n", lastCycleIndex);
+				captureInter( p[i],lastCycleIndex );
+				separableFunc = false;
 			}
 
 			// record last optimized dimension
@@ -838,14 +831,14 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 
 	if (learnStageFlag == false){
 		if (preBestVal - parents.best().getFitness()>0){
-			printf ( "Inner Fitness Improved!\n" );
+//			printf ( "Inner Fitness Improved!\n" );
 			return 0;
 		}else{
 			return 1;
 		}
 	}else{
 		if (preValInBestCand != (*bestCand)[0][index]){
-			printf ( "Best Candidate Update!\n" );
+//			printf ( "Best Candidate Update!\n" );
 			return 1;
 		}else{
 			return 0;
@@ -1297,7 +1290,7 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 
 		// if there is any interaction detected, combine the groupInfo
 		if (randIndiv.getFitness()<bestCand->getFitness()){
-			printf("Interaction Detected between %d & %d\n", curDim, lastDim);
+//			printf("Interaction Detected between %d & %d\n", curDim, lastDim);
 			unsigned group1, group2;
 
 			//		vector<unsigned> rmVec;
@@ -1359,19 +1352,20 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 			//		printf("groupInfo:\n");
 			//		printf("group1 = %d, group2 =%d\ncurrent D = %d, last D = %d\n", lookUpGroup[curDim], lookUpGroup[lastDim], curDim, lastDim);
 
-		}else if (randIndiv.getFitness() == bestCand->getFitness()){
-			printf ( "bestCand\n" );
-			printPopulation(*bestCand);
-
-			printf ( "randIndiv\n" );
-			printPopulation(randIndiv);
-
-			printf ( "Fitness of randindiv == %f\n", randIndiv.getFitness());
-			printf ( "Fitness of bestCand == %f\n", (*bestCand).getFitness());
-
-			printf ( "Error: Generating Random Individual, it is the same with the bestCand\n" );
-			exit(EXIT_SUCCESS);
 		}
+//		else if (randIndiv.getFitness() == bestCand->getFitness()){
+//			printf ( "bestCand\n" );
+//			printPopulation(*bestCand);
+//
+//			printf ( "randIndiv\n" );
+//			printPopulation(randIndiv);
+//
+//			printf ( "Fitness of randindiv == %f\n", randIndiv.getFitness());
+//			printf ( "Fitness of bestCand == %f\n", (*bestCand).getFitness());
+//
+//			printf ( "Error: Generating Random Individual, it is the same with the bestCand\n" );
+//			exit(EXIT_SUCCESS);
+//		}
 	}
 
 	/*
