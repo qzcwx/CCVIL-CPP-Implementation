@@ -89,6 +89,7 @@ RunParameter::RunParameter(){
 	samplingInterval =round(fitnessCheckPoint.back()/samplingPoint); 
 	printf ( "Sampling Interval = %d\n", samplingInterval );
 	printf("Initial Random Seed = %d\n", initRandomSeed);
+	srand(initRandomSeed);
 	printf ( "Non-separable group size = %d\n", nonSeparableGroupSize );
 }
 

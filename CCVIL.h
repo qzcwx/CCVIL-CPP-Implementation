@@ -64,6 +64,7 @@ protected:
 	unsigned long fes;
 	double bestFit;
 	bool* impreciseGroup;
+	unsigned bestCandIndex;
 
 
 	// in result folder

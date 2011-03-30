@@ -49,6 +49,7 @@ double F19::compute(double*x){
 	}
 
 	result=schwefel(anotherz, dimension);
+
 	return(result);
 }
 
@@ -68,5 +69,6 @@ double F19::compute(vector<double> x){
 	}
 
 	result=schwefel(anotherz, dimension);
+
 	return(result);
 }
