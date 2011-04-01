@@ -20,7 +20,7 @@ public:
 	void addToArchive(IndividualT<double> failIndiv);
 	void removeDuplicateElem();
 	void truncateArchive();
-	PopulationT<double> unique(PopulationT<double> popAll);
+	//	PopulationT<double> unique(PopulationT<double> popAll);
 	PopulationT<double> *getPop();
 };
 

@@ -24,6 +24,7 @@ PopulationT<double> *Archive::getPop(){
     Step 2: Remove duplicate elements
     Step 3: If necessary, randomly remove some solutions to maintain the archive size
  */
+
 void Archive::addToArchive(IndividualT<double> failIndiv){
 	// Step 1: Add new solution to the archive
 	pop->append(failIndiv); 
@@ -69,6 +70,7 @@ void Archive::truncateArchive(){
 	}
 }
 
+/*
 PopulationT<double> Archive::unique(PopulationT<double> popAll){
 	if (popAll.size() > 0){
 		unsigned D = popAll[0][0].size();
@@ -99,10 +101,11 @@ PopulationT<double> Archive::unique(PopulationT<double> popAll){
 		return popAll;
 	}
 }
-
+*/
 
 /* 
  * ===  FUNCTION  ======================================================================
+ *
  *         Name:  Archive::getCapacity()
  *  Description:  return the maximun size of archive
  * =====================================================================================
