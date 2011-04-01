@@ -24,4 +24,4 @@ echo "Complete file transfer"
 echo Job ID $1
 
 # submit jobs
-qsub ccvil.pbs -v job_id=$1
+qsub ccvil.pbs -v jobID=$1

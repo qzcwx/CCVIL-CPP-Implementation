@@ -7,7 +7,7 @@ do
 	#	cat configure.ini | grep '^functionToRun [0-9]*$'
 	./submit.sh $i
 	echo sleep
-	sleep 5
+	sleep 15
 done
 
 echo 'All job have been submitted successfully'
