@@ -21,5 +21,7 @@ scp pkg.tgz $Node2_dir
 
 echo "Complete file transfer"
 
+echo Job ID $1
+
 # submit jobs
-qsub ccvil.pbs
+qsub ccvil.pbs -v job_id=$1

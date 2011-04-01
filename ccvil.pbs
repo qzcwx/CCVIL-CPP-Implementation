@@ -12,6 +12,12 @@ tar xpfz pkg.tgz -C ./CCVIL
 cd CCVIL
 echo Directory is $PWD
 make
+
+sed "s/^functionToRun [0-9]*$/functionToRun $job_id/" configure.ini > temp
+cat temp > configure.ini
+echo Job ID:$job_id
+cat configure.ini | grep '^functionToRun [0-9]*$'
+
 echo Start Time is `date`
 ./main.out
 echo Finish Time is `date`
