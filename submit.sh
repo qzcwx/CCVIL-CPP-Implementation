@@ -25,3 +25,5 @@ echo Job ID $1
 
 # submit jobs
 qsub ccvil.pbs -v jobID=$1
+
+rm pkg.tgz

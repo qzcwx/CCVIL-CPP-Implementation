@@ -9,6 +9,8 @@ if [ ! -d CCVIL ]; then
 fi  
 
 tar xpfz pkg.tgz -C ./CCVIL
+rm pkg.tgz
+
 cd CCVIL
 echo Directory is $PWD
 make

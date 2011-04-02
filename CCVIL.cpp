@@ -298,7 +298,7 @@ void CCVIL::optimizationStage(){
 	// initialize the control parameters for each group
 	for (unsigned i = 0; i< groupAmount; i++){
 		groupF[i] = 0.5;
-		groupCR[i] = 0.9;
+		groupCR[i] = 0.5;
 		failCounter[i] = 0;
 	}
 
@@ -331,7 +331,7 @@ void CCVIL::optimizationStage(){
 
 			if (sum(failCounter,groupAmount)>=((param->failThreshold+1)*groupAmount)){
 				printf ( "*** Restart as no group can be optimized ***\n" );
-				exit(EXIT_SUCCESS);
+//				exit(EXIT_SUCCESS);
 				popSizeVary(3.0);
 				popInit();
 				//				(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
@@ -376,8 +376,8 @@ void CCVIL::optimizationStage(){
 
 			// initialize the control parameters for each group
 			for (unsigned i = 0; i< groupAmount; i++){
-				groupF[i] = 0.5;
-				groupCR[i] = 0.9;
+//				groupF[i] = 0.5;
+//				groupCR[i] = 0.9;
 				failCounter[i] = 0;
 			}
 		}
@@ -663,10 +663,10 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 		PopulationT<double> ui(offsprings);
 		ui.setMinimize();
 		for (unsigned i=0; i<NP; i++){
-			unsigned randIndexCrossover = floor(Rng::uni()*param->dimension);
+			unsigned randIndexCrossover = floor(Rng::uni()*vecIndex.size());
 			for (unsigned j=0; j<vecIndex.size(); j++){
 				//				printf ( "NP %d, D %d, Inherit mutation: ", i, j );
-				if (vecIndex[j] == randIndexCrossover || Rng::uni() < CR[i]){
+				if ( j == randIndexCrossover || Rng::uni() < CR[i]){
 					ui[i][0][vecIndex[j]] = vi[i][0][vecIndex[j]];
 				}
 			}
