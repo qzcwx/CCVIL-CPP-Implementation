@@ -11,7 +11,7 @@ int main(){
 	unsigned dim = 1000;
 	unsigned funToRun[] = {1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
 	unsigned funNum = 20;
-	unsigned timesOfRun = 10000;
+	unsigned timesOfRun = 1;
 
 	vector<double> runTimeVec;
 	struct timeval start, end;

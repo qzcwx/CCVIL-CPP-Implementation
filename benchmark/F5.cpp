@@ -69,9 +69,15 @@ double F5::compute(vector<double> x){
   double result = 0.0;
 
   if(Ovector == NULL) {
-    Ovector   = createShiftVector(dimension,minX,maxX);
-    Pvector   = createPermVector(dimension);
-    RotMatrix = createRotMatrix1D(nonSeparableGroupSize);
+	  Ovector   = createShiftVector(dimension,minX,maxX);
+//	  Pvector = (int*)malloc(sizeof(int) * dimension);
+//	  for (i = 0; i<dimension; i++){
+//		  Pvector[i] = i;	
+//	  }
+	  
+	  //TODO: Neeed to change back to random one ****************************************************************************
+	  Pvector   = createPermVector(dimension);
+	  RotMatrix = createRotMatrix1D(nonSeparableGroupSize);
   }
 
   for(i = 0; i < dimension; i++) {
