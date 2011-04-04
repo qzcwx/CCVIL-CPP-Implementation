@@ -33,6 +33,7 @@
 #include	<sstream>
 #include	<ctime>
 #include	<cfloat>
+#include	<algorithm>
 
 
 #include "benchmark/Benchmarks.h"
@@ -114,6 +115,7 @@ protected:
 	void sampleInfo ( double curFit   );
 	void initBestCand (bool learnStageFlag );
 	void eliminateError ( PopulationT<double> population, unsigned index);
+	void sortGroupInfo ();
 
 public:
 	CCVIL(RunParameter* runParam);
