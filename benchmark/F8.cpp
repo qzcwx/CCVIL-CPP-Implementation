@@ -133,10 +133,8 @@ double F8::compute(vector<double> x){
 	for(i = m; i < dimension; i++) {
 		anotherz2[i - m] = anotherz[Pvector[i]];
 	}
-		
-	//TODO: Test code, remove rosenbrock part
+			
 	result = rosenbrock(anotherz1,m) * 1e6 + sphere(anotherz2,dimension - m);
-//	result = sphere(anotherz2,dimension - m);
 
 //	printf("Rosenbrock Part = %1.16E\n", rosenbrock(anotherz1,m) * 1e6);
 //	printf("Sphere Part = %1.16E\n", sphere(anotherz2,dimension - m));

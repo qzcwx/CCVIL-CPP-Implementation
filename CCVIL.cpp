@@ -271,19 +271,19 @@ void CCVIL::learningStage(){
 		cycle++;
 	}
 
-	printf ( "Before sorting, Group info\n" );
-	print2Dvector(groupInfo);
-
-	printf ( "Look up group table\n" );
-	printArray(lookUpGroup, param->dimension);
+	//	printf ( "Before sorting, Group info\n" );
+	//	print2Dvector(groupInfo);
+	//
+	//	printf ( "Look up group table\n" );
+	//	printArray(lookUpGroup, param->dimension);
 
 	sortGroupInfo();
 
-	printf ( "After sorting, Group info\n" );
-	print2Dvector(groupInfo);
-
-	printf ( "Look up group table\n" );
-	printArray(lookUpGroup, param->dimension);
+	//	printf ( "After sorting, Group info\n" );
+	//	print2Dvector(groupInfo);
+	//
+	//	printf ( "Look up group table\n" );
+	//	printArray(lookUpGroup, param->dimension);
 }
 
 /*
@@ -318,8 +318,8 @@ void CCVIL::optimizationStage(){
 
 	while (fes<MaxFitEval){
 		++cycle;
-		printf("===================================================\n\n\n\n===================================================\n");
-		printf ( "Cycle %d\n", cycle );
+		//		printf("===================================================\n\n\n\n===================================================\n");
+		//		printf ( "Cycle %d\n", cycle );
 
 		//		for (unsigned i=0; i<pop.size(); i++){
 		//			printf("%d:\tGroupSize = %d,\tPopSize = %d\n", i, groupInfo[i].size(), pop[i].size());
@@ -328,8 +328,8 @@ void CCVIL::optimizationStage(){
 		//				fp->getID(), 	cycle, 			(int)groupInfo.size(), fes, improveRate, bestCand->fitnessValue());
 
 		for (unsigned i=0; i<groupAmount; i++) {
-			printf ( "Phase = %d\n" , i);
-			printf ( "*****************************************************\n" );
+			//			printf ( "Phase = %d\n" , i);
+			//			printf ( "*****************************************************\n" );
 			if (failCounter[i] <= param->failThreshold){
 				//only optimize on current group, if no a single improvement in the past "failThreshold" successive cycle
 				innerImprove = JADECC(i,learnStageFlag);
@@ -342,7 +342,7 @@ void CCVIL::optimizationStage(){
 
 			if (sum(failCounter,groupAmount)>=((param->failThreshold+1)*groupAmount)){
 				printf ( "*** Restart as no group can be optimized ***\n" );
-				exit(EXIT_SUCCESS);
+				//				exit(EXIT_SUCCESS);
 				popSizeVary(3.0);
 				popInit();
 				//				(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
@@ -367,12 +367,13 @@ void CCVIL::optimizationStage(){
 
 		improveRate = abs((lastCycleBestVal-bestCand->fitnessValue())/bestCand->fitnessValue());
 
+		printf ( "Fail group counter = %d\n", countFailGroupNum() );
 		printf("F %d, Optimization Cycle =%d, GroupAmount = %d, groupCR = %f, groupF = %f, fes = %ld, Improved FES = %f, BestVal = %.8e\n",
 				fp->getID(), 	cycle, 	(int)groupInfo.size(), mean(groupCR,groupAmount), mean(groupF,groupAmount), fes, improveRate, bestCand->fitnessValue());
 
 		if (cycle>1 && improveRate<0.01){
 			printf ( "*** Restart as non-improvement ***\n" );
-			exit(EXIT_SUCCESS);
+			//			exit(EXIT_SUCCESS);
 			popSizeVary(3.0);
 			popInit();
 			//			(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());	
@@ -419,7 +420,7 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 	 ************************************************************/
 
 	/***************************** Parameters Setting **************************/
-	unsigned D = pop[index][0].size(), NP = pop[index].size(), G, g, *r1, *r2;
+	unsigned D = pop[index][0][0].size(), NP = pop[index].size(), G, g, *r1, *r2;
 	int LB = fp->getMinX(), UB = fp->getMaxX();
 	double Fm, CRm, c = param->c, p = param->p, preBestVal, preValInBestCand = 0;
 	double *F, *CR;
@@ -512,21 +513,23 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 
 	/* Print the struture of the entire population */
 
-	printf ( "Indices for optimization in this phase\n" );
-	printVector(vecIndex);
-
-	printf ( "The amount of subpopulation = %d\n", (int)pop.size() );
-
-	printf("The whole population\n");
-	print2Dvector(pop);
-
-	printf("Best Candidate at the beginning of each phase\n");
-	printPopulation((*bestCand));
-
-	printf("Parents Population\n");
-	printPopulation(parents);
-	printf ( "Fitness of Parents\n" );
-	printFitness(parents);
+//	if (cycle==5 && index ==0){
+//		printf ( "Indices for optimization in this phase\n" );
+//		printVector(vecIndex);
+//
+//		printf ( "The amount of subpopulation = %d\n", (int)pop.size() );
+//
+//		printf("The whole population\n");
+//		print2Dvector(pop);
+//
+//		printf("Best Candidate at the beginning of each phase\n");
+//		printPopulation((*bestCand));
+//
+//		printf("Parents Population\n");
+//		printPopulation(parents);
+//		printf ( "Fitness of Parents\n" );
+//		printFitness(parents);
+//	}
 
 	unsigned bestIndex = parents.bestIndex();
 
@@ -545,8 +548,11 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 
 	/***************************** Iterations **************************/
 	while ( g<=G && fes < MaxFitEval){
-		printf("***************************** Iterations **************************\n");
-		printf("Generation %d, fes %ld\n", g, fes);
+
+//	if (cycle==5 && index ==0){
+//		printf("***************************** Iterations **************************\n");
+//		printf("Generation %d, fes %ld\n", g, fes);
+//	}
 
 		vector<double> goodCR, goodF, f_rec; 
 
@@ -739,11 +745,13 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 			//			printf ( "after adaptation, CRm = %f, Fm = %f\n", CRm, Fm );
 		}
 
-		//		printf("Population after Mutation, population size of it = %d \n", ui.size());
-		//		printPopulation(ui);
-		//
-		//		printf("Fitness of ui\n");
-		//		printFitness(ui);
+//	if (cycle==5 && index ==0){
+//		printf("Population after Mutation, population size of it = %d \n", ui.size());
+//		printPopulation(ui);
+//
+//		printf("Fitness of ui, bestIndex = %d\n", parents.bestIndex());
+//		printFitness(ui);
+//	}
 
 
 		if (g % (20000/vecIndex.size()) == 0){
@@ -817,19 +825,19 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 		groupF[index] = Fm;
 	}
 
-	printf ( "================After Interactions Process================\n" );
-
-	printf("Parents Population\n");
-	printPopulation(parents);
-
-	printf ( "Fitness of Parents, bestIndex = %d\n", parents.bestIndex() );
-	printFitness(parents);
-
-	printf("The whole population\n");
-	print2Dvector(pop);
-
-	printf("Best Candidate after update\n");
-	printPopulation(*bestCand);
+	//	printf ( "================After Interactions Process================\n" );
+	//
+	//	printf("Parents Population\n");
+	//	printPopulation(parents);
+	//
+	//	printf ( "Fitness of Parents, bestIndex = %d\n", parents.bestIndex() );
+	//	printFitness(parents);
+	//
+	//	printf("The whole population\n");
+	//	print2Dvector(pop);
+	//
+	//	printf("Best Candidate after update\n");
+	//	printPopulation(*bestCand);
 
 	bestCand->setFitness(parents.best().getFitness());
 
@@ -850,6 +858,7 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 
 
 	if (learnStageFlag == false){
+		// For optimization stage
 		if (preBestVal - parents.best().getFitness()>0){
 			//			printf ( "Inner Fitness Improved!\n" );
 			return 0;
@@ -857,6 +866,7 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 			return 1;
 		}
 	}else{
+		// For learning stage
 		if (preValInBestCand != (*bestCand)[0][index]){
 			//			printf ( "Best Candidate Update!\n" );
 			return 1;
@@ -1260,9 +1270,9 @@ void CCVIL::popGenerate(bool learnStageFlag){
 	}else{
 		//		population generation in optimization stage
 		for (unsigned i=0; i<groupInfo.size(); i++){
+			unsigned NP = groupInfo[i].size()+10;
 			//TODO: Change the population back to +10
-	//		unsigned NP = groupInfo[i].size()+10;
-			unsigned NP = groupInfo[i].size()+2;
+			//			unsigned NP = groupInfo[i].size()+2;
 			PopulationT<double> tempPop(NP, ChromosomeT<double>(groupInfo[i].size()));
 			tempPop.setMinimize();
 			pop.push_back(tempPop);
@@ -1551,3 +1561,22 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 				}
 			}
 		}		/* -----  end of function sortGroupInfo  ----- */
+
+
+	/* 
+	 * ===  FUNCTION  ======================================================================
+	 *         Name:  countFailGroupNum
+	 *  Description:  
+	 * =====================================================================================
+	 */
+	unsigned
+		CCVIL::countFailGroupNum (  )
+		{
+			unsigned sum = 0;
+			for (unsigned i=0; i<groupInfo.size(); i++){
+				if(failCounter[i]>param->failThreshold){
+					sum += 1;
+				}
+			}
+			return sum;
+		}		/* -----  end of function countFailGroupNum  ----- */

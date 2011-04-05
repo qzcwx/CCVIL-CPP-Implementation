@@ -116,6 +116,7 @@ protected:
 	void initBestCand (bool learnStageFlag );
 	void eliminateError ( PopulationT<double> population, unsigned index);
 	void sortGroupInfo ();
+	unsigned countFailGroupNum ();
 
 public:
 	CCVIL(RunParameter* runParam);
