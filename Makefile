@@ -1,6 +1,6 @@
 CC=g++
-SHARKLIB=/usr/local/lib/
-SHARKINC=/usr/local/include/
+SHARKLIB=/usr/lib/
+SHARKINC=/usr/include/
 LDLIBS=-lshark
 LDFLAGS=-L${SHARKLIB} -Wl,-rpath,${SHARKLIB}
 CXXFLAGS=-Wall -pedantic -I${SHARKINC} -O4
@@ -12,7 +12,7 @@ F11.o F12.o F13.o F14.o F15.o F16.o F17.o F18.o F19.o F20.o
 #OBJECTS = main.o RunParameter.o F2.o Benchmarks.o
 
 main: $(OBJECTS)
-	$(CC) $(CXXFLAGS) -o main.out $(OBJECTS) $(LDLIBS)
+	$(CC) $(CXXFLAGS) -o main.out $(OBJECTS) $(LDFLAGS) $(LDLIBS)
 
 main.o: main.cpp Header.h benchmark/RunParameter.h benchmark/Benchmarks.h CCVIL.h Archive.h\
 benchmark/F1.h benchmark/F2.h benchmark/F3.h benchmark/F4.h benchmark/F5.h benchmark/F6.h benchmark/F7.h benchmark/F8.h benchmark/F9.h benchmark/F10.h\

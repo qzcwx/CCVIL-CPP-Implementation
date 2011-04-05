@@ -8,7 +8,7 @@
 
 # tar all files necessary for compiling and running the program into a single file
 #PACKAGE_NAME=pkg.tgz
-tar cpzf pkg.tgz --exclude=result --exclude=trace --exclude=pkg.tgz --exclude=tags --exclude='*.o' --exclude=out --exclude='*.out' --exclude='*.swp' --exclude='.git' --exclude='Run-CCVIL.*' --exclude=submit.sh --exclude=run.sh ./
+tar cpzf pkg.tgz --exclude=result --exclude=trace --exclude=pkg.tgz --exclude=tags --exclude='*.o' --exclude=out --exclude='*.out' --exclude='*.swp' --exclude='.git' --exclude='RUN-CCVIL.*' --exclude=submit.sh ./
 #tar cpzf $PACKAGE_NAME --exclude=result --exclude=trace --exclude=pkg.tgz --exclude=tags --exclude='*.o' --exclude=out --exclude='*.out' --exclude='*.swp' --exclude='.git' --exclude=submit.sh ./
 
 # transfer the archive
