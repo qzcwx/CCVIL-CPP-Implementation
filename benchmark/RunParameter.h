@@ -48,6 +48,10 @@ public:
 	// CCVIL's lower threshold
 	unsigned lowerThreshold;
 
+	// for running the partial information experiment
+	// the percentage of prior knonw grouping information
+	vector<double> knownGroupPercent;
+	
 	// Runtime Parameter for rJADE
 	 double c;	
 

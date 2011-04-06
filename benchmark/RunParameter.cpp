@@ -69,6 +69,8 @@ RunParameter::RunParameter(){
 							failThreshold = atoi (strArray);
 						}else if (strcmp(confType.c_str(), "Afactor")==0){
 							Afactor = atoi (strArray);
+						}else if (strcmp(confType.c_str(), "knownGroupPercent")==0){
+							knownGroupPercent.push_back(atof (strArray));
 						}else {
 							cerr<<"Configuration Parameter not found: "<<strArray<<endl;
 							exit(-1);
@@ -86,11 +88,20 @@ RunParameter::RunParameter(){
 		cout<<"Fail to open configFile.ini file"<<endl;
 		configFile.close();
 	}
+
 	samplingInterval =round(fitnessCheckPoint.back()/samplingPoint); 
 	printf ( "Sampling Interval = %d\n", samplingInterval );
+
 	printf("Initial Random Seed = %d\n", initRandomSeed);
 	srand(initRandomSeed);
+
 	printf ( "Non-separable group size = %d\n", nonSeparableGroupSize );
+
+	printf ( "Percentage of pior grouping information\n" );
+	for (unsigned i=0; i<knownGroupPercent.size(); i++){
+		printf ( "%f\t", knownGroupPercent[i] );
+	}
+	printf ( "\n" );
 }
 
 // default destructor

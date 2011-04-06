@@ -327,7 +327,7 @@ void CCVIL::optimizationStage(){
 		//		printf("F %d, Optimization Cycle =%d, GroupAmount = %d, fes = %ld, Improved FES = %f, BestVal = %.8e\n",
 		//				fp->getID(), 	cycle, 			(int)groupInfo.size(), fes, improveRate, bestCand->fitnessValue());
 
-		for (unsigned i=0; i<groupAmount; i++) {
+		for (unsigned i=0; i<groupAmount && fes<MaxFitEval; i++) {
 			//			printf ( "Phase = %d\n" , i);
 			//			printf ( "*****************************************************\n" );
 			if (failCounter[i] <= param->failThreshold){
@@ -371,7 +371,7 @@ void CCVIL::optimizationStage(){
 		printf("F %d, Optimization Cycle =%d, GroupAmount = %d, groupCR = %f, groupF = %f, fes = %ld, Improved FES = %f, BestVal = %.8e\n",
 				fp->getID(), 	cycle, 	(int)groupInfo.size(), mean(groupCR,groupAmount), mean(groupF,groupAmount), fes, improveRate, bestCand->fitnessValue());
 
-		if (cycle>1 && improveRate<0.01){
+		if (cycle>1 && improveRate<0.01 && fes< MaxFitEval){
 			printf ( "*** Restart as non-improvement ***\n" );
 			//			exit(EXIT_SUCCESS);
 			popSizeVary(3.0);
