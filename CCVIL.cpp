@@ -3,7 +3,7 @@
  *
  *       Filename:  CCVIL.cpp
  *
- *    Description:  The main source file of CCVIL algorithm's implementation, it includes
+ * Description:  The main source file of CCVIL algorithm's implementation, it includes
  *    				two stages:
  *    					1) Learning Stage
  *    					2) Optimization Stage
@@ -179,7 +179,7 @@ void CCVIL::run(){
 			(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
 		}
 
-		optimizationStage();
+//		optimizationStage();
 
 		gettimeofday(&end, NULL);
 		/* algorithm runing part: end */
@@ -334,8 +334,8 @@ void CCVIL::learningStage(){
 
 	sortGroupInfo();
 
-//	printf ( "After sorting, Group info\n" );
-//	print2Dvector(groupInfo);
+	//	printf ( "After sorting, Group info\n" );
+	//	print2Dvector(groupInfo);
 	//
 	//	printf ( "Look up group table\n" );
 	//	printArray(lookUpGroup, param->dimension);
@@ -1689,10 +1689,10 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 
 			// generate random permutation
 			unsigned* randPermInter = randPerm(arrSize);
-//			for (unsigned i=0; i<arrSize; i++){
-//				printf ( "%d\t", (int)randPermInter[i] );
-//			}
-//			printf( "\n" );
+			//			for (unsigned i=0; i<arrSize; i++){
+			//				printf ( "%d\t", (int)randPermInter[i] );
+			//			}
+			//			printf( "\n" );
 
 			// firstly suppose that there is no prior information
 			bool* interPartArray = new bool[arrSize];
@@ -1704,10 +1704,10 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 				}else if (param->learnStrategy == 3){
 					double randN = rand()/(double)RAND_MAX;
 					if (randN<0.5){
-//						printf ( "F\n" );
+						//						printf ( "F\n" );
 						interPartArray[i] = false;
 					}else {
-//						printf ( "T\n" );
+						//						printf ( "T\n" );
 						interPartArray[i] = true;
 					}
 				}else{
@@ -1716,9 +1716,10 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 				}
 			}	
 
+
 			// truncate the known ProirInterStage according to given percentage of prior interaction information
 			unsigned knownArrSize = floor(arrSize* param->knownGroupPercent[0]);
-//			printf ( "Known Array Size = %d, Interaction Array Size = %d\n", knownArrSize, fp->getInterArray().size() );
+			printf ( "Known Array Size = %d, Interaction Array Size = %d\n", knownArrSize, fp->getInterArray().size() );
 
 			for (unsigned i=0; i< knownArrSize; i++){
 				interPartArray[randPermInter[i]] = (fp->getInterArray())[randPermInter[i]];
@@ -1731,7 +1732,7 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 //				printf ( "%d\t", (int)fp->getInterArray()[i] );
 //			}
 //			printf( "\n" );
-
+//
 //			printf ( "Interaction Partial Information\n" );
 //			for (unsigned i=0; i<arrSize; i++){
 //				printf ( "%d\t", interPartArray[i] );
@@ -1765,8 +1766,9 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 			}
 
 			sortGroupInfo();
-//			printf ( "After sorting, Group info\n" );
-//			print2Dvector(groupInfo);
+			//			printf ( "After sorting, Group info\n" );
+			//			print2Dvector(groupInfo);
+			printf ( "The amount of groups = %d\n", groupInfo.size() );
 
 			delete interPartArray;
 			delete randPermInter;
