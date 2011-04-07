@@ -10,6 +10,7 @@ public:
 	F14();
 	double compute(double* x) ;
 	double compute(vector<double> x) ;
+	void generateInterArray ( );
 	~F14();
 };
 

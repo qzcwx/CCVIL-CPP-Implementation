@@ -45,8 +45,7 @@ protected:
 	double sphere(double*x,int dim, int k);
 	double rosenbrock(double*x,int dim);
 	double rosenbrock(double*x,int dim, int k);
-
-
+	unsigned convertMatrixToArrayIndex ( unsigned i, unsigned j );
 
 	int64_t M;
 	int64_t A;
@@ -66,6 +65,8 @@ protected:
 	double* anotherz;
 	double* anotherz1;
 	double* anotherz2;
+
+	vector<bool> interArray;
 
 	// running time setting for benchmarks
 	int minX;
@@ -90,6 +91,7 @@ public:
 	void setSeed(int64_t);
 	void setDimension(int);
 	void setNonSeparableGroupSize(int);
+	vector<bool> getInterArray (  );
 };
 
 #endif

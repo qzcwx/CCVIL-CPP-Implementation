@@ -38,8 +38,8 @@ CCVIL::CCVIL(RunParameter* runParam){
 }
 
 CCVIL::~CCVIL(){
-	delete bestCand;
-	delete[] p;
+//	delete bestCand;
+//	delete[] p;
 	delete[] impreciseGroup;
 	delete[] lookUpGroup;
 }
@@ -74,17 +74,19 @@ void CCVIL::run(){
 	for (unsigned i=0; i < param->numOfRun; i++){
 		printf ( "\n\n\n========================== F %d, Run %d ========================\n\n\n", fp->getID(), i+1 );
 
-		/************************* re-initialize the sampling points *************************/
-		groupInfo.clear();
-		// initialize the groupInfo
-		for (unsigned j = 0; j<param->dimension; j++){
-			vector<unsigned> tempVec;
-			tempVec.push_back(j);
-			lookUpGroup[j] = j;
-			groupInfo.push_back(tempVec);
+		if (param->learnStrategy == 0){
+			/************************* re-initialize the sampling points *************************/
+			groupInfo.clear();
+			// initialize the groupInfo
+			for (unsigned j = 0; j<param->dimension; j++){
+				vector<unsigned> tempVec;
+				tempVec.push_back(j);
+				lookUpGroup[j] = j;
+				groupInfo.push_back(tempVec);
+			}
+			//		printf ( "groupInfo\n" );
+			//		print2Dvector(groupInfo);
 		}
-		//		printf ( "groupInfo\n" );
-		//		print2Dvector(groupInfo);
 
 		samplingPoints.clear();
 		//	printf ( "Sampling Points\n" );
@@ -127,8 +129,20 @@ void CCVIL::run(){
 		gettimeofday(&start, NULL);
 		fes = 0;
 		bestFit = DBL_MAX;
-		learningStage();
+
+		//		printf ( "Vector, size of interaction array =%d\n", (fp->getInterArray()).size() );
+		//		printVector(fp->getInterArray());
+
+		if (param->learnStrategy == 0){
+			learningStage();
+		}
+
+		if (param->learnStrategy != 0){
+			// initialize bestCand
+		}
+
 		optimizationStage();
+
 		gettimeofday(&end, NULL);
 		/* algorithm runing part: end */
 
@@ -263,6 +277,10 @@ void CCVIL::learningStage(){
 			// record last optimized dimension
 			if ( lastCycleIndex==-1 || isSameGroup == false ){
 				lastCycleIndex = p[i];
+			}
+			
+			if (i == param->dimension-1){
+				delete[] p;
 			}
 		}
 		printf("F %d, Learning Cycle =%d, fes = %ld, GroupAmount = %d, BestVal = %.8e \n",
@@ -401,6 +419,7 @@ void CCVIL::optimizationStage(){
 	delete[] groupCR;
 	delete[] groupF;
 	delete[] failCounter;
+	delete bestCand;
 }
 
 
@@ -1182,6 +1201,13 @@ void CCVIL::printVector(vector<double> v){
 	cout<<endl;
 }
 
+void CCVIL::printVector(vector<bool> v){
+	for (unsigned i=0; i<v.size(); i++){
+		printf("%d\t", (int)v[i]);
+	}
+	cout<<endl;
+}
+
 void CCVIL::randFCR(unsigned NP, double CRm, double CRsigma, double Fm, double Fsigma, double* &F, double* &CR){
 	Normal norRnd;
 	for (unsigned i=0; i<NP; i++){
@@ -1580,3 +1606,49 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 			}
 			return sum;
 		}		/* -----  end of function countFailGroupNum  ----- */
+
+	/* 
+	 * ===  FUNCTION  ======================================================================
+	 *         Name:  CCVIL::getPriorInterStage
+	 *  Description:  this stage 1) generate the groupInfo; 2) initialize bestCand 
+	 * =====================================================================================
+	 */
+	void
+		CCVIL::getPriorInterStage ()
+		{
+			unsigned arrSize = param->dimension*(param->dimension-1)/2;
+			/**********************************
+			 * 1) generate groupInfo
+			 **********************************/
+
+			// generate random permutation
+			unsigned* randPermInter = randPerm(arrSize);
+
+			// firstly suppose that there is no prior information
+			bool* interPartArray = new bool[arrSize];
+			for (unsigned i=0; i<arrSize; i++){
+				interPartArray[i] = false;
+			}	
+
+			// truncate the known ProirInterStage according to given percentage of prior interaction information
+			for (unsigned i=0; i<arrSize* param->knownGroupPercent[0]; i++){
+				interPartArray[randPermInter[i]] = (fp->getInterArray())[randPermInter[i]];
+			}
+
+			// generate groupInfo according to interPartArray
+			groupInfo.clear();
+			// initialize the groupInfo
+			for (unsigned j = 0; j<param->dimension; j++){
+				vector<unsigned> tempVec;
+				tempVec.push_back(j);
+				lookUpGroup[j] = j;
+				groupInfo.push_back(tempVec);
+			}
+
+			for 
+
+			sortGroupInfo();
+
+			delete interPartArray;
+			delete randPermInter;
+		}		/* -----  end of function CCVIL::getPriorInterStage  ----- */

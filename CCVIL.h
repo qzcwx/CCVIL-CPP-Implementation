@@ -103,6 +103,7 @@ protected:
 	void printFitness(PopulationT<double> printPop);
 	void printVector(vector<unsigned> v);
 	void printVector(vector<double> v);
+	void printVector(vector<bool> v);
 	double sum(vector<double> vec);
 	unsigned sum ( unsigned* arr, unsigned N );
 	double mean ( double* arr, unsigned size );
@@ -117,6 +118,7 @@ protected:
 	void eliminateError ( PopulationT<double> population, unsigned index);
 	void sortGroupInfo ();
 	unsigned countFailGroupNum ();
+	void getPriorInterStage ();
 
 public:
 	CCVIL(RunParameter* runParam);

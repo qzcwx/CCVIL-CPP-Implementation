@@ -71,6 +71,8 @@ RunParameter::RunParameter(){
 							Afactor = atoi (strArray);
 						}else if (strcmp(confType.c_str(), "knownGroupPercent")==0){
 							knownGroupPercent.push_back(atof (strArray));
+						}else if (strcmp(confType.c_str(), "learnStrategy")==0){
+							learnStrategy = atoi (strArray);
 						}else {
 							cerr<<"Configuration Parameter not found: "<<strArray<<endl;
 							exit(-1);

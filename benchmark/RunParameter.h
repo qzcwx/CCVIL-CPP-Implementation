@@ -26,7 +26,6 @@ public:
 	// initial Group Size
 	unsigned initialGroupSize;
 
-
 	// The number of Sampling points for plotting the convergence curve
 	unsigned samplingPoint;
 
@@ -38,6 +37,9 @@ public:
 
 	// group size for non-separable part of function
 	unsigned nonSeparableGroupSize;
+
+	// strategy for learning and grouping 
+	unsigned learnStrategy;
 
 	// Fitness check point
 	vector<unsigned> fitnessCheckPoint;

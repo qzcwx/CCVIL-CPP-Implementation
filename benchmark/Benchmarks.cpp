@@ -21,6 +21,7 @@ Benchmarks::Benchmarks(RunParameter* runParam){
 
 	functionInitRandomSeed = L(runParam->initRandomSeed);
 	m_seed= functionInitRandomSeed;
+
 	M = 0x5DEECE66D;
 	A  = 0xB;
 
@@ -606,3 +607,30 @@ int Benchmarks::getMinX(){
 int Benchmarks::getMaxX(){
 	return maxX;
 }
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  getInterArray
+ *  Description:  get the variable interaction information in the representation of one
+ *  				dimensional array
+ * =====================================================================================
+ */
+	vector<bool>
+Benchmarks::getInterArray (  )
+{
+	return interArray;
+}		/* -----  end of function getInterArray  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  convertMatrixToArrayIndex
+ *  Description:  
+ * =====================================================================================
+ */
+	unsigned	
+Benchmarks::convertMatrixToArrayIndex ( unsigned i, unsigned j )
+{
+	return ( i* (2*dimension-i-3) / 2 + j - 1);
+}		/* -----  end of function convertMatrixToArrayIndex  ----- */
