@@ -18,6 +18,7 @@
  *
  * =====================================================================================
  */
+
 #include "CCVIL.h"
 
 CCVIL::CCVIL(RunParameter* runParam){
@@ -35,7 +36,6 @@ CCVIL::CCVIL(RunParameter* runParam){
 	lowerThreshold = runParam->lowerThreshold;
 	upperThreshold = min(round(MaxFitEval*0.6/(runParam->dimension*((1+1)*(3)+1))), 800.0);
 	cout<<"Lower threshold = "<<lowerThreshold<<", Upper threshold = "<<upperThreshold<<endl;
-
 
 	bestCand = new IndividualT<double>(ChromosomeT<double>(param->dimension));
 }
@@ -70,6 +70,8 @@ void CCVIL::run(){
 		resultStr += "-";
 		resultStr += itos (floor(param->knownGroupPercent[0]*100));
 	}
+	resultStr += "-";
+	resultStr += itos(param->learnStrategy);
 	resultStr += ".txt";
 	printf("resultStr = %s", resultStr.c_str());
 	printf("\n");
@@ -81,11 +83,12 @@ void CCVIL::run(){
 		timeStr += "-";
 		timeStr += itos (floor(param->knownGroupPercent[0]*100));
 	}
+	timeStr += "-";
+	timeStr += itos(param->learnStrategy);
 	timeStr += ".txt";
 	printf("timeStr = %s", timeStr.c_str());
 	printf("\n");
 	timeFP = fopen(timeStr.c_str(), "w");
-
 
 	for (unsigned i=0; i < param->numOfRun; i++){
 		printf ( "\n\n\n========================== F %d, Run %d ========================\n\n\n", fp->getID(), i+1 );
@@ -121,6 +124,8 @@ void CCVIL::run(){
 			groupStr += "-";
 			groupStr += itos (floor(param->knownGroupPercent[0]*100));
 		}
+		groupStr += "-";
+		groupStr += itos(param->learnStrategy);
 		groupStr += ".txt";
 		printf("groupStr = %s", groupStr.c_str());
 		printf("\n");
@@ -135,6 +140,8 @@ void CCVIL::run(){
 			fesStr += "-";
 			fesStr += itos (floor(param->knownGroupPercent[0]*100));
 		}
+		fesStr += "-";
+		fesStr += itos(param->learnStrategy);
 		fesStr += ".txt";
 		printf("fesStr = %s", fesStr.c_str());
 		printf("\n");
@@ -148,6 +155,8 @@ void CCVIL::run(){
 			valStr += "-";
 			valStr += itos (floor(param->knownGroupPercent[0]*100));
 		}
+		valStr += "-";
+		valStr += itos(param->learnStrategy);
 		valStr += ".txt";
 		printf("valStr = %s", valStr.c_str());
 		printf("\n");
@@ -1688,7 +1697,23 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 			// firstly suppose that there is no prior information
 			bool* interPartArray = new bool[arrSize];
 			for (unsigned i=0; i<arrSize; i++){
-				interPartArray[i] = false;
+				if (param->learnStrategy == 1){
+					interPartArray[i] = false;
+				}else if (param->learnStrategy == 2){
+					interPartArray[i] = true;
+				}else if (param->learnStrategy == 3){
+					double randN = rand()/(double)RAND_MAX;
+					if (randN<0.5){
+//						printf ( "F\n" );
+						interPartArray[i] = false;
+					}else {
+//						printf ( "T\n" );
+						interPartArray[i] = true;
+					}
+				}else{
+					printf ( "Learning Strategy not found\n" );
+					exit(EXIT_FAILURE);
+				}
 			}	
 
 			// truncate the known ProirInterStage according to given percentage of prior interaction information
@@ -1699,6 +1724,7 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 				interPartArray[randPermInter[i]] = (fp->getInterArray())[randPermInter[i]];
 				//				interPartArray[i] = (fp->getInterArray())[i];
 			}
+
 
 //			printf ( "Interaction Complete Information\n" );
 //			for (unsigned i=0; i<arrSize; i++){
