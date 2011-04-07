@@ -1,24 +1,27 @@
 #!/bin/sh
 #PBS -N RUN-$jobID-CCVIL
-#PBS -q batch
-cd /home/chenwx/qsub
-echo Running on hosts `hostname`
+#PBS -M chenwx.ustc@gmail.com
+#PBS -l cput=480:0:00
+#PBS -l walltime=300:0:0
 
-if [ ! -d CCVIL ]; then  
-	mkdir CCVIL  
-fi  
+echo "I ran on:"
+cat $PBS_NODEFILE
 
-tar xpfz pkg.tgz -C ./CCVIL
-rm pkg.tgz
+cd /home/fb16/tweise/wenxiang/workplace/CCVIL
 
-cd CCVIL
-echo Directory is $PWD
-make
+echo Job ID: $jobID, partialGroup $parGroup
 
+# modifiy function to fun
 sed "s/^functionToRun [0-9]*$/functionToRun $jobID/" configure.ini > temp
 cat temp > configure.ini
-echo Job ID: $jobID
+
+# modifiy the percentage of known grouping information to fun
+sed "s/^knownGroupPercent [0-9]*$/knownGroupPercent $parGroup/" configure.ini > temp1
+cat temp1 > configure.ini
+
+# checkout whether the modified result is correct or not
 cat configure.ini | grep '^functionToRun [0-9]*$'
+cat configure.ini | grep '^knownGroupPercent [0-9]*$'
 
 echo Start Time is `date`
 ./main.out

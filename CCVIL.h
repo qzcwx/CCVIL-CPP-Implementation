@@ -119,6 +119,7 @@ protected:
 	void sortGroupInfo ();
 	unsigned countFailGroupNum ();
 	void getPriorInterStage ();
+	void combineGroup ( unsigned group1, unsigned group2 );
 
 public:
 	CCVIL(RunParameter* runParam);

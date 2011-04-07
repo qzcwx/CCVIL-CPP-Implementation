@@ -10,6 +10,11 @@
 #define L(i) ((int64_t)i)
 #define D(i) ((double)i)
 
+struct IndexMap{
+	unsigned arrIndex1;
+	unsigned arrIndex2;
+};
+
 class Benchmarks{
 protected:
 	int next(int bits);
@@ -46,6 +51,7 @@ protected:
 	double rosenbrock(double*x,int dim);
 	double rosenbrock(double*x,int dim, int k);
 	unsigned convertMatrixToArrayIndex ( unsigned i, unsigned j );
+	void createIndexMapping (  ); 
 
 	int64_t M;
 	int64_t A;
@@ -74,6 +80,9 @@ protected:
 	int dimension;
 	int nonSeparableGroupSize;
 	int64_t functionInitRandomSeed;
+	RunParameter* param;
+	struct IndexMap *indexMap;
+	unsigned arrSize;
 
 public:
 	Benchmarks(RunParameter* runParam);
@@ -92,6 +101,8 @@ public:
 	void setDimension(int);
 	void setNonSeparableGroupSize(int);
 	vector<bool> getInterArray (  );
+	void ArrToMat ( unsigned I1, unsigned I2, unsigned &matIndex );
+	void MatToArr ( unsigned &I1, unsigned &I2, unsigned matIndex );
 };
 
 #endif

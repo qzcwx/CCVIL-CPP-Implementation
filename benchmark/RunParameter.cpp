@@ -101,6 +101,7 @@ RunParameter::RunParameter(){
 
 	printf ( "Percentage of pior grouping information\n" );
 	for (unsigned i=0; i<knownGroupPercent.size(); i++){
+		knownGroupPercent[i] = knownGroupPercent[i]/100;
 		printf ( "%f\t", knownGroupPercent[i] );
 	}
 	printf ( "\n" );

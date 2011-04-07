@@ -1,7 +1,10 @@
 #include "Benchmarks.h"
 
 Benchmarks::Benchmarks(RunParameter* runParam){
+	param = runParam;
 	dimension = runParam->dimension;		
+	arrSize = dimension*(dimension-1)/2;
+
 	nonSeparableGroupSize = runParam->nonSeparableGroupSize;
 	MASK = ((L(1)) << (L(48))) - (L(1));
 	m_havenextGaussian = false;
@@ -27,6 +30,10 @@ Benchmarks::Benchmarks(RunParameter* runParam){
 
 	minX = -100;
 	maxX = 100;
+
+	if (param->learnStrategy!=0){
+		createIndexMapping();
+	}
 }
 
 Benchmarks::Benchmarks(){
@@ -80,6 +87,10 @@ Benchmarks::~Benchmarks(){
 	delete[] anotherz;
 	delete[] anotherz1;
 	delete[] anotherz2;
+
+	if (param->learnStrategy!=0){
+		delete[] indexMap;
+	}
 }
 
 int Benchmarks::next(int bits) {
@@ -634,3 +645,61 @@ Benchmarks::convertMatrixToArrayIndex ( unsigned i, unsigned j )
 {
 	return ( i* (2*dimension-i-3) / 2 + j - 1);
 }		/* -----  end of function convertMatrixToArrayIndex  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  createIndexMapping
+ *  Description:  
+ * =====================================================================================
+ */
+	void
+Benchmarks::createIndexMapping (  )
+{
+	unsigned N = dimension, indexCounter = 0;
+
+	indexMap = new struct IndexMap[arrSize];
+
+	for (unsigned i=0; i<N; i++){
+		for (unsigned j=i+1; j<N; j++){
+			indexMap[indexCounter].arrIndex1 = i;
+			indexMap[indexCounter].arrIndex2 = j;
+			indexCounter++;
+		}
+	}
+}		/* -----  end of function CCVIL::createIndexMapping  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  ArrToMat
+ *  Description:  
+ * =====================================================================================
+ */
+	void
+Benchmarks::ArrToMat ( unsigned I1, unsigned I2, unsigned &matIndex )
+{
+	for (unsigned i=0; i<arrSize; i++){
+		if (indexMap[i].arrIndex1 == I1 && indexMap[i].arrIndex2 == I2){
+			matIndex = i;
+			return ;
+		}
+	}
+	
+	printf ( "Cannot locate the matrix index from given array indices\n" );
+	exit(EXIT_FAILURE);
+}		/* -----  end of function Benchmarks::ArrToMat  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  Benchmarks::MatToArr
+ *  Description:  
+ * =====================================================================================
+ */
+	void
+Benchmarks::MatToArr ( unsigned &I1, unsigned &I2, unsigned matIndex )
+{
+	I1 = indexMap[matIndex].arrIndex1;
+	I2 = indexMap[matIndex].arrIndex2;
+}		/* -----  end of function Benchmarks::MatToArr  ----- */

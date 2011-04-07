@@ -5,6 +5,7 @@
 
 class F16:public Benchmarks{
 protected:
+	void generateInterArray ( );
 public:
 	F16(RunParameter* runParam);
 	F16();

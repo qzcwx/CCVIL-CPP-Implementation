@@ -5,12 +5,12 @@
 
 class F14:public Benchmarks{
 protected:
+	void generateInterArray ( );
 public:
 	F14(RunParameter* runParam);
 	F14();
 	double compute(double* x) ;
 	double compute(vector<double> x) ;
-	void generateInterArray ( );
 	~F14();
 };
 

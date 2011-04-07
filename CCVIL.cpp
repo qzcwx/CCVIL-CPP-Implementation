@@ -35,13 +35,17 @@ CCVIL::CCVIL(RunParameter* runParam){
 	lowerThreshold = runParam->lowerThreshold;
 	upperThreshold = min(round(MaxFitEval*0.6/(runParam->dimension*((1+1)*(3)+1))), 800.0);
 	cout<<"Lower threshold = "<<lowerThreshold<<", Upper threshold = "<<upperThreshold<<endl;
+
+
+	bestCand = new IndividualT<double>(ChromosomeT<double>(param->dimension));
 }
 
 CCVIL::~CCVIL(){
-//	delete bestCand;
-//	delete[] p;
+	delete bestCand;
+	//	delete[] p;
 	delete[] impreciseGroup;
 	delete[] lookUpGroup;
+
 }
 
 void CCVIL::run(){
@@ -55,9 +59,17 @@ void CCVIL::run(){
 	mkdir ("result", O_CREAT|S_IRWXU|S_IRWXG|S_IROTH|S_IXOTH);
 	mkdir ("trace", O_CREAT|S_IRWXU|S_IRWXG|S_IROTH|S_IXOTH);
 
+	if (param->learnStrategy != 0){
+		getPriorInterStage(); 
+	}
+
 	// in result folder
 	string resultStr("result/resF");
 	resultStr += itos(fp->getID());
+	if (param->learnStrategy != 0){
+		resultStr += "-";
+		resultStr += itos (floor(param->knownGroupPercent[0]*100));
+	}
 	resultStr += ".txt";
 	printf("resultStr = %s", resultStr.c_str());
 	printf("\n");
@@ -65,6 +77,10 @@ void CCVIL::run(){
 
 	string timeStr("result/timeF");
 	timeStr += itos(fp->getID());
+	if (param->learnStrategy != 0){
+		timeStr += "-";
+		timeStr += itos (floor(param->knownGroupPercent[0]*100));
+	}
 	timeStr += ".txt";
 	printf("timeStr = %s", timeStr.c_str());
 	printf("\n");
@@ -101,6 +117,10 @@ void CCVIL::run(){
 		groupStr += itos(fp->getID());
 		groupStr += "-";
 		groupStr += itos(i+1);
+		if (param->learnStrategy != 0){
+			groupStr += "-";
+			groupStr += itos (floor(param->knownGroupPercent[0]*100));
+		}
 		groupStr += ".txt";
 		printf("groupStr = %s", groupStr.c_str());
 		printf("\n");
@@ -111,6 +131,10 @@ void CCVIL::run(){
 		fesStr += itos(fp->getID());
 		fesStr += "-";
 		fesStr += itos(i+1);
+		if (param->learnStrategy != 0){
+			fesStr += "-";
+			fesStr += itos (floor(param->knownGroupPercent[0]*100));
+		}
 		fesStr += ".txt";
 		printf("fesStr = %s", fesStr.c_str());
 		printf("\n");
@@ -120,6 +144,10 @@ void CCVIL::run(){
 		valStr += itos(fp->getID());
 		valStr += "-";
 		valStr += itos(i+1);
+		if (param->learnStrategy != 0){
+			valStr += "-";
+			valStr += itos (floor(param->knownGroupPercent[0]*100));
+		}
 		valStr += ".txt";
 		printf("valStr = %s", valStr.c_str());
 		printf("\n");
@@ -139,6 +167,7 @@ void CCVIL::run(){
 
 		if (param->learnStrategy != 0){
 			// initialize bestCand
+			(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
 		}
 
 		optimizationStage();
@@ -203,7 +232,6 @@ void CCVIL::learningStage(){
 	unsigned innerImprove;
 	bool learnStageFlag, needCapture, isSameGroup = false, separableFunc = true; // assume every benchmark function is separable at the first beginning
 
-	bestCand = new IndividualT<double>(ChromosomeT<double>(param->dimension));
 	(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
 
 	//	printf ( "Best Cand\n" );
@@ -278,7 +306,7 @@ void CCVIL::learningStage(){
 			if ( lastCycleIndex==-1 || isSameGroup == false ){
 				lastCycleIndex = p[i];
 			}
-			
+
 			if (i == param->dimension-1){
 				delete[] p;
 			}
@@ -297,8 +325,8 @@ void CCVIL::learningStage(){
 
 	sortGroupInfo();
 
-	//	printf ( "After sorting, Group info\n" );
-	//	print2Dvector(groupInfo);
+//	printf ( "After sorting, Group info\n" );
+//	print2Dvector(groupInfo);
 	//
 	//	printf ( "Look up group table\n" );
 	//	printArray(lookUpGroup, param->dimension);
@@ -419,7 +447,6 @@ void CCVIL::optimizationStage(){
 	delete[] groupCR;
 	delete[] groupF;
 	delete[] failCounter;
-	delete bestCand;
 }
 
 
@@ -532,23 +559,23 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 
 	/* Print the struture of the entire population */
 
-//	if (cycle==5 && index ==0){
-//		printf ( "Indices for optimization in this phase\n" );
-//		printVector(vecIndex);
-//
-//		printf ( "The amount of subpopulation = %d\n", (int)pop.size() );
-//
-//		printf("The whole population\n");
-//		print2Dvector(pop);
-//
-//		printf("Best Candidate at the beginning of each phase\n");
-//		printPopulation((*bestCand));
-//
-//		printf("Parents Population\n");
-//		printPopulation(parents);
-//		printf ( "Fitness of Parents\n" );
-//		printFitness(parents);
-//	}
+	//	if (cycle==5 && index ==0){
+	//		printf ( "Indices for optimization in this phase\n" );
+	//		printVector(vecIndex);
+	//
+	//		printf ( "The amount of subpopulation = %d\n", (int)pop.size() );
+	//
+	//		printf("The whole population\n");
+	//		print2Dvector(pop);
+	//
+	//		printf("Best Candidate at the beginning of each phase\n");
+	//		printPopulation((*bestCand));
+	//
+	//		printf("Parents Population\n");
+	//		printPopulation(parents);
+	//		printf ( "Fitness of Parents\n" );
+	//		printFitness(parents);
+	//	}
 
 	unsigned bestIndex = parents.bestIndex();
 
@@ -568,10 +595,10 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 	/***************************** Iterations **************************/
 	while ( g<=G && fes < MaxFitEval){
 
-//	if (cycle==5 && index ==0){
-//		printf("***************************** Iterations **************************\n");
-//		printf("Generation %d, fes %ld\n", g, fes);
-//	}
+		//	if (cycle==5 && index ==0){
+		//		printf("***************************** Iterations **************************\n");
+		//		printf("Generation %d, fes %ld\n", g, fes);
+		//	}
 
 		vector<double> goodCR, goodF, f_rec; 
 
@@ -764,13 +791,13 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 			//			printf ( "after adaptation, CRm = %f, Fm = %f\n", CRm, Fm );
 		}
 
-//	if (cycle==5 && index ==0){
-//		printf("Population after Mutation, population size of it = %d \n", ui.size());
-//		printPopulation(ui);
-//
-//		printf("Fitness of ui, bestIndex = %d\n", parents.bestIndex());
-//		printFitness(ui);
-//	}
+		//	if (cycle==5 && index ==0){
+		//		printf("Population after Mutation, population size of it = %d \n", ui.size());
+		//		printPopulation(ui);
+		//
+		//		printf("Fitness of ui, bestIndex = %d\n", parents.bestIndex());
+		//		printFitness(ui);
+		//	}
 
 
 		if (g % (20000/vecIndex.size()) == 0){
@@ -1405,43 +1432,47 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 			//		printf("group1 = %d, group2 =%d\ncurrent D = %d, last D = %d\n", group1, group2, curDim, lastDim)
 			// through comparison, always join the latter one into the previous
 			if(group1 < group2){
-				// join group2 into group1
-				for (unsigned i=0; i<groupInfo[group2].size(); i++){
-					// instead of push at the back of vector
-					groupInfo[group1].push_back(groupInfo[group2][i]);
-				}
-				//			groupInfo[group2].clear();
+				combineGroup(group1, group2);
 
-				for (unsigned i = 0; i<groupInfo[group2].size(); i++){
-					lookUpGroup[groupInfo[group2][i]] = group1;
-				}
-
-				groupInfo.erase(groupInfo.begin() + group2);
-				for (unsigned i=0; i<param->dimension; i++){
-					if (lookUpGroup[i]>group2){
-						lookUpGroup[i]--;
-					}
-				}
+				//				// join group2 into group1
+				//				for (unsigned i=0; i<groupInfo[group2].size(); i++){
+				//					// instead of push at the back of vector
+				//					groupInfo[group1].push_back(groupInfo[group2][i]);
+				//				}
+				//				//			groupInfo[group2].clear();
+				//
+				//				for (unsigned i = 0; i<groupInfo[group2].size(); i++){
+				//					lookUpGroup[groupInfo[group2][i]] = group1;
+				//				}
+				//
+				//				groupInfo.erase(groupInfo.begin() + group2);
+				//				for (unsigned i=0; i<param->dimension; i++){
+				//					if (lookUpGroup[i]>group2){
+				//						lookUpGroup[i]--;
+				//					}
+				//				}
 			}else{// group2 < group1
-				// join group1 into group2
-				// rmVec = groupInfo[group1];
-				for (unsigned i=0; i<groupInfo[group1].size(); i++){
-					groupInfo[group2].push_back(groupInfo[group1][i]);
-					//		groupInfo[group2].push_back(rmVec[i]);
-				}
-				//	groupInfo[group1].clear();
+				combineGroup(group2, group1);
 
-				for (unsigned i = 0; i<groupInfo[group1].size(); i++){
-					lookUpGroup[groupInfo[group1][i]] = group2;
-				}
-
-				groupInfo.erase(groupInfo.begin() + group1);
-
-				for (unsigned i=0; i<param->dimension; i++){
-					if (lookUpGroup[i]>group1){
-						lookUpGroup[i]--;
-					}
-				}
+				//				// join group1 into group2
+				//				// rmVec = groupInfo[group1];
+				//				for (unsigned i=0; i<groupInfo[group1].size(); i++){
+				//					groupInfo[group2].push_back(groupInfo[group1][i]);
+				//					//		groupInfo[group2].push_back(rmVec[i]);
+				//				}
+				//				//	groupInfo[group1].clear();
+				//
+				//				for (unsigned i = 0; i<groupInfo[group1].size(); i++){
+				//					lookUpGroup[groupInfo[group1][i]] = group2;
+				//				}
+				//
+				//				groupInfo.erase(groupInfo.begin() + group1);
+				//
+				//				for (unsigned i=0; i<param->dimension; i++){
+				//					if (lookUpGroup[i]>group1){
+				//						lookUpGroup[i]--;
+				//					}
+				//				}
 			}
 
 			//		printf("============= After Merge =============\n");
@@ -1466,6 +1497,32 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 		//			exit(EXIT_SUCCESS);
 		//		}
 	}
+
+	/* 
+	 * ===  FUNCTION  ======================================================================
+	 *         Name:  CCVIL::combineGroup
+	 *  Description:  
+	 * =====================================================================================
+	 */
+	void
+		CCVIL::combineGroup ( unsigned group1, unsigned group2 )
+		{
+			for (unsigned i=0; i<groupInfo[group2].size(); i++){
+				// instead of push at the back of vector
+				groupInfo[group1].push_back(groupInfo[group2][i]);
+			}
+
+			for (unsigned i = 0; i<groupInfo[group2].size(); i++){
+				lookUpGroup[groupInfo[group2][i]] = group1;
+			}
+
+			groupInfo.erase(groupInfo.begin() + group2);
+			for (unsigned i=0; i<param->dimension; i++){
+				if (lookUpGroup[i]>group2){
+					lookUpGroup[i]--;
+				}
+			}
+		}		/* -----  end of function CCVIL::combineGroup  ----- */
 
 	/*
 	 * check whether the two variable belong to the same group or not
@@ -1623,6 +1680,10 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 
 			// generate random permutation
 			unsigned* randPermInter = randPerm(arrSize);
+//			for (unsigned i=0; i<arrSize; i++){
+//				printf ( "%d\t", (int)randPermInter[i] );
+//			}
+//			printf( "\n" );
 
 			// firstly suppose that there is no prior information
 			bool* interPartArray = new bool[arrSize];
@@ -1631,9 +1692,25 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 			}	
 
 			// truncate the known ProirInterStage according to given percentage of prior interaction information
-			for (unsigned i=0; i<arrSize* param->knownGroupPercent[0]; i++){
+			unsigned knownArrSize = floor(arrSize* param->knownGroupPercent[0]);
+//			printf ( "Known Array Size = %d, Interaction Array Size = %d\n", knownArrSize, fp->getInterArray().size() );
+
+			for (unsigned i=0; i< knownArrSize; i++){
 				interPartArray[randPermInter[i]] = (fp->getInterArray())[randPermInter[i]];
+				//				interPartArray[i] = (fp->getInterArray())[i];
 			}
+
+//			printf ( "Interaction Complete Information\n" );
+//			for (unsigned i=0; i<arrSize; i++){
+//				printf ( "%d\t", (int)fp->getInterArray()[i] );
+//			}
+//			printf( "\n" );
+
+//			printf ( "Interaction Partial Information\n" );
+//			for (unsigned i=0; i<arrSize; i++){
+//				printf ( "%d\t", interPartArray[i] );
+//			}
+//			printf( "\n" );
 
 			// generate groupInfo according to interPartArray
 			groupInfo.clear();
@@ -1645,9 +1722,25 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
 				groupInfo.push_back(tempVec);
 			}
 
-			for 
+			// combine interactive groups as if the information is caputred by learning
+			unsigned group1=-1, group2=-1;
+			for (unsigned i=0; i<arrSize; i++){
+				if (interPartArray[i]==true ){
+					unsigned I1=-1, I2=-1;
+					fp->MatToArr(I1, I2, i);
+					group1 = lookUpGroup[I1];
+					group2 = lookUpGroup[I2];
+					if (group1 != group2){
+//						printf ( "Combine Index: %d & %d\n", I1, I2 );
+						combineGroup(lookUpGroup[I1], lookUpGroup[I2]);
+//						print2Dvector(groupInfo);
+					}
+				}
+			}
 
 			sortGroupInfo();
+//			printf ( "After sorting, Group info\n" );
+//			print2Dvector(groupInfo);
 
 			delete interPartArray;
 			delete randPermInter;

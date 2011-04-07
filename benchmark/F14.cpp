@@ -20,17 +20,20 @@ F14::F14(RunParameter* runParam):Benchmarks(runParam){
 	minX = -100;
 	maxX = 100;
 	ID = 14;
+
 	lookup = lookupprepare(nonSeparableGroupSize);
 
 	Ovector=createShiftVector(dimension,minX,maxX);
 
-	Pvector = (int*)malloc(sizeof(int) * dimension);
-	for (unsigned i = 0; i<(unsigned)dimension; i++){
-		Pvector[i] = i;	
-	}
+//	Pvector = (int*)malloc(sizeof(int) * dimension);
+//	for (unsigned i = 0; i<(unsigned)dimension; i++){
+//		Pvector[i] = i;	
+//	}
 
-//	Pvector=createPermVector(dimension);
-	MultiRotMatrix1D=createMultiRotateMatrix1D(nonSeparableGroupSize,dimension/(nonSeparableGroupSize));
+//	TODO: Neeed to change back to random one ****************************************************************************
+	Pvector=createPermVector(dimension);
+
+	MultiRotMatrix1D = createMultiRotateMatrix1D(nonSeparableGroupSize,dimension/(nonSeparableGroupSize));
 
 	generateInterArray ( );
 }
@@ -46,8 +49,6 @@ F14::F14():Benchmarks(){
 	Ovector=createShiftVector(dimension,minX,maxX);
 	Pvector=createPermVector(dimension);
 	MultiRotMatrix1D=createMultiRotateMatrix1D(nonSeparableGroupSize,dimension/(nonSeparableGroupSize));
-
-	generateInterArray ( );
 }
 
 F14::~F14(){
@@ -119,11 +120,11 @@ F14::generateInterArray ( )
 			for (unsigned k=j+1; k<(unsigned)nonSeparableGroupSize; k++){
 				compIndex = Pvector[i*nonSeparableGroupSize+k];
 				if (baseIndex < compIndex){
-					printf ( "Mat: smallIndex %d, bigIndex %d; Arr: %d\n", baseIndex, compIndex, convertMatrixToArrayIndex(baseIndex, compIndex));
+//					printf ( "Mat: smallIndex %d, bigIndex %d; Arr: %d\n", baseIndex, compIndex, convertMatrixToArrayIndex(baseIndex, compIndex));
 					interArray[convertMatrixToArrayIndex(baseIndex, compIndex)] = true;
 				}else{
-					printf ( "Mat: smallIndex %d, bigIndex %d; Arr: %d\n", compIndex, baseIndex, convertMatrixToArrayIndex(compIndex, baseIndex));
-					printf ( "%d\n", convertMatrixToArrayIndex(compIndex, baseIndex));
+//					printf ( "Mat: smallIndex %d, bigIndex %d; Arr: %d\n", compIndex, baseIndex, convertMatrixToArrayIndex(compIndex, baseIndex));
+//					printf ( "%d\n", convertMatrixToArrayIndex(compIndex, baseIndex));
 					interArray[convertMatrixToArrayIndex( compIndex, baseIndex)] = true;
 				}
 			}

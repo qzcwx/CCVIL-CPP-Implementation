@@ -53,9 +53,10 @@ public:
 	// for running the partial information experiment
 	// the percentage of prior knonw grouping information
 	vector<double> knownGroupPercent;
+
 	
 	// Runtime Parameter for rJADE
-	 double c;	
+	double c;	
 
 	double p;
 
@@ -68,6 +69,6 @@ public:
 
 	// default destructor
 	~RunParameter();
-
+	
 };
 #endif
