@@ -54,6 +54,7 @@ public:
 	// the percentage of prior knonw grouping information
 	vector<double> knownGroupPercent;
 
+	double learnPortion;
 	
 	// Runtime Parameter for rJADE
 	double c;	

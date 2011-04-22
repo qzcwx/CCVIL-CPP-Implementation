@@ -120,6 +120,7 @@ protected:
 	unsigned countFailGroupNum ();
 	void getPriorInterStage ();
 	void combineGroup ( unsigned group1, unsigned group2 );
+	void sampleLearnStage ( );
 
 public:
 	CCVIL(RunParameter* runParam);

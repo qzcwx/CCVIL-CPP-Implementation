@@ -67,6 +67,8 @@ RunParameter::RunParameter(){
 							printf ( "assign p = %f\n", p );
 						}else if (strcmp(confType.c_str(), "failThreshold")==0){
 							failThreshold = atoi (strArray);
+						}else if (strcmp(confType.c_str(), "learnPortion")==0){
+							learnPortion = atof (strArray);
 						}else if (strcmp(confType.c_str(), "Afactor")==0){
 							Afactor = atoi (strArray);
 						}else if (strcmp(confType.c_str(), "knownGroupPercent")==0){
@@ -105,6 +107,9 @@ RunParameter::RunParameter(){
 		printf ( "%f\t", knownGroupPercent[i] );
 	}
 	printf ( "\n" );
+
+	printf ( "Maximum Portion of fitness spend for learning stage = %f\n", learnPortion );
+	
 }
 
 // default destructor

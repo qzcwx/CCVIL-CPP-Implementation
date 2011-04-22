@@ -69,4 +69,3 @@ double F20::compute(vector<double> x){
 	result=rosenbrock(anotherz, dimension);
 	return(result);
 }
-

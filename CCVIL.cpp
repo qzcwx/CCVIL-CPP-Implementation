@@ -34,7 +34,8 @@ CCVIL::CCVIL(RunParameter* runParam){
 	cout<<"Max Fitness Evaluation = "<<MaxFitEval<<endl;
 
 	lowerThreshold = runParam->lowerThreshold;
-	upperThreshold = min(round(MaxFitEval*0.6/(runParam->dimension*((1+1)*(3)+1))), 800.0);
+//	upperThreshold = min(round(MaxFitEval*0.6/(runParam->dimension*((1+1)*(3)+1))), 800.0);
+	upperThreshold = min(round(MaxFitEval*param->learnPortion/(runParam->dimension*((1+1)*(3)+1))), 800.0); 
 	cout<<"Lower threshold = "<<lowerThreshold<<", Upper threshold = "<<upperThreshold<<endl;
 
 	bestCand = new IndividualT<double>(ChromosomeT<double>(param->dimension));
@@ -59,7 +60,7 @@ void CCVIL::run(){
 	mkdir ("result", O_CREAT|S_IRWXU|S_IRWXG|S_IROTH|S_IXOTH);
 	mkdir ("trace", O_CREAT|S_IRWXU|S_IRWXG|S_IROTH|S_IXOTH);
 
-	if (param->learnStrategy != 0){
+	if (param->learnStrategy != 0 && param->learnStrategy != 4){
 		getPriorInterStage(); 
 	}
 
@@ -172,6 +173,8 @@ void CCVIL::run(){
 
 		if (param->learnStrategy == 0){
 			learningStage();
+		}else if (param->learnStrategy==4){
+			sampleLearnStage();
 		}
 
 		if (param->learnStrategy != 0){
@@ -341,6 +344,95 @@ void CCVIL::learningStage(){
 	//	printf ( "Look up group table\n" );
 	//	printArray(lookUpGroup, param->dimension);
 }
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  CCVIL::sampleLearnStage
+ *  Description:  With the new sampling strategy in the learning and wanna see the 
+ *  							efficacy of naive sampling approach
+ * =====================================================================================
+ */
+void CCVIL::sampleLearnStage (  ) {
+	unsigned testTimes, i, indexI=0, indexJ=0, group1, group2; // the amount of testing the interaction
+	double randi_1, randi_2, randj_1, randj_2, diff; 
+
+	// generate groupInfo according to interPartArray
+	groupInfo.clear();
+	// initialize the groupInfo
+	for (unsigned j = 0; j<param->dimension; j++){
+		vector<unsigned> tempVec;
+		tempVec.push_back(j);
+		lookUpGroup[j] = j;
+		groupInfo.push_back(tempVec);
+	}
+
+	testTimes = MaxFitEval*(param->learnPortion)/(double)4; 
+	printf ( "test times = %d\n", testTimes );
+
+	// each individual serves for one test
+	IndividualT<double> tempIndiv(ChromosomeT<double>(param->dimension));
+	tempIndiv[0].initialize(fp->getMinX(), fp->getMaxX()); 
+	IndividualT<double> indiv1_1, indiv2_1, indiv1_2, indiv2_2;
+
+	// indiv0 -> geneVal1
+	// indiv1 -> geneVal2
+	// indiv2 -> cooperation and fitness evalution
+	for ( i = 0; i < testTimes; i += 1 ) {
+		indiv1_1 = tempIndiv;
+		indiv2_1 = tempIndiv;
+		indiv1_2 = tempIndiv;
+		indiv2_2 = tempIndiv;
+
+		indexI = floor(Rng::uni()*param->dimension);
+		indexJ = floor(Rng::uni()*param->dimension);
+
+		while ( (indexI==indexJ || lookUpGroup[indexI]==lookUpGroup[indexJ])&& groupInfo.size()!=1 ){
+			indexI = floor(Rng::uni()*param->dimension);
+			indexJ = floor(Rng::uni()*param->dimension);
+		}
+
+		if (groupInfo.size()==1){
+			printf ( "Converge to one single group\n" );
+			break; 
+		}
+
+//		printf ( "randi = %d, randj = %d\n", indexI, indexJ);
+
+		randi_1 = tempIndiv[0][indexI];
+		randj_1 = tempIndiv[0][indexJ];
+
+		randi_2 = Rng::uni() * (fp->getMaxX() - fp->getMinX()) + fp->getMinX(); 
+		randj_2 = Rng::uni() * (fp->getMaxX() - fp->getMinX()) + fp->getMinX(); 
+
+		indiv2_1[0][indexJ] = randj_2;
+		indiv1_2[0][indexI] = randi_2;
+
+		indiv2_2[0][indexI] = randi_2;
+		indiv2_2[0][indexJ] = randj_2;
+
+		indiv1_1.setFitness( fp->compute(indiv1_1[0]) );
+		indiv2_1.setFitness( fp->compute(indiv2_1[0]) );
+		indiv1_2.setFitness( fp->compute(indiv1_2[0]) );
+		indiv2_2.setFitness( fp->compute(indiv2_2[0]) );
+
+		fes+=4; 
+
+		diff = (indiv1_1.getFitness()-indiv2_1.getFitness()) * (indiv1_2.getFitness()-indiv2_2.getFitness()); 
+
+		if ( diff <=0 ){ 
+			printf ( "Combine %d & %d, fes = %ld \n", indexI, indexJ, fes );
+			group1 = lookUpGroup[indexI];
+			group2 = lookUpGroup[indexJ];
+			combineGroup( group1, group2 );
+			printf ( "The amount of groups = %d\n", groupInfo.size() );
+		}
+	}
+
+	sortGroupInfo();
+	//			printf ( "After sorting, Group info\n" );
+	//			print2Dvector(groupInfo);
+	//	printf ( "The amount of groups = %d\n", groupInfo.size() );
+}		/* -----  end of function CCVIL::sampleLearnStage  ----- */
 
 /*
  * procedure of optimization stage, based on the groupInfo to group the entire population
@@ -1758,6 +1850,7 @@ CCVIL::getPriorInterStage ()
 			if (group1 != group2){
 				//						printf ( "Combine Index: %d & %d\n", I1, I2 );
 				combineGroup(lookUpGroup[I1], lookUpGroup[I2]);
+
 				//						print2Dvector(groupInfo);
 			}
 		}
