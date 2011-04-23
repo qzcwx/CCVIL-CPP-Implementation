@@ -104,13 +104,13 @@ double F8::compute(vector<double> x){
 		//			printf("%f\t",Ovector[i]);
 		//		}
 
-		Pvector = createPermVector(dimension);
+		//		Pvector = createPermVector(dimension);
 		
 		//TODO: Neeed to change back to random one ****************************************************************************
-		//		Pvector = (int*)malloc(sizeof(int) * dimension);
-		//		for (i = 0; i<dimension; i++){
-		//			Pvector[i] = i;	
-		//		}
+		Pvector = (int*)malloc(sizeof(int) * dimension);
+		for (i = 0; i<dimension; i++){
+			Pvector[i] = i;	
+		}
 
 		//		printf("\n\n\nP vector\n\n\n");
 		//		for (i = 0; i<dimension; i++){
@@ -136,8 +136,8 @@ double F8::compute(vector<double> x){
 			
 	result = rosenbrock(anotherz1,m) * 1e6 + sphere(anotherz2,dimension - m);
 
-//	printf("Rosenbrock Part = %1.16E\n", rosenbrock(anotherz1,m) * 1e6);
-//	printf("Sphere Part = %1.16E\n", sphere(anotherz2,dimension - m));
+	//	printf("Rosenbrock Part = %1.16E\n", rosenbrock(anotherz1,m) * 1e6);
+	//	printf("Sphere Part = %1.16E\n", sphere(anotherz2,dimension - m));
 
 	return(result);
 }

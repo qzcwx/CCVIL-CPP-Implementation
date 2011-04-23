@@ -57,13 +57,19 @@ double F4::compute(double*x){
 	}
 	*/
 
-    Pvector   = createPermVector(dimension);
+		Pvector   = createPermVector(dimension);
+
 	/*
 	printf("\n\n\nP vector\n\n\n");
 	for (i = 0; i<dimension; i++){
 		printf("%d\t",Pvector[i]);
 	}
 	*/
+
+//	  Pvector = (int*)malloc(sizeof(int) * dimension);
+//	  for (i = 0; i<dimension; i++){
+//		  Pvector[i] = i;	
+//	  }
 
     RotMatrix = createRotMatrix1D(nonSeparableGroupSize);
 	/*
@@ -111,13 +117,17 @@ double F4::compute(vector<double> x){
 	}
 	*/
 
-    Pvector   = createPermVector(dimension);
+		//    Pvector   = createPermVector(dimension);
 	/*
 	printf("\n\n\nP vector\n\n\n");
 	for (i = 0; i<dimension; i++){
 		printf("%d\t",Pvector[i]);
 	}
 	*/
+	  Pvector = (int*)malloc(sizeof(int) * dimension);
+	  for (i = 0; i<dimension; i++){
+		  Pvector[i] = i;	
+	  }
 
     RotMatrix = createRotMatrix1D(nonSeparableGroupSize);
 	/*

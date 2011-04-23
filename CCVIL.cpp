@@ -353,7 +353,7 @@ void CCVIL::learningStage(){
  * =====================================================================================
  */
 void CCVIL::sampleLearnStage (  ) {
-	unsigned testTimes, i, indexI=0, indexJ=0, group1, group2; // the amount of testing the interaction
+	unsigned indexI=0, indexJ=0, group1, group2, localMaxFit; // the amount of testing the interaction
 	double randi_1, randi_2, randj_1, randj_2, diff; 
 
 	// generate groupInfo according to interPartArray
@@ -366,18 +366,23 @@ void CCVIL::sampleLearnStage (  ) {
 		groupInfo.push_back(tempVec);
 	}
 
-	testTimes = MaxFitEval*(param->learnPortion)/(double)4; 
-	printf ( "test times = %d\n", testTimes );
+// 	testTimes = MaxFitEval*(param->learnPortion)/(double)3; 
+//	printf ( "test times = %d\n", testTimes );
+	localMaxFit = MaxFitEval*(param->learnPortion); 
+	printf ( "Local Max Fitness Evaluation for Learning Stage = %d\n", localMaxFit );
 
 	// each individual serves for one test
 	IndividualT<double> tempIndiv(ChromosomeT<double>(param->dimension));
 	tempIndiv[0].initialize(fp->getMinX(), fp->getMaxX()); 
 	IndividualT<double> indiv1_1, indiv2_1, indiv1_2, indiv2_2;
 
+	tempIndiv.setFitness( fp->compute(tempIndiv[0]) );
+	fes += 1; 
+
 	// indiv0 -> geneVal1
 	// indiv1 -> geneVal2
 	// indiv2 -> cooperation and fitness evalution
-	for ( i = 0; i < testTimes; i += 1 ) {
+	while (fes < localMaxFit) {
 		indiv1_1 = tempIndiv;
 		indiv2_1 = tempIndiv;
 		indiv1_2 = tempIndiv;
@@ -396,7 +401,7 @@ void CCVIL::sampleLearnStage (  ) {
 			break; 
 		}
 
-//		printf ( "randi = %d, randj = %d\n", indexI, indexJ);
+		//		printf ( "randi = %d, randj = %d\n", indexI, indexJ);
 
 		randi_1 = tempIndiv[0][indexI];
 		randj_1 = tempIndiv[0][indexJ];
@@ -410,16 +415,27 @@ void CCVIL::sampleLearnStage (  ) {
 		indiv2_2[0][indexI] = randi_2;
 		indiv2_2[0][indexJ] = randj_2;
 
-		indiv1_1.setFitness( fp->compute(indiv1_1[0]) );
+		indiv1_1.setFitness( tempIndiv.getFitness() );
 		indiv2_1.setFitness( fp->compute(indiv2_1[0]) );
 		indiv1_2.setFitness( fp->compute(indiv1_2[0]) );
 		indiv2_2.setFitness( fp->compute(indiv2_2[0]) );
 
-		fes+=4; 
+		fes+=3; 
+
+		// for minimization problem
+		if ( indiv1_1.getFitness() > indiv2_1.getFitness() ){
+			tempIndiv = indiv2_1; 
+		}
+
+		//		if ( indiv1_2.getFitness() > indiv2_2.getFitness() ){
+		//			tempIndiv = indiv2_2; 
+		//		}else{
+		//			tempIndiv = indiv1_2;
+		//		}
 
 		diff = (indiv1_1.getFitness()-indiv2_1.getFitness()) * (indiv1_2.getFitness()-indiv2_2.getFitness()); 
 
-		if ( diff <=0 ){ 
+		if ( diff < 0 ){ 
 			printf ( "Combine %d & %d, fes = %ld \n", indexI, indexJ, fes );
 			group1 = lookUpGroup[indexI];
 			group2 = lookUpGroup[indexJ];
@@ -429,9 +445,11 @@ void CCVIL::sampleLearnStage (  ) {
 	}
 
 	sortGroupInfo();
-	//			printf ( "After sorting, Group info\n" );
-	//			print2Dvector(groupInfo);
-	//	printf ( "The amount of groups = %d\n", groupInfo.size() );
+
+	printf ( "After sorting, Group info\n" );
+	print2Dvector(groupInfo);
+
+	printf ( "The amount of groups = %d\n", groupInfo.size() );
 }		/* -----  end of function CCVIL::sampleLearnStage  ----- */
 
 /*
@@ -459,7 +477,6 @@ void CCVIL::optimizationStage(){
 		groupCR[i] = 0.5;
 		failCounter[i] = 0;
 	}
-
 
 	double lastCycleBestVal = 0, improveRate = 0;
 	unsigned innerImprove;
