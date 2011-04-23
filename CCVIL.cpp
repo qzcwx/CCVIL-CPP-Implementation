@@ -353,8 +353,9 @@ void CCVIL::learningStage(){
  * =====================================================================================
  */
 void CCVIL::sampleLearnStage (  ) {
-	unsigned indexI=0, indexJ=0, group1, group2, localMaxFit; // the amount of testing the interaction
+	unsigned indexI = 0, indexJ = 0, group1, group2, localMaxFit; // the amount of testing the interaction
 	double randi_1, randi_2, randj_1, randj_2, diff; 
+	bool firstCycle = true;
 
 	// generate groupInfo according to interPartArray
 	groupInfo.clear();
@@ -383,64 +384,86 @@ void CCVIL::sampleLearnStage (  ) {
 	// indiv1 -> geneVal2
 	// indiv2 -> cooperation and fitness evalution
 	while (fes < localMaxFit) {
-		indiv1_1 = tempIndiv;
-		indiv2_1 = tempIndiv;
-		indiv1_2 = tempIndiv;
-		indiv2_2 = tempIndiv;
+		if (firstCycle==true){
 
-		indexI = floor(Rng::uni()*param->dimension);
-		indexJ = floor(Rng::uni()*param->dimension);
+			for(unsigned i=0; i<param->dimension; i++){
 
-		while ( (indexI==indexJ || lookUpGroup[indexI]==lookUpGroup[indexJ])&& groupInfo.size()!=1 ){
+				indiv1_1 = tempIndiv;
+				indiv1_2 = tempIndiv;
+
+				randi_1 = tempIndiv[0][indexI];
+				randi_2 = Rng::uni() * (fp->getMaxX() - fp->getMinX()) + fp->getMinX(); 
+
+				indiv1_2[0][i] = randi_2;
+				indiv1_2.setFitness( fp->compute(indiv1_2[0]) );
+				fes += 1; 
+
+				if ( indiv1_1.getFitness() > indiv1_2.getFitness() ){
+					tempIndiv = indiv1_2; 
+				}
+			}
+
+			firstCycle = false; 
+		}else{
+			indiv1_1 = tempIndiv;
+			indiv2_1 = tempIndiv;
+			indiv1_2 = tempIndiv;
+			indiv2_2 = tempIndiv;
+
 			indexI = floor(Rng::uni()*param->dimension);
 			indexJ = floor(Rng::uni()*param->dimension);
-		}
 
-		if (groupInfo.size()==1){
-			printf ( "Converge to one single group\n" );
-			break; 
-		}
+			while ( (indexI==indexJ || lookUpGroup[indexI]==lookUpGroup[indexJ])&& groupInfo.size()!=1 ){
+				indexI = floor(Rng::uni()*param->dimension);
+				indexJ = floor(Rng::uni()*param->dimension);
+			}
 
-		//		printf ( "randi = %d, randj = %d\n", indexI, indexJ);
+			if (groupInfo.size()==1){
+				printf ( "Converge to one single group\n" );
+				break; 
+			}
 
-		randi_1 = tempIndiv[0][indexI];
-		randj_1 = tempIndiv[0][indexJ];
+			//		printf ( "randi = %d, randj = %d\n", indexI, indexJ);
 
-		randi_2 = Rng::uni() * (fp->getMaxX() - fp->getMinX()) + fp->getMinX(); 
-		randj_2 = Rng::uni() * (fp->getMaxX() - fp->getMinX()) + fp->getMinX(); 
+			randi_1 = tempIndiv[0][indexI];
+			randj_1 = tempIndiv[0][indexJ];
 
-		indiv2_1[0][indexJ] = randj_2;
-		indiv1_2[0][indexI] = randi_2;
+			randi_2 = Rng::uni() * (fp->getMaxX() - fp->getMinX()) + fp->getMinX(); 
+			randj_2 = Rng::uni() * (fp->getMaxX() - fp->getMinX()) + fp->getMinX(); 
 
-		indiv2_2[0][indexI] = randi_2;
-		indiv2_2[0][indexJ] = randj_2;
+			indiv2_1[0][indexJ] = randj_2;
+			indiv1_2[0][indexI] = randi_2;
 
-		indiv1_1.setFitness( tempIndiv.getFitness() );
-		indiv2_1.setFitness( fp->compute(indiv2_1[0]) );
-		indiv1_2.setFitness( fp->compute(indiv1_2[0]) );
-		indiv2_2.setFitness( fp->compute(indiv2_2[0]) );
+			indiv2_2[0][indexI] = randi_2;
+			indiv2_2[0][indexJ] = randj_2;
 
-		fes+=3; 
+			indiv1_1.setFitness( tempIndiv.getFitness() );
+			indiv2_1.setFitness( fp->compute(indiv2_1[0]) );
+			indiv1_2.setFitness( fp->compute(indiv1_2[0]) );
+			indiv2_2.setFitness( fp->compute(indiv2_2[0]) );
 
-		// for minimization problem
-		if ( indiv1_1.getFitness() > indiv2_1.getFitness() ){
-			tempIndiv = indiv2_1; 
-		}
+			fes+=3; 
 
-		//		if ( indiv1_2.getFitness() > indiv2_2.getFitness() ){
-		//			tempIndiv = indiv2_2; 
-		//		}else{
-		//			tempIndiv = indiv1_2;
-		//		}
+			// for minimization problem
+			if ( indiv1_1.getFitness() > indiv2_1.getFitness() ){
+				tempIndiv = indiv2_1; 
+			}
 
-		diff = (indiv1_1.getFitness()-indiv2_1.getFitness()) * (indiv1_2.getFitness()-indiv2_2.getFitness()); 
+			//		if ( indiv1_2.getFitness() > indiv2_2.getFitness() ){
+			//			tempIndiv = indiv2_2; 
+			//		}else{
+			//			tempIndiv = indiv1_2;
+			//		}
 
-		if ( diff < 0 ){ 
-			printf ( "Combine %d & %d, fes = %ld \n", indexI, indexJ, fes );
-			group1 = lookUpGroup[indexI];
-			group2 = lookUpGroup[indexJ];
-			combineGroup( group1, group2 );
-			printf ( "The amount of groups = %d\n", groupInfo.size() );
+			diff = (indiv1_1.getFitness()-indiv2_1.getFitness()) * (indiv1_2.getFitness()-indiv2_2.getFitness()); 
+
+			if ( diff < 0 ){ 
+				printf ( "Combine %d & %d, fes = %ld \n", indexI, indexJ, fes );
+				group1 = lookUpGroup[indexI];
+				group2 = lookUpGroup[indexJ];
+				combineGroup( group1, group2 );
+				printf ( "The amount of groups = %d\n", groupInfo.size() );
+			}
 		}
 	}
 
