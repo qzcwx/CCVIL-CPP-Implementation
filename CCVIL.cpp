@@ -33,9 +33,13 @@ CCVIL::CCVIL(RunParameter* runParam){
 	MaxFitEval = runParam->fitnessCheckPoint[(*runParam).fitnessCheckPoint.size()-1];
 	cout<<"Max Fitness Evaluation = "<<MaxFitEval<<endl;
 
-	lowerThreshold = runParam->lowerThreshold;
-//	upperThreshold = min(round(MaxFitEval*0.6/(runParam->dimension*((1+1)*(3)+1))), 800.0);
-	upperThreshold = min(round(MaxFitEval*param->learnPortion/(runParam->dimension*((1+1)*(3)+1))), 800.0); 
+	if (param->learnStrategy==0){
+		lowerThreshold = runParam->lowerThreshold;
+		upperThreshold = min(round(MaxFitEval*param->learnPortion/(runParam->dimension*((1+1)*(3)+1))), 800.0); 
+	}else if (param->learnStrategy==4){
+		lowerThreshold = 3*round(log(1-0.99)/log(1-1/(double)param->dimension));
+		upperThreshold = 3*(param->dimension)*((param->dimension)-1)/2; 
+	}
 	cout<<"Lower threshold = "<<lowerThreshold<<", Upper threshold = "<<upperThreshold<<endl;
 
 	bestCand = new IndividualT<double>(ChromosomeT<double>(param->dimension));
@@ -182,7 +186,7 @@ void CCVIL::run(){
 			(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
 		}
 
-		//		optimizationStage();
+		optimizationStage();
 
 		gettimeofday(&end, NULL);
 		/* algorithm runing part: end */
@@ -366,10 +370,10 @@ void CCVIL::sampleLearnStage (  ) {
 		groupInfo.push_back(tempVec);
 	}
 
-// 	testTimes = MaxFitEval*(param->learnPortion)/(double)3; 
-//	printf ( "test times = %d\n", testTimes );
+	// 	testTimes = MaxFitEval*(param->learnPortion)/(double)3; 
+	//	printf ( "test times = %d\n", testTimes );
 	localMaxFit = MaxFitEval*(param->learnPortion); 
-	printf ( "Local Max Fitness Evaluation for Learning Stage = %d\n", localMaxFit );
+	//	printf ( "Local Max Fitness Evaluation for Learning Stage = %d\n", localMaxFit );
 
 	// each individual serves for one test
 	IndividualT<double> tempIndiv(ChromosomeT<double>(param->dimension));
@@ -378,11 +382,16 @@ void CCVIL::sampleLearnStage (  ) {
 
 	tempIndiv.setFitness( fp->compute(tempIndiv[0]) );
 	fes += 1; 
+	sampleInfo(tempIndiv.getFitness());
+	if (tempIndiv.getFitness()<bestFit){
+		bestFit = tempIndiv.getFitness(); 
+	}
 
 	// indiv0 -> geneVal1
 	// indiv1 -> geneVal2
 	// indiv2 -> cooperation and fitness evalution
-	while (fes < localMaxFit) {
+	while (fes < upperThreshold && (fes<=lowerThreshold || groupInfo.size()>1)) {
+
 		indiv1_1 = tempIndiv;
 		indiv2_1 = tempIndiv;
 		indiv1_2 = tempIndiv;
@@ -425,6 +434,12 @@ void CCVIL::sampleLearnStage (  ) {
 		// for minimization problem
 		if ( indiv1_1.getFitness() > indiv2_1.getFitness() ){
 			tempIndiv = indiv2_1; 
+			sampleInfo(indiv2_1.getFitness());
+			if (tempIndiv.getFitness()<bestFit){
+				bestFit = tempIndiv.getFitness(); 
+			}
+		} else {
+			sampleInfo(indiv1_1.getFitness());
 		}
 
 		//		if ( indiv1_2.getFitness() > indiv2_2.getFitness() ){
@@ -436,18 +451,18 @@ void CCVIL::sampleLearnStage (  ) {
 		diff = (indiv1_1.getFitness()-indiv2_1.getFitness()) * (indiv1_2.getFitness()-indiv2_2.getFitness()); 
 
 		if ( diff < 0 ){ 
-//			printf ( "Combine %d & %d, fes = %ld \n", indexI, indexJ, fes );
+			printf ( "Combine %d & %d, group num = %d, fes = %ld \n", indexI, indexJ, groupInfo.size(), fes );
 			group1 = lookUpGroup[indexI];
 			group2 = lookUpGroup[indexJ];
 			combineGroup( group1, group2 );
-//			printf ( "The amount of groups = %d\n", groupInfo.size() );
+			//			printf ( "The amount of groups = %d\n", groupInfo.size() );
 		}
 	}
 
 	sortGroupInfo();
 
-//	printf ( "After sorting, Group info\n" );
-//	print2Dvector(groupInfo);
+	//	printf ( "After sorting, Group info\n" );
+	//	print2Dvector(groupInfo);
 
 	printf ( "The amount of groups = %d, fes = %ld\n", groupInfo.size(), fes );
 }		/* -----  end of function CCVIL::sampleLearnStage  ----- */
@@ -607,8 +622,6 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 	}else{
 		vecIndex = groupInfo[index];
 	}
-
-
 
 	//	printf("LB = %d, UB = %d, D = %d, NP = %d, G = %d, index = %d\n", LB, UB, D, NP, G, index);
 	if ( learnStageFlag == true ){
@@ -1620,8 +1633,7 @@ void CCVIL::captureInter(unsigned curDim, unsigned lastDim){
  *  Description:  
  * =====================================================================================
  */
-	void
-CCVIL::combineGroup ( unsigned group1, unsigned group2 )
+void CCVIL::combineGroup ( unsigned group1, unsigned group2 )
 {
 	for (unsigned i=0; i<groupInfo[group2].size(); i++){
 		// instead of push at the back of vector

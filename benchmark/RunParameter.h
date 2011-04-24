@@ -13,63 +13,63 @@
 using namespace std;
 
 class RunParameter{
-public:
-	// Dimension of problems
-	unsigned dimension;
+	public:
+		// Dimension of problems
+		unsigned dimension;
 
-	// the amount of independent run
-	unsigned numOfRun;
+		// the amount of independent run
+		unsigned numOfRun;
 
-	// initial population size
-	unsigned NP;
+		// initial population size
+		unsigned NP;
 
-	// initial Group Size
-	unsigned initialGroupSize;
+		// initial Group Size
+		unsigned initialGroupSize;
 
-	// The number of Sampling points for plotting the convergence curve
-	unsigned samplingPoint;
+		// The number of Sampling points for plotting the convergence curve
+		unsigned samplingPoint;
 
-	// Sampling interval for plotting the convergence curve
-	unsigned samplingInterval;
+		// Sampling interval for plotting the convergence curve
+		unsigned samplingInterval;
 
-	// initialized random seed
-	int initRandomSeed;
+		// initialized random seed
+		int initRandomSeed;
 
-	// group size for non-separable part of function
-	unsigned nonSeparableGroupSize;
+		// group size for non-separable part of function
+		unsigned nonSeparableGroupSize;
 
-	// strategy for learning and grouping 
-	unsigned learnStrategy;
+		// strategy for learning and grouping 
+		unsigned learnStrategy;
 
-	// Fitness check point
-	vector<unsigned> fitnessCheckPoint;
+		// Fitness check point
+		vector<unsigned> fitnessCheckPoint;
 
-	// the IDes of benchmark functions to be tested in the experiment
-	vector<unsigned> functionToRun;
+		// the IDes of benchmark functions to be tested in the experiment
+		vector<unsigned> functionToRun;
 
-	// CCVIL's lower threshold
-	unsigned lowerThreshold;
+		// CCVIL's lower threshold
+		unsigned lowerThreshold;
 
-	// for running the partial information experiment
-	// the percentage of prior knonw grouping information
-	vector<double> knownGroupPercent;
+		// for running the partial information experiment
+		// the percentage of prior knonw grouping information
+		vector<double> knownGroupPercent;
 
-	double learnPortion;
-	
-	// Runtime Parameter for rJADE
-	double c;	
+		double learnPortion;
 
-	double p;
+		// Runtime Parameter for rJADE
+		double c;	
 
-	unsigned failThreshold;
+		double p;
 
-	unsigned Afactor;
+		unsigned failThreshold;
 
-	// default constructor
-	RunParameter();
+		unsigned Afactor;
 
-	// default destructor
-	~RunParameter();
-	
+		// default constructor
+		RunParameter();
+
+		// default destructor
+		~RunParameter();
+
 };
 #endif

@@ -104,13 +104,13 @@ double F8::compute(vector<double> x){
 		//			printf("%f\t",Ovector[i]);
 		//		}
 
-		//		Pvector = createPermVector(dimension);
+		Pvector = createPermVector(dimension);
 		
-		//TODO: Neeed to change back to random one ****************************************************************************
-		Pvector = (int*)malloc(sizeof(int) * dimension);
-		for (i = 0; i<dimension; i++){
-			Pvector[i] = i;	
-		}
+		//		//TODO: Neeed to change back to random one ****************************************************************************
+		//		Pvector = (int*)malloc(sizeof(int) * dimension);
+		//		for (i = 0; i<dimension; i++){
+		//			Pvector[i] = i;	
+		//		}
 
 		//		printf("\n\n\nP vector\n\n\n");
 		//		for (i = 0; i<dimension; i++){

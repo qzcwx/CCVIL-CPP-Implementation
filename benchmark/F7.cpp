@@ -69,14 +69,7 @@ double F7::compute(vector<double> x){
 
   if(Ovector == NULL) {
 	  Ovector = createShiftVector(dimension,minX,maxX);
-
-	  Pvector = (int*)malloc(sizeof(int) * dimension);
-	  for (i = 0; i<dimension; i++){
-		  Pvector[i] = i;	
-	  }
-	  
-	  //TODO: Neeed to change back to random one ****************************************************************************
-		//	  Pvector   = createPermVector(dimension);
+		Pvector   = createPermVector(dimension);
   }
 
   for(i = 0; i < dimension; i++) {
