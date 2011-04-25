@@ -37,7 +37,7 @@ CCVIL::CCVIL(RunParameter* runParam){
 		lowerThreshold = runParam->lowerThreshold;
 		upperThreshold = min(round(MaxFitEval*param->learnPortion/(runParam->dimension*((1+1)*(3)+1))), 800.0); 
 	}else if (param->learnStrategy==4){
-		lowerThreshold = 3*round(log(1-0.99)/log(1-1/(double)param->dimension));
+		lowerThreshold = 3*round(log(1-0.995)/log(1-1/(double)param->dimension));
 		upperThreshold = 3*(param->dimension)*((param->dimension)-1)/2; 
 	}
 	cout<<"Lower threshold = "<<lowerThreshold<<", Upper threshold = "<<upperThreshold<<endl;
