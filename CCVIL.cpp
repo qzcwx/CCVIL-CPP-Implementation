@@ -181,7 +181,7 @@ void CCVIL::run(){
 			sampleLearnStage();
 		}
 
-		if (param->learnStrategy != 0){
+		if (param->learnStrategy != 0 && param->learnStrategy!=4){
 			// initialize bestCand
 			(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
 		}
@@ -390,7 +390,7 @@ void CCVIL::sampleLearnStage (  ) {
 	// indiv0 -> geneVal1
 	// indiv1 -> geneVal2
 	// indiv2 -> cooperation and fitness evalution
-	while (fes < upperThreshold && (fes<=lowerThreshold || groupInfo.size()>1)) {
+	while (fes < upperThreshold && (fes<=lowerThreshold || groupInfo.size()<param->dimension)) {
 
 		indiv1_1 = tempIndiv;
 		indiv2_1 = tempIndiv;
@@ -451,7 +451,7 @@ void CCVIL::sampleLearnStage (  ) {
 		diff = (indiv1_1.getFitness()-indiv2_1.getFitness()) * (indiv1_2.getFitness()-indiv2_2.getFitness()); 
 
 		if ( diff < 0 ){ 
-			printf ( "Combine %d & %d, group num = %d, fes = %ld \n", indexI, indexJ, groupInfo.size(), fes );
+			//			printf ( "Combine %d & %d, group num = %d, fes = %ld \n", indexI, indexJ, groupInfo.size(), fes );
 			group1 = lookUpGroup[indexI];
 			group2 = lookUpGroup[indexJ];
 			combineGroup( group1, group2 );
@@ -461,6 +461,11 @@ void CCVIL::sampleLearnStage (  ) {
 
 	sortGroupInfo();
 
+	// utilizing the information and store best found value in bestCand
+	(*bestCand)=tempIndiv; 
+
+	// (*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
+	
 	//	printf ( "After sorting, Group info\n" );
 	//	print2Dvector(groupInfo);
 

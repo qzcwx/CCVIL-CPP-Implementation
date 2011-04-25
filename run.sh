@@ -10,7 +10,7 @@ do
 			#	cat configure.ini | grep '^functionToRun [0-9]*$'
 			# ./submit.sh $i
 			qsub ccvil.pbs -v jobID=$i
-		#	sleep 1
+			sleep 5
 done
 
 echo 'All job have been submitted successfully'
