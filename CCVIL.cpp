@@ -462,9 +462,9 @@ void CCVIL::sampleLearnStage (  ) {
 	sortGroupInfo();
 
 	// utilizing the information and store best found value in bestCand
-	(*bestCand)=tempIndiv; 
+//	(*bestCand)=tempIndiv; 
 
-	// (*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
+	(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
 	
 	//	printf ( "After sorting, Group info\n" );
 	//	print2Dvector(groupInfo);
