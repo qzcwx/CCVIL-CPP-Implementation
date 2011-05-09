@@ -246,7 +246,6 @@ void CCVIL::learningStage(){
 	cout<<"Learning Stage ... "<<endl;
 	cycle = 1; 
 	int lastCycleIndex = -1;
-	unsigned innerImprove;
 	bool learnStageFlag, needCapture, isSameGroup = false, separableFunc = true; // assume every benchmark function is separable at the first beginning
 
 	(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
@@ -308,7 +307,7 @@ void CCVIL::learningStage(){
 			if (lastCycleIndex == -1 || isSameGroup == false){
 				// if current dimension and last optimized index are in the different group, then optimize on current dimension
 				//				printf ( "Index = %d\n", p[i] );
-				innerImprove = JADECC(p[i], true); 	/*learnStage = true*/
+				JADECC(p[i], true); 	/*learnStage = true*/
 			} else {
 				needCapture = false;
 			}
@@ -357,8 +356,8 @@ void CCVIL::learningStage(){
  * =====================================================================================
  */
 void CCVIL::sampleLearnStage (  ) {
-	unsigned indexI=0, indexJ=0, group1, group2, localMaxFit; // the amount of testing the interaction
-	double randi_1, randi_2, randj_1, randj_2, diff; 
+	unsigned indexI=0, indexJ=0, group1, group2; // the amount of testing the interaction
+	double  randi_2,  randj_2, diff; 
 
 	// generate groupInfo according to interPartArray
 	groupInfo.clear();
@@ -372,7 +371,7 @@ void CCVIL::sampleLearnStage (  ) {
 
 	// 	testTimes = MaxFitEval*(param->learnPortion)/(double)3; 
 	//	printf ( "test times = %d\n", testTimes );
-	localMaxFit = MaxFitEval*(param->learnPortion); 
+//	localMaxFit = MaxFitEval*(param->learnPortion); 
 	//	printf ( "Local Max Fitness Evaluation for Learning Stage = %d\n", localMaxFit );
 
 	// each individual serves for one test
@@ -412,8 +411,6 @@ void CCVIL::sampleLearnStage (  ) {
 
 		//		printf ( "randi = %d, randj = %d\n", indexI, indexJ);
 
-		randi_1 = tempIndiv[0][indexI];
-		randj_1 = tempIndiv[0][indexJ];
 
 		randi_2 = Rng::uni() * (fp->getMaxX() - fp->getMinX()) + fp->getMinX(); 
 		randj_2 = Rng::uni() * (fp->getMaxX() - fp->getMinX()) + fp->getMinX(); 
@@ -451,7 +448,7 @@ void CCVIL::sampleLearnStage (  ) {
 		diff = (indiv1_1.getFitness()-indiv2_1.getFitness()) * (indiv1_2.getFitness()-indiv2_2.getFitness()); 
 
 		if ( diff < 0 ){ 
-			//			printf ( "Combine %d & %d, group num = %d, fes = %ld \n", indexI, indexJ, groupInfo.size(), fes );
+			printf ( "%ld\t%d\n", fes/3,groupInfo.size() );
 			group1 = lookUpGroup[indexI];
 			group2 = lookUpGroup[indexJ];
 			combineGroup( group1, group2 );
@@ -469,15 +466,16 @@ void CCVIL::sampleLearnStage (  ) {
 	//	printf ( "After sorting, Group info\n" );
 	//	print2Dvector(groupInfo);
 
-	printf ( "The amount of groups = %d, fes = %ld\n", groupInfo.size(), fes );
 }		/* -----  end of function CCVIL::sampleLearnStage  ----- */
 
 /*
  * procedure of optimization stage, based on the groupInfo to group the entire population
  */
 void CCVIL::optimizationStage(){
-	unsigned groupAmount = groupInfo.size();
+	unsigned groupAmount = groupInfo.size(), innerImprove;
 	bool learnStageFlag = false;
+
+
 	//	printf("\nOptimization Stage, groupAmount = %d\n", groupAmount);
 
 	cycle = 0;
@@ -499,7 +497,6 @@ void CCVIL::optimizationStage(){
 	}
 
 	double lastCycleBestVal = 0, improveRate = 0;
-	unsigned innerImprove;
 
 	while (fes<MaxFitEval){
 		++cycle;
