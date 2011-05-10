@@ -121,6 +121,8 @@ protected:
 	void getPriorInterStage ();
 	void combineGroup ( unsigned group1, unsigned group2 );
 	void sampleLearnStage ( );
+	void binSearchLearnStage (  ); 
+	int findInteractPosition ( IndividualT<double> indiv1, IndividualT<double> indiv2, unsigned indexI ); 
 
 public:
 	CCVIL(RunParameter* runParam);

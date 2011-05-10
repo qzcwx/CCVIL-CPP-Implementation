@@ -36,7 +36,7 @@ CCVIL::CCVIL(RunParameter* runParam){
 	if (param->learnStrategy==0){
 		lowerThreshold = runParam->lowerThreshold;
 		upperThreshold = min(round(MaxFitEval*param->learnPortion/(runParam->dimension*((1+1)*(3)+1))), 800.0); 
-	}else if (param->learnStrategy==4){
+	}else if (param->learnStrategy==4 || param->learnStrategy==5){
 		lowerThreshold = 3*round(log(1-0.995)/log(1-1/(double)param->dimension));
 		upperThreshold = 3*(param->dimension)*((param->dimension)-1)/2; 
 	}
@@ -64,7 +64,7 @@ void CCVIL::run(){
 	mkdir ("result", O_CREAT|S_IRWXU|S_IRWXG|S_IROTH|S_IXOTH);
 	mkdir ("trace", O_CREAT|S_IRWXU|S_IRWXG|S_IROTH|S_IXOTH);
 
-	if (param->learnStrategy != 0 && param->learnStrategy != 4){
+	if (param->learnStrategy >= 1 && param->learnStrategy <= 3){
 		getPriorInterStage(); 
 	}
 
@@ -179,9 +179,11 @@ void CCVIL::run(){
 			learningStage();
 		}else if (param->learnStrategy==4){
 			sampleLearnStage();
+		}else if (param->learnStrategy==5){
+			binSearchLearnStage(); 
 		}
 
-		if (param->learnStrategy != 0 && param->learnStrategy!=4){
+		if (param->learnStrategy >= 1 && param->learnStrategy <= 3){
 			// initialize bestCand
 			(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
 		}
@@ -347,6 +349,127 @@ void CCVIL::learningStage(){
 	//	printf ( "Look up group table\n" );
 	//	printArray(lookUpGroup, param->dimension);
 }
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  CCVIL::binSearchLearnStage
+ *  Description:  locate the interaction with binary search approach, which intends to 
+ *  							reduce the runtime complexity from O(l) to O(lg l)
+ * =====================================================================================
+ */
+	void
+CCVIL::binSearchLearnStage (  )
+{
+
+	// intialize groupInfo to {{1}, {2}, ..., {N}}
+	groupInfo.clear();
+	// initialize the groupInfo
+	for (unsigned j = 0; j<param->dimension; j++){
+		vector<unsigned> tempVec;
+		tempVec.push_back(j);
+		lookUpGroup[j] = j;
+		groupInfo.push_back(tempVec);
+	}
+
+	// lowerThreshold: stop criteria if the problem is found separable, i.e., groupInfo.size() == dimension.
+	// upperThreshold: stop criteria if the problem is found non-separable, i.e., groupInfo.size() < dimension.
+	while (fes < upperThreshold && (fes<=lowerThreshold || groupInfo.size()<param->dimension)) {
+		unsigned indexI = floor(Rng::uni()*param->dimension);
+
+		IndividualT<double> indiv1(ChromosomeT<double>(param->dimension));
+		indiv1[0].initialize(fp->getMinX(), fp->getMaxX()); 
+
+		IndividualT<double> indiv2(ChromosomeT<double>(param->dimension));
+		indiv2[0].initialize(fp->getMinX(), fp->getMaxX()); 
+
+		unsigned groupI = lookUpGroup[indexI]; 
+
+		for (unsigned i=0; i < groupInfo[groupI].size(); i++){
+			indiv2[0][groupInfo[groupI][i]] = indiv1[0][groupInfo[groupI][i]]; 
+		}
+
+		double randI = Rng::uni() * (fp->getMaxX() - fp->getMinX()) + fp->getMinX(); 
+		IndividualT<double> indiv1_sub(indiv1);
+		indiv1_sub[0][indexI] = randI; 
+		IndividualT<double> indiv2_sub(indiv2);
+		indiv2_sub[0][indexI] = randI; 
+
+//		double fes1, fes1_sub, fes2, fes2_sub; 
+		
+		indiv1.setFitness( fp->compute(indiv1[0]) );
+		indiv2.setFitness( fp->compute(indiv2[0]) );
+		indiv1_sub.setFitness( fp->compute(indiv1_sub[0]) );
+		indiv2_sub.setFitness( fp->compute(indiv2_sub[0]) );
+		fes += 4; 
+
+		int interIndex; 
+		if ( (indiv1.getFitness()-indiv1_sub.getFitness()) != (indiv2.getFitness()-indiv2_sub.getFitness())){
+			 interIndex = findInteractPosition(indiv1, indiv2, indexI); 
+		}else {
+			interIndex = -1; 
+		}
+
+
+		if (interIndex != -1){
+			printf ( "%ld\t%d\n", fes/3,groupInfo.size() );
+		  unsigned group1 = lookUpGroup[indexI];
+			unsigned group2 = lookUpGroup[interIndex];
+			combineGroup( group1, group2 );
+		}
+	}
+}		/* -----  end of function CCVIL::binSearchLearnStage  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  CCVIL::findInteractPosition
+ *  Description:  find the interaction position using binary search approach
+ *  							indiv1 -> s
+ *  							indiv2 -> s'
+ *  							indiv3 -> s_2
+ * =====================================================================================
+ */
+	int	
+CCVIL::findInteractPosition ( IndividualT<double> indiv1, IndividualT<double> indiv2, unsigned indexI )
+{
+	vector<unsigned> diffDim; 
+	// find the dimensions where indiv1 & indiv2 differ
+	for (unsigned i=0; i<param->dimension; i++){
+		if (indiv1[0][i] != indiv2[0][i]){
+			diffDim.push_back(i);
+		}
+	}
+
+	if (diffDim.size()==1){
+		return diffDim[0]; 
+	}
+
+	IndividualT<double> indiv3(indiv2);
+	for (unsigned i=0; i<diffDim.size()/2; i++){
+			indiv3[0][diffDim[i]] = indiv1[0][diffDim[i]]; 
+	}
+
+	double randI = Rng::uni() * (fp->getMaxX() - fp->getMinX()) + fp->getMinX(); 
+	IndividualT<double> indiv1_sub(indiv1);
+	indiv1_sub[0][indexI] = randI; 
+	IndividualT<double> indiv3_sub(indiv3);
+	indiv3_sub[0][indexI] = randI; 
+
+	//		double fes1, fes1_sub, fes2, fes2_sub; 
+
+	indiv1.setFitness( fp->compute(indiv1[0]) );
+	indiv3.setFitness( fp->compute(indiv3[0]) );
+	indiv1_sub.setFitness( fp->compute(indiv1_sub[0]) );
+	indiv3_sub.setFitness( fp->compute(indiv3_sub[0]) );
+	fes += 4; 
+
+
+	if ( (indiv1.getFitness()-indiv1_sub.getFitness()) != (indiv3.getFitness()-indiv3_sub.getFitness())){
+		return findInteractPosition(indiv1, indiv3, indexI); 
+	}else{
+		return findInteractPosition(indiv2, indiv3, indexI); 
+	}
+}		/* -----  end of function CCVIL::findInteractPosition  ----- */
 
 /* 
  * ===  FUNCTION  ======================================================================
