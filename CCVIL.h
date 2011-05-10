@@ -123,6 +123,7 @@ protected:
 	void sampleLearnStage ( );
 	void binSearchLearnStage (  ); 
 	int findInteractPosition ( IndividualT<double> indiv1, IndividualT<double> indiv2, unsigned indexI ); 
+	bool testInteraction (  IndividualT<double> indiv1, IndividualT<double> indiv2, unsigned indexI  ); 
 
 public:
 	CCVIL(RunParameter* runParam);
