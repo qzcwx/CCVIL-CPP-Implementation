@@ -188,7 +188,7 @@ void CCVIL::run(){
 			(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
 		}
 
-		optimizationStage();
+		//		optimizationStage();
 
 		gettimeofday(&end, NULL);
 		/* algorithm runing part: end */
@@ -354,11 +354,11 @@ void CCVIL::learningStage(){
  * ===  FUNCTION  ======================================================================
  *         Name:  CCVIL::binSearchLearnStage
  *  Description:  locate the interaction with binary search approach, which intends to 
- *  							reduce the runtime complexity from O(l) to O(lg l)
+ *  							reduce the runtime complexity from O(l*l) to O( l * lg l)
  * =====================================================================================
  */
 	void
-CCVIL::binSearchLearnStage (  )
+CCVIL::binSearchLearnStage ()
 {
 
 	// intialize groupInfo to {{1}, {2}, ..., {N}}
@@ -375,44 +375,65 @@ CCVIL::binSearchLearnStage (  )
 	// upperThreshold: stop criteria if the problem is found non-separable, i.e., groupInfo.size() < dimension.
 	while (fes < upperThreshold && (fes<=lowerThreshold || groupInfo.size()<param->dimension)) {
 		unsigned indexI = floor(Rng::uni()*param->dimension);
+		printf ( "index I = %d\n", indexI );
 
 		IndividualT<double> indiv1(ChromosomeT<double>(param->dimension));
 		indiv1[0].initialize(fp->getMinX(), fp->getMaxX()); 
+		printf ( "indiv 1\n" );
+		printPopulation(indiv1); 
 
-		IndividualT<double> indiv2(ChromosomeT<double>(param->dimension));
-		indiv2[0].initialize(fp->getMinX(), fp->getMaxX()); 
+		IndividualT<double> indiv0(ChromosomeT<double>(param->dimension));
+		indiv0[0].initialize(fp->getMinX(), fp->getMaxX()); 
+		printf ( "indiv 0\n" );
+		printPopulation(indiv0); 
 
 		unsigned groupI = lookUpGroup[indexI]; 
+		printf ( "group Index that indexI belongs to: %d\n", groupI );
 
+		IndividualT<double> indiv2(indiv0);
 		for (unsigned i=0; i < groupInfo[groupI].size(); i++){
 			indiv2[0][groupInfo[groupI][i]] = indiv1[0][groupInfo[groupI][i]]; 
 		}
+		printf ( "indiv2\n" );
+		printPopulation(indiv2); 
 
 		double randI = Rng::uni() * (fp->getMaxX() - fp->getMinX()) + fp->getMinX(); 
+		printf ( "mutated gene = %.16f\n", randI );
+
 		IndividualT<double> indiv1_sub(indiv1);
 		indiv1_sub[0][indexI] = randI; 
-		IndividualT<double> indiv2_sub(indiv2);
-		indiv2_sub[0][indexI] = randI; 
+		printf ( "indiv 1 sub\n" );
+		printPopulation(indiv1_sub);
 
-//		double fes1, fes1_sub, fes2, fes2_sub; 
-		
+		IndividualT<double> indiv2_sub(indiv2);
+		indiv2_sub[0][indexI] = randI;
+		printf ( "indiv 2 sub\n" );
+		printPopulation(indiv2_sub);
+
 		indiv1.setFitness( fp->compute(indiv1[0]) );
 		indiv2.setFitness( fp->compute(indiv2[0]) );
 		indiv1_sub.setFitness( fp->compute(indiv1_sub[0]) );
 		indiv2_sub.setFitness( fp->compute(indiv2_sub[0]) );
 		fes += 4; 
 
+		double fesIndiv1Delta = indiv1.getFitness() - indiv1_sub.getFitness(); 
+		double fesIndiv2Delta = indiv2.getFitness() - indiv2_sub.getFitness(); 
+		printf ( "fes: indiv1 =\t\t%.16f\tindiv2 =\t%.16f\nfes: indiv1_sub =\t%.16f\tindiv2_sub =\t%.16f\n",indiv1.getFitness(),indiv2.getFitness(),indiv1_sub.getFitness(),indiv2_sub.getFitness());
+		printf ( "fes delta: indiv1 = %.30f, indiv2 = %.30f\n", fesIndiv1Delta, fesIndiv2Delta);
+
 		int interIndex; 
-		if ( (indiv1.getFitness()-indiv1_sub.getFitness()) != (indiv2.getFitness()-indiv2_sub.getFitness())){
-			 interIndex = findInteractPosition(indiv1, indiv2, indexI); 
+		printf ( "the difference = %.30f, differ rate = %.30f\n", fesIndiv1Delta - fesIndiv2Delta, abs((fesIndiv1Delta - fesIndiv2Delta)/max(abs(fesIndiv1Delta), abs(fesIndiv2Delta))) );
+		if ( abs((fesIndiv1Delta - fesIndiv2Delta)/max(abs(fesIndiv1Delta), abs(fesIndiv2Delta)))>1e-6 ){
+			printf ( "fes delta not equal\n");
+			interIndex = findInteractPosition(indiv1, indiv2, indexI); 
 		}else {
+			printf ( "fes delta equal\n" );
 			interIndex = -1; 
 		}
 
-
 		if (interIndex != -1){
-			printf ( "%ld\t%d\n", fes/3,groupInfo.size() );
-		  unsigned group1 = lookUpGroup[indexI];
+			printf ("%d & %d: %ld\t%d\n", indexI, interIndex, fes, groupInfo.size());
+			unsigned group1 = lookUpGroup[indexI];
 			unsigned group2 = lookUpGroup[interIndex];
 			combineGroup( group1, group2 );
 		}
@@ -446,7 +467,7 @@ CCVIL::findInteractPosition ( IndividualT<double> indiv1, IndividualT<double> in
 
 	IndividualT<double> indiv3(indiv2);
 	for (unsigned i=0; i<diffDim.size()/2; i++){
-			indiv3[0][diffDim[i]] = indiv1[0][diffDim[i]]; 
+		indiv3[0][diffDim[i]] = indiv1[0][diffDim[i]]; 
 	}
 
 	double randI = Rng::uni() * (fp->getMaxX() - fp->getMinX()) + fp->getMinX(); 
@@ -494,7 +515,7 @@ void CCVIL::sampleLearnStage (  ) {
 
 	// 	testTimes = MaxFitEval*(param->learnPortion)/(double)3; 
 	//	printf ( "test times = %d\n", testTimes );
-//	localMaxFit = MaxFitEval*(param->learnPortion); 
+	//	localMaxFit = MaxFitEval*(param->learnPortion); 
 	//	printf ( "Local Max Fitness Evaluation for Learning Stage = %d\n", localMaxFit );
 
 	// each individual serves for one test
@@ -582,10 +603,10 @@ void CCVIL::sampleLearnStage (  ) {
 	sortGroupInfo();
 
 	// utilizing the information and store best found value in bestCand
-//	(*bestCand)=tempIndiv; 
+	//	(*bestCand)=tempIndiv; 
 
 	(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
-	
+
 	//	printf ( "After sorting, Group info\n" );
 	//	print2Dvector(groupInfo);
 
