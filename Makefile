@@ -11,8 +11,8 @@ F1.o F2.o F3.o F4.o F5.o F6.o F7.o F8.o F9.o F10.o\
 F11.o F12.o F13.o F14.o F15.o F16.o F17.o F18.o F19.o F20.o 
 #OBJECTS = main.o RunParameter.o F2.o Benchmarks.o
 
-main: $(OBJECTS)
-	$(CC) $(CXXFLAGS) -o main.out $(OBJECTS) $(LDFLAGS) $(LDLIBS)
+CCVIL: $(OBJECTS)
+	$(CC) $(CXXFLAGS) -o CCVIL $(OBJECTS) $(LDFLAGS) $(LDLIBS)
 
 main.o: main.cpp Header.h benchmark/RunParameter.h benchmark/Benchmarks.h CCVIL.h Archive.h\
 benchmark/F1.h benchmark/F2.h benchmark/F3.h benchmark/F4.h benchmark/F5.h benchmark/F6.h benchmark/F7.h benchmark/F8.h benchmark/F9.h benchmark/F10.h\
@@ -93,7 +93,7 @@ F20.o: benchmark/F20.h benchmark/Benchmarks.h benchmark/F20.cpp
 
 .PHONY : clean clrout
 clean:
-	rm -f main main.out $(OBJECTS)
+	rm -f CCVIL $(OBJECTS)
 
 clrout:
 	rm -fr result trace out outout
