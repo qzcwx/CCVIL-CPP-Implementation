@@ -375,12 +375,12 @@ CCVIL::binSearchLearnStage ()
 	// upperThreshold: stop criteria if the problem is found non-separable, i.e., groupInfo.size() < dimension.
 	while (fes < upperThreshold && (fes<=lowerThreshold || groupInfo.size()<param->dimension)) {
 		unsigned indexI = floor(Rng::uni()*param->dimension);
-//		printf ( "index I = %d\n", indexI );
+		//		printf ( "index I = %d\n", indexI );
 
 		IndividualT<double> indiv1(ChromosomeT<double>(param->dimension));
 		indiv1[0].initialize(fp->getMinX(), fp->getMaxX()); 
-//		printf ( "indiv 1\n" );
-//		printPopulation(indiv1); 
+		//		printf ( "indiv 1\n" );
+		//		printPopulation(indiv1); 
 
 		IndividualT<double> indiv0(ChromosomeT<double>(param->dimension));
 		indiv0[0].initialize(fp->getMinX(), fp->getMaxX()); 
@@ -406,11 +406,17 @@ CCVIL::binSearchLearnStage ()
 		}
 
 		if (interIndex != -1){
-			printf ("%d\t&\t%d:\t%ld\t%d\n", indexI, interIndex, fes, groupInfo.size());
 			unsigned group1 = lookUpGroup[indexI];
 			unsigned group2 = lookUpGroup[interIndex];
 			combineGroup( group1, group2 );
+			printf ("%d\t&\t%d:\t%ld\t%d\n", indexI, interIndex, fes, groupInfo.size());
 		}
+
+		if (groupInfo.size()==1){
+			printf ( "Converge to one single group\n" );
+			break; 
+		}
+
 	}
 }		/* -----  end of function CCVIL::binSearchLearnStage  ----- */
 
@@ -504,8 +510,12 @@ CCVIL::testInteraction (  IndividualT<double> indiv1, IndividualT<double> indiv2
 //	printf ( "fes: indiv1 =\t\t%.16f\tindiv2 =\t%.16f\nfes: indiv1_sub =\t%.16f\tindiv2_sub =\t%.16f\n",indiv1.getFitness(),indiv2.getFitness(),indiv1_sub.getFitness(),indiv2_sub.getFitness());
 //	printf ( "fes delta: indiv1 = %.30f, indiv2 = %.30f\n", fesIndiv1Delta, fesIndiv2Delta);
 //
-	if (abs((fesIndiv1Delta - fesIndiv2Delta)/max(abs(fesIndiv1Delta), abs(fesIndiv2Delta)))>5e-1) {
-		printf ( "the difference = %.30f, differ rate = %.30f\n", fesIndiv1Delta - fesIndiv2Delta, abs((fesIndiv1Delta - fesIndiv2Delta)/max(abs(fesIndiv1Delta), abs(fesIndiv2Delta))) );
+	if ( abs(fesIndiv1Delta - fesIndiv2Delta)/max(abs(indiv1.getFitness()), abs(indiv2.getFitness())) >1e-10) {
+//		printf ( "**************** Index %d ******************************\n", indexI );
+//		printf ( "fes: indiv1 =\t\t%.16f\tindiv2 =\t%.16f\nfes: indiv1_sub =\t%.16f\tindiv2_sub =\t%.16f\n",indiv1.getFitness(),indiv2.getFitness(),indiv1_sub.getFitness(),indiv2_sub.getFitness());
+//		printf ( "fes delta: indiv1 = %.30f, indiv2 = %.30f\n", fesIndiv1Delta, fesIndiv2Delta);
+//		printf ( "the difference = %.30f, differ rate = %.10f, differ rate = %.10f\n", fesIndiv1Delta - fesIndiv2Delta, abs((fesIndiv1Delta - fesIndiv2Delta)/max(abs(indiv1.getFitness()), abs(indiv2.getFitness()))), abs(fesIndiv1Delta - fesIndiv2Delta)/max(abs(indiv1.getFitness()), abs(indiv2.getFitness())) );
+//		printf ( "*******************************************************\n\n" );
 		return true; 
 	}else{
 		return false; 
