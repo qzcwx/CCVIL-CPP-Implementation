@@ -36,12 +36,11 @@ CCVIL::CCVIL(RunParameter* runParam){
 	if (param->learnStrategy==0){
 		lowerThreshold = runParam->lowerThreshold;
 		upperThreshold = min(round(MaxFitEval*param->learnPortion/(runParam->dimension*((1+1)*(3)+1))), 800.0); 
-	}else if (param->learnStrategy==4 || param->learnStrategy==5){
+	}else if (param->learnStrategy>=4){
 		lowerThreshold = 3*round(log(1-0.995)/log(1-1/(double)param->dimension));
 		upperThreshold = 3*(param->dimension)*((param->dimension)-1)/2; 
 	}
 	cout<<"Lower threshold = "<<lowerThreshold<<", Upper threshold = "<<upperThreshold<<endl;
-
 	bestCand = new IndividualT<double>(ChromosomeT<double>(param->dimension));
 }
 
@@ -50,7 +49,6 @@ CCVIL::~CCVIL(){
 	//	delete[] p;
 	delete[] impreciseGroup;
 	delete[] lookUpGroup;
-
 }
 
 void CCVIL::run(){
@@ -177,7 +175,7 @@ void CCVIL::run(){
 
 		if (param->learnStrategy == 0){
 			learningStage();
-		}else if (param->learnStrategy==4){
+		}else if (param->learnStrategy==4 || param->learnStrategy==6){
 			sampleLearnStage();
 		}else if (param->learnStrategy==5){
 			binSearchLearnStage(); 
@@ -188,7 +186,7 @@ void CCVIL::run(){
 			(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
 		}
 
-		//		optimizationStage();
+		optimizationStage();
 
 		gettimeofday(&end, NULL);
 		/* algorithm runing part: end */
@@ -603,14 +601,26 @@ void CCVIL::sampleLearnStage (  ) {
 		fes+=3; 
 
 		// for minimization problem
-		if ( indiv1_1.getFitness() > indiv2_1.getFitness() ){
-			tempIndiv = indiv2_1; 
-			sampleInfo(indiv2_1.getFitness());
-			if (tempIndiv.getFitness()<bestFit){
-				bestFit = tempIndiv.getFitness(); 
+		if (param->learnStrategy == 4){
+			if ( indiv1_1.getFitness() > indiv2_1.getFitness() ){
+				tempIndiv = indiv2_1; 
+				sampleInfo(indiv2_1.getFitness());
+				if (tempIndiv.getFitness()<bestFit){
+					bestFit = tempIndiv.getFitness(); 
+				}
+			} else {
+				sampleInfo(indiv1_1.getFitness());
 			}
-		} else {
-			sampleInfo(indiv1_1.getFitness());
+		}else if (param->learnStrategy == 6){
+			if ( Rng::uni()<0.5 ){
+				tempIndiv = indiv2_1; 
+				sampleInfo(indiv2_1.getFitness());
+				if (tempIndiv.getFitness()<bestFit){
+					bestFit = tempIndiv.getFitness(); 
+				}
+			} else {
+				sampleInfo(indiv1_1.getFitness());
+			}
 		}
 
 		//		if ( indiv1_2.getFitness() > indiv2_2.getFitness() ){
@@ -638,8 +648,8 @@ void CCVIL::sampleLearnStage (  ) {
 
 	(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
 
-	//	printf ( "After sorting, Group info\n" );
-	//	print2Dvector(groupInfo);
+	printf ( "After sorting, Group info\n" );
+	print2Dvector(groupInfo);
 
 }		/* -----  end of function CCVIL::sampleLearnStage  ----- */
 
@@ -2070,3 +2080,4 @@ CCVIL::getPriorInterStage ()
 	delete interPartArray;
 	delete randPermInter;
 }		/* -----  end of function CCVIL::getPriorInterStage  ----- */
+
