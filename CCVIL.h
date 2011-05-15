@@ -68,7 +68,6 @@ protected:
 	bool* impreciseGroup;
 	unsigned bestCandIndex;
 
-
 	// in result folder
 	FILE *resultFP;
 	vector<double> resultRec;

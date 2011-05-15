@@ -382,24 +382,24 @@ CCVIL::binSearchLearnStage ()
 
 		IndividualT<double> indiv0(ChromosomeT<double>(param->dimension));
 		indiv0[0].initialize(fp->getMinX(), fp->getMaxX()); 
-//		printf ( "indiv 0\n" );
-//		printPopulation(indiv0); 
+		//		printf ( "indiv 0\n" );
+		//		printPopulation(indiv0); 
 
 		unsigned groupI = lookUpGroup[indexI]; 
-//		printf ( "group Index that indexI belongs to: %d\n", groupI );
+		//		printf ( "group Index that indexI belongs to: %d\n", groupI );
 
 		IndividualT<double> indiv2(indiv0);
 		for (unsigned i=0; i < groupInfo[groupI].size(); i++){
 			indiv2[0][groupInfo[groupI][i]] = indiv1[0][groupInfo[groupI][i]]; 
 		}
-//		printf ( "indiv2\n" );
-//		printPopulation(indiv2); 
+		//		printf ( "indiv2\n" );
+		//		printPopulation(indiv2); 
 
 		if ( testInteraction(indiv1, indiv2, indexI) ){
-//			printf ( "fes delta not equal\n");
+			//			printf ( "fes delta not equal\n");
 			interIndex = findInteractPosition(indiv1, indiv2, indexI); 
 		}else {
-//			printf ( "fes delta equal\n" );
+			//			printf ( "fes delta equal\n" );
 			interIndex = -1; 
 		}
 
@@ -414,8 +414,9 @@ CCVIL::binSearchLearnStage ()
 			printf ( "Converge to one single group\n" );
 			break; 
 		}
-
 	}
+
+	sortGroupInfo();
 }		/* -----  end of function CCVIL::binSearchLearnStage  ----- */
 
 
@@ -435,14 +436,14 @@ CCVIL::findInteractPosition ( IndividualT<double> indiv1, IndividualT<double> in
 {
 	vector<unsigned> diffDim; 
 
-//	printf("===================================================\n");
-//	printf ( "Find Interacting Position\n" );
+	//	printf("===================================================\n");
+	//	printf ( "Find Interacting Position\n" );
 
-//	printf ( "indiv 1\n" );
-//	printPopulation(indiv1); 
+	//	printf ( "indiv 1\n" );
+	//	printPopulation(indiv1); 
 
-//	printf ( "indiv 2\n" );
-//	printPopulation(indiv2); 
+	//	printf ( "indiv 2\n" );
+	//	printPopulation(indiv2); 
 
 	// find the dimensions where indiv1 & indiv2 differ
 	for (unsigned i=0; i<param->dimension; i++){
@@ -450,8 +451,8 @@ CCVIL::findInteractPosition ( IndividualT<double> indiv1, IndividualT<double> in
 			diffDim.push_back(i);
 		}
 	}
-//	printf ( "diff Dim vector\n" );
-//	printVector(diffDim); 
+	//	printf ( "diff Dim vector\n" );
+	//	printVector(diffDim); 
 
 	if (diffDim.size()==1){
 		return diffDim[0]; 
@@ -461,10 +462,10 @@ CCVIL::findInteractPosition ( IndividualT<double> indiv1, IndividualT<double> in
 	for (unsigned i=0; i<diffDim.size()/2; i++){
 		indiv3[0][diffDim[i]] = indiv1[0][diffDim[i]]; 
 	}
-//	printf ( "diffDim.size/2 = %d\n", diffDim.size()/2 );
+	//	printf ( "diffDim.size/2 = %d\n", diffDim.size()/2 );
 
-//	printf ( "indiv 3\n" );
-//	printPopulation(indiv3); 
+	//	printf ( "indiv 3\n" );
+	//	printPopulation(indiv3); 
 
 	if ( testInteraction(indiv1, indiv3, indexI)){
 		return findInteractPosition(indiv1, indiv3, indexI); 
@@ -472,7 +473,7 @@ CCVIL::findInteractPosition ( IndividualT<double> indiv1, IndividualT<double> in
 		return findInteractPosition(indiv2, indiv3, indexI); 
 	}
 
-//	printf("===================================================\n");
+	//	printf("===================================================\n");
 }		/* -----  end of function CCVIL::findInteractPosition  ----- */
 
 /* 
@@ -485,17 +486,17 @@ CCVIL::findInteractPosition ( IndividualT<double> indiv1, IndividualT<double> in
 CCVIL::testInteraction (  IndividualT<double> indiv1, IndividualT<double> indiv2, unsigned indexI  )
 {
 	double randI = Rng::uni() * (fp->getMaxX() - fp->getMinX()) + fp->getMinX(); 
-//	printf ( "mutated gene = %.16f\n", randI );
+	//	printf ( "mutated gene = %.16f\n", randI );
 
 	IndividualT<double> indiv1_sub(indiv1);
 	indiv1_sub[0][indexI] = randI; 
-//	printf ( "indiv 1 sub\n" );
-//	printPopulation(indiv1_sub);
+	//	printf ( "indiv 1 sub\n" );
+	//	printPopulation(indiv1_sub);
 
 	IndividualT<double> indiv2_sub(indiv2);
 	indiv2_sub[0][indexI] = randI;
-//	printf ( "indiv 2 sub\n" );
-//	printPopulation(indiv2_sub);
+	//	printf ( "indiv 2 sub\n" );
+	//	printPopulation(indiv2_sub);
 
 	indiv1.setFitness( fp->compute(indiv1[0]) );
 	indiv2.setFitness( fp->compute(indiv2[0]) );
@@ -505,15 +506,15 @@ CCVIL::testInteraction (  IndividualT<double> indiv1, IndividualT<double> indiv2
 
 	double fesIndiv1Delta = indiv1.getFitness() - indiv1_sub.getFitness(); 
 	double fesIndiv2Delta = indiv2.getFitness() - indiv2_sub.getFitness(); 
-//	printf ( "fes: indiv1 =\t\t%.16f\tindiv2 =\t%.16f\nfes: indiv1_sub =\t%.16f\tindiv2_sub =\t%.16f\n",indiv1.getFitness(),indiv2.getFitness(),indiv1_sub.getFitness(),indiv2_sub.getFitness());
-//	printf ( "fes delta: indiv1 = %.30f, indiv2 = %.30f\n", fesIndiv1Delta, fesIndiv2Delta);
-//
+	//	printf ( "fes: indiv1 =\t\t%.16f\tindiv2 =\t%.16f\nfes: indiv1_sub =\t%.16f\tindiv2_sub =\t%.16f\n",indiv1.getFitness(),indiv2.getFitness(),indiv1_sub.getFitness(),indiv2_sub.getFitness());
+	//	printf ( "fes delta: indiv1 = %.30f, indiv2 = %.30f\n", fesIndiv1Delta, fesIndiv2Delta);
+	//
 	if ( abs(fesIndiv1Delta - fesIndiv2Delta)/max(abs(indiv1.getFitness()), abs(indiv2.getFitness())) >1e-10) {
-//		printf ( "**************** Index %d ******************************\n", indexI );
-//		printf ( "fes: indiv1 =\t\t%.16f\tindiv2 =\t%.16f\nfes: indiv1_sub =\t%.16f\tindiv2_sub =\t%.16f\n",indiv1.getFitness(),indiv2.getFitness(),indiv1_sub.getFitness(),indiv2_sub.getFitness());
-//		printf ( "fes delta: indiv1 = %.30f, indiv2 = %.30f\n", fesIndiv1Delta, fesIndiv2Delta);
-//		printf ( "the difference = %.30f, differ rate = %.10f, differ rate = %.10f\n", fesIndiv1Delta - fesIndiv2Delta, abs((fesIndiv1Delta - fesIndiv2Delta)/max(abs(indiv1.getFitness()), abs(indiv2.getFitness()))), abs(fesIndiv1Delta - fesIndiv2Delta)/max(abs(indiv1.getFitness()), abs(indiv2.getFitness())) );
-//		printf ( "*******************************************************\n\n" );
+		//		printf ( "**************** Index %d ******************************\n", indexI );
+		//		printf ( "fes: indiv1 =\t\t%.16f\tindiv2 =\t%.16f\nfes: indiv1_sub =\t%.16f\tindiv2_sub =\t%.16f\n",indiv1.getFitness(),indiv2.getFitness(),indiv1_sub.getFitness(),indiv2_sub.getFitness());
+		//		printf ( "fes delta: indiv1 = %.30f, indiv2 = %.30f\n", fesIndiv1Delta, fesIndiv2Delta);
+		//		printf ( "the difference = %.30f, differ rate = %.10f, differ rate = %.10f\n", fesIndiv1Delta - fesIndiv2Delta, abs((fesIndiv1Delta - fesIndiv2Delta)/max(abs(indiv1.getFitness()), abs(indiv2.getFitness()))), abs(fesIndiv1Delta - fesIndiv2Delta)/max(abs(indiv1.getFitness()), abs(indiv2.getFitness())) );
+		//		printf ( "*******************************************************\n\n" );
 		return true; 
 	}else{
 		return false; 
@@ -644,14 +645,25 @@ void CCVIL::sampleLearnStage (  ) {
 	sortGroupInfo();
 
 	// utilizing the information and store best found value in bestCand
-	//	(*bestCand)=tempIndiv; 
+	// (*bestCand)=tempIndiv; 
 
 	(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
 
-	printf ( "After sorting, Group info\n" );
-	print2Dvector(groupInfo);
-
+	//	printf ( "After sorting, Group info\n" );
+	//	print2Dvector(groupInfo);
 }		/* -----  end of function CCVIL::sampleLearnStage  ----- */
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  CCVIL::RandomSampleGenDef
+ *  Description:  Random Sampling 
+ * =====================================================================================
+ */
+	void
+CCVIL::RandomSampleGenDef (  )
+{
+	return ;
+}		/* -----  end of function CCVIL::RandomSampleGenDef  ----- */
 
 /*
  * procedure of optimization stage, based on the groupInfo to group the entire population
@@ -661,7 +673,7 @@ void CCVIL::optimizationStage(){
 	bool learnStageFlag = false;
 
 
-	//	printf("\nOptimization Stage, groupAmount = %d\n", groupAmount);
+	printf("\nOptimization Stage, groupAmount = %d\n", groupAmount);
 
 	cycle = 0;
 	//	learnStageFlag = false, generate new population with regard to the groupInfo
@@ -695,8 +707,8 @@ void CCVIL::optimizationStage(){
 		//				fp->getID(), 	cycle, 			(int)groupInfo.size(), fes, improveRate, bestCand->fitnessValue());
 
 		for (unsigned i=0; i<groupAmount && fes<MaxFitEval; i++) {
-			//			printf ( "Phase = %d\n" , i);
-			//			printf ( "*****************************************************\n" );
+			printf ( "Phase = %d\n" , i);
+			printf ( "*****************************************************\n" );
 			if (failCounter[i] <= param->failThreshold){
 				//only optimize on current group, if no a single improvement in the past "failThreshold" successive cycle
 				innerImprove = JADECC(i,learnStageFlag);
@@ -770,7 +782,6 @@ void CCVIL::optimizationStage(){
 	delete[] failCounter;
 }
 
-
 /* 
  * JADECC: the internal optimizer of CCVIL
  * Optimize on one specific dimension for each run
@@ -838,9 +849,10 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 
 	parents.setMinimize();
 	offsprings.setMinimize();
-
+	printf ( "JADECC-0\n" );
 
 	for (unsigned i=0; i < parents.size(); i++){
+		printf ( "i = %d \n",i );
 		// run on individuals
 		if (learnStageFlag == true)  {
 			// For learning stage, groupInfo may merge internally, while pop always maintain one-dimensional group
@@ -854,7 +866,7 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 				}
 			}
 			preValInBestCand = (*bestCand)[0][index];
-		} else{
+		} else {
 			// For optimization stage, use goupInfo to enumerate all elements in the same group
 			for (unsigned j=0; j<parents[i][0].size(); j++){
 				// not belongs to the current optimized group
@@ -863,9 +875,9 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 				}
 
 				// deal with the current optimized dimensions
-				for (unsigned j=0; j< groupInfo[index].size(); j++){
-					unsigned I = groupInfo[index][j];
-					parents[i][0][I] = (pop[index])[i][0][j];
+				for (unsigned k=0; k< groupInfo[index].size(); k++){
+					unsigned I = groupInfo[index][k];
+					parents[i][0][I] = (pop[index])[i][0][k];
 				}
 			}
 		}
@@ -876,6 +888,7 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 		parents[i].setFitness( fp->compute(parents[i][0]) );
 	}
 
+	printf ( "JADECC\n" );
 	/* Print the struture of the entire population */
 
 	//	if (cycle==5 && index ==0){
@@ -911,14 +924,9 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 	sampleInfo(preBestVal);
 
 
+	printf ( "Before Interactions of JADECC\n" );
 	/***************************** Iterations **************************/
 	while ( g<=G && fes < MaxFitEval){
-
-		//	if (cycle==5 && index ==0){
-		//		printf("***************************** Iterations **************************\n");
-		//		printf("Generation %d, fes %ld\n", g, fes);
-		//	}
-
 		vector<double> goodCR, goodF, f_rec; 
 
 		goodCR.clear();
@@ -1118,14 +1126,14 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 		//		printFitness(ui);
 		//	}
 
-
 		if (g % (20000/vecIndex.size()) == 0){
 			if ( learnStageFlag == true ) {
 				printf("LearningStage, GroupNum = %d, D = %d, groupIndex = %d, Cycle = %d, G = %d, fes = %ld, Best Fitness = %.8e\n", (int)groupInfo.size(), (int)vecIndex.size(), index, cycle, g, fes, parents.best().fitnessValue() );
-			}else{
+			} else {
 				printf("OptimizationStage, GroupNum = %d, D = %d, groupIndex = %d, Cycle = %d, G = %d, fes = %ld, Best Fitness = %.8e\n", (int)groupInfo.size(), (int)vecIndex.size(), index, cycle, g, fes, parents.best().fitnessValue());
 			}
 		}
+
 		delete[] randIndex;
 		delete[] indBest;
 
@@ -2080,4 +2088,3 @@ CCVIL::getPriorInterStage ()
 	delete interPartArray;
 	delete randPermInter;
 }		/* -----  end of function CCVIL::getPriorInterStage  ----- */
-
