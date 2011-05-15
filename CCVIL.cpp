@@ -179,6 +179,8 @@ void CCVIL::run(){
 			sampleLearnStage();
 		}else if (param->learnStrategy==5){
 			binSearchLearnStage(); 
+		}else if (param->learnStrategy==7){
+			RandomSampleGenDef(); 
 		}
 
 		if (param->learnStrategy >= 1 && param->learnStrategy <= 3){
@@ -662,7 +664,53 @@ void CCVIL::sampleLearnStage (  ) {
 	void
 CCVIL::RandomSampleGenDef (  )
 {
-	return ;
+	unsigned indexI=0, indexJ=0; 
+	double randi; 
+
+	// generate groupInfo according to interPartArray
+	groupInfo.clear();
+	// initialize the groupInfo
+	for (unsigned j = 0; j<param->dimension; j++){
+		vector<unsigned> tempVec;
+		tempVec.push_back(j);
+		lookUpGroup[j] = j;
+		groupInfo.push_back(tempVec);
+	}
+
+
+	while (fes < upperThreshold && (fes<=lowerThreshold || groupInfo.size()<param->dimension)) {
+
+		// each individual serves for one test
+		IndividualT<double> tempIndiv(ChromosomeT<double>(param->dimension));
+		tempIndiv[0].initialize(fp->getMinX(), fp->getMaxX()); 
+		IndividualT<double> indiv(tempIndiv);
+
+		indexI = floor(Rng::uni()*param->dimension);
+		indexJ = floor(Rng::uni()*param->dimension);
+
+		while ( (indexI==indexJ || lookUpGroup[indexI]==lookUpGroup[indexJ])&& groupInfo.size()!=1 ){
+			indexI = floor(Rng::uni()*param->dimension);
+			indexJ = floor(Rng::uni()*param->dimension);
+		}
+
+		randi = Rng::uni() * (fp->getMaxX() - fp->getMinX()) + fp->getMinX(); 
+		indiv[0][indexJ] = randi; 
+
+	 if(testInteraction(tempIndiv, indiv, indexI)){
+			unsigned group1 = lookUpGroup[indexI];
+			unsigned group2 = lookUpGroup[indexJ];
+			combineGroup( group1, group2 );
+			printf ("%d\t&\t%d:\t%ld\t%d\n", indexI, indexJ, fes, groupInfo.size());
+	 }
+
+	 if (groupInfo.size()==1){
+		 printf ( "Converge to one single group\n" );
+		 break; 
+	 }
+	}
+
+	(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
+	sortGroupInfo();
 }		/* -----  end of function CCVIL::RandomSampleGenDef  ----- */
 
 /*
