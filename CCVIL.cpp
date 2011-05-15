@@ -181,6 +181,8 @@ void CCVIL::run(){
 			binSearchLearnStage(); 
 		}else if (param->learnStrategy==7){
 			RandomSampleGenDef(); 
+		}else if (param->learnStrategy==8){
+			RandomWalkGenDef(); 
 		}
 
 		if (param->learnStrategy >= 1 && param->learnStrategy <= 3){
@@ -501,10 +503,32 @@ CCVIL::testInteraction (  IndividualT<double> indiv1, IndividualT<double> indiv2
 	//	printPopulation(indiv2_sub);
 
 	indiv1.setFitness( fp->compute(indiv1[0]) );
+	fes += 1; 
+	sampleInfo(indiv1.getFitness());
+	if (indiv1.getFitness()<bestFit){
+		bestFit = indiv1.getFitness(); 
+	}
+
 	indiv2.setFitness( fp->compute(indiv2[0]) );
+	fes += 1; 
+	sampleInfo(indiv2.getFitness());
+	if (indiv2.getFitness()<bestFit){
+		bestFit = indiv2.getFitness(); 
+	}
+
 	indiv1_sub.setFitness( fp->compute(indiv1_sub[0]) );
+	fes += 1; 
+	sampleInfo(indiv1_sub.getFitness());
+	if (indiv1_sub.getFitness()<bestFit){
+		bestFit = indiv1_sub.getFitness(); 
+	}
+
 	indiv2_sub.setFitness( fp->compute(indiv2_sub[0]) );
-	fes += 4; 
+	fes += 1; 
+	sampleInfo(indiv2_sub.getFitness());
+	if (indiv2_sub.getFitness()<bestFit){
+		bestFit = indiv2_sub.getFitness(); 
+	}
 
 	double fesIndiv1Delta = indiv1.getFitness() - indiv1_sub.getFitness(); 
 	double fesIndiv2Delta = indiv2.getFitness() - indiv2_sub.getFitness(); 
@@ -522,6 +546,95 @@ CCVIL::testInteraction (  IndividualT<double> indiv1, IndividualT<double> indiv2
 		return false; 
 	}
 }		/* -----  end of function CCVILL::testInteraction  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  CCVIL::TestInterWalk
+ *  Description:  add a new parameter, localBest. It is updated inside the function
+ * =====================================================================================
+ */
+	bool
+CCVIL::TestInterWalk ( IndividualT<double> indiv2, unsigned indexI, unsigned indexJ, IndividualT<double> &localBest )
+{
+	double randI = Rng::uni() * (fp->getMaxX() - fp->getMinX()) + fp->getMinX(); 
+
+	IndividualT<double> indiv1(localBest); 
+
+	IndividualT<double> indiv1_sub(indiv1);
+	indiv1_sub[0][indexI] = randI; 
+
+	IndividualT<double> indiv2_sub(indiv2);
+	indiv2_sub[0][indexI] = randI;
+
+	indiv1.setFitness( fp->compute(indiv1[0]) );
+	fes += 1; 
+	sampleInfo(indiv1.getFitness());
+	if (indiv1.getFitness()<bestFit){
+		bestFit = indiv1.getFitness(); 
+	}
+
+	indiv2.setFitness( fp->compute(indiv2[0]) );
+	fes += 1; 
+	sampleInfo(indiv2.getFitness());
+	if (indiv2.getFitness()<bestFit){
+		bestFit = indiv2.getFitness(); 
+	}
+
+	indiv1_sub.setFitness( fp->compute(indiv1_sub[0]) );
+	fes += 1; 
+	sampleInfo(indiv1_sub.getFitness());
+	if (indiv1_sub.getFitness()<bestFit) {
+		bestFit = indiv1_sub.getFitness(); 
+	}
+
+	indiv2_sub.setFitness( fp->compute(indiv2_sub[0]) );
+	fes += 1; 
+	sampleInfo(indiv2_sub.getFitness());
+	if (indiv2_sub.getFitness()<bestFit){
+		bestFit = indiv2_sub.getFitness(); 
+	}
+
+	// update the localBest for producing random candidate afterwards
+	if (indiv1.getFitness() < indiv1_sub.getFitness()){
+		// indiv1 is better
+		localBest[0][indexI] = indiv1[0][indexI]; 
+	}else{
+		// indiv1_sub is better
+		localBest[0][indexI] = indiv1_sub[0][indexI]; 
+	}
+
+	if (indiv1.getFitness() < indiv2.getFitness()){
+		// indiv1 is better
+		localBest[0][indexJ] = indiv1[0][indexJ]; 
+	}else{
+		localBest[0][indexJ] = indiv2[0][indexJ]; 
+	}
+
+	double fesIndiv1Delta = indiv1.getFitness() - indiv1_sub.getFitness(); 
+	double fesIndiv2Delta = indiv2.getFitness() - indiv2_sub.getFitness(); 
+	//	printf ( "fes: indiv1 =\t\t%.16f\tindiv2 =\t%.16f\nfes: indiv1_sub =\t%.16f\tindiv2_sub =\t%.16f\n",indiv1.getFitness(),indiv2.getFitness(),indiv1_sub.getFitness(),indiv2_sub.getFitness());
+	//	printf ( "fes delta: indiv1 = %.30f, indiv2 = %.30f\n", fesIndiv1Delta, fesIndiv2Delta);
+	//
+	
+	//	for (unsigned i=0; i<param->dimension; i++){
+	//		if (indiv1[0][i] != localBest[0][i]){
+	//			printf ( "Local Best Updatedm\n" );
+	//			break; 
+	//		}
+	//	}		
+
+	if ( abs(fesIndiv1Delta - fesIndiv2Delta)/max(abs(indiv1.getFitness()), abs(indiv2.getFitness())) >1e-10) {
+		//		printf ( "**************** Index %d ******************************\n", indexI );
+		//		printf ( "fes: indiv1 =\t\t%.16f\tindiv2 =\t%.16f\nfes: indiv1_sub =\t%.16f\tindiv2_sub =\t%.16f\n",indiv1.getFitness(),indiv2.getFitness(),indiv1_sub.getFitness(),indiv2_sub.getFitness());
+		//		printf ( "fes delta: indiv1 = %.30f, indiv2 = %.30f\n", fesIndiv1Delta, fesIndiv2Delta);
+		//		printf ( "the difference = %.30f, differ rate = %.10f, differ rate = %.10f\n", fesIndiv1Delta - fesIndiv2Delta, abs((fesIndiv1Delta - fesIndiv2Delta)/max(abs(indiv1.getFitness()), abs(indiv2.getFitness()))), abs(fesIndiv1Delta - fesIndiv2Delta)/max(abs(indiv1.getFitness()), abs(indiv2.getFitness())) );
+		//		printf ( "*******************************************************\n\n" );
+		return true; 
+	}else{
+		return false; 
+	}
+}		/* -----  end of function CCVIL::TestInterWalk  ----- */
 
 /* 
  * ===  FUNCTION  ======================================================================
@@ -696,22 +809,90 @@ CCVIL::RandomSampleGenDef (  )
 		randi = Rng::uni() * (fp->getMaxX() - fp->getMinX()) + fp->getMinX(); 
 		indiv[0][indexJ] = randi; 
 
-	 if(testInteraction(tempIndiv, indiv, indexI)){
+		if(testInteraction(tempIndiv, indiv, indexI)){
 			unsigned group1 = lookUpGroup[indexI];
 			unsigned group2 = lookUpGroup[indexJ];
 			combineGroup( group1, group2 );
 			printf ("%d\t&\t%d:\t%ld\t%d\n", indexI, indexJ, fes, groupInfo.size());
-	 }
+		}
 
-	 if (groupInfo.size()==1){
-		 printf ( "Converge to one single group\n" );
-		 break; 
-	 }
+		if (groupInfo.size()==1){
+			printf ( "Converge to one single group\n" );
+			break; 
+		}
 	}
 
 	(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
 	sortGroupInfo();
 }		/* -----  end of function CCVIL::RandomSampleGenDef  ----- */
+
+
+/* 
+ * ===  FUNCTION  ======================================================================
+ *         Name:  CCVIL::RandomWalkGenDef
+ *  Description:  
+ * =====================================================================================
+ */
+	void
+CCVIL::RandomWalkGenDef (  )
+{
+	unsigned indexI=0, indexJ=0; 
+	double randi; 
+
+	// generate groupInfo according to interPartArray
+	groupInfo.clear();
+	// initialize the groupInfo
+	for (unsigned j = 0; j<param->dimension; j++){
+		vector<unsigned> tempVec;
+		tempVec.push_back(j);
+		lookUpGroup[j] = j;
+		groupInfo.push_back(tempVec);
+	}
+
+	IndividualT<double> localBest(ChromosomeT<double>(param->dimension));
+	localBest[0].initialize(fp->getMinX(), fp->getMaxX()); 
+
+	while (fes < upperThreshold && (fes<=lowerThreshold || groupInfo.size()<param->dimension)) {
+
+		// each individual serves for one test
+		IndividualT<double> indiv(localBest);
+
+		indexI = floor(Rng::uni()*param->dimension);
+		indexJ = floor(Rng::uni()*param->dimension);
+
+		while ( (indexI==indexJ || lookUpGroup[indexI]==lookUpGroup[indexJ])&& groupInfo.size()!=1 ){
+			indexI = floor(Rng::uni()*param->dimension);
+			indexJ = floor(Rng::uni()*param->dimension);
+		}
+
+		randi = Rng::uni() * (fp->getMaxX() - fp->getMinX()) + fp->getMinX(); 
+		indiv[0][indexJ] = randi; 
+
+		
+		IndividualT<double> tempIndiv(localBest);
+		if(TestInterWalk( indiv, indexI, indexJ, localBest)){
+			unsigned group1 = lookUpGroup[indexI];
+			unsigned group2 = lookUpGroup[indexJ];
+			combineGroup( group1, group2 );
+			printf ("%d\t&\t%d:\t%ld\t%d\n", indexI, indexJ, fes, groupInfo.size());
+		}
+
+		for (unsigned i=0; i<param->dimension; i++){
+			if (tempIndiv[0][i] != localBest[0][i]){
+				printf ( "Local Best Updatedm\n" );
+				break; 
+			}
+		}		
+
+		if (groupInfo.size()==1){
+			printf ( "Converge to one single group\n" );
+			break; 
+		}
+	}
+
+	(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
+	sortGroupInfo();
+}		/* -----  end of function CCVIL::RandomWalkGenDef  ----- */
 
 /*
  * procedure of optimization stage, based on the groupInfo to group the entire population

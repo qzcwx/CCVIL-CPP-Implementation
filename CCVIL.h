@@ -124,6 +124,8 @@ protected:
 	int findInteractPosition ( IndividualT<double> indiv1, IndividualT<double> indiv2, unsigned indexI ); 
 	bool testInteraction ( IndividualT<double> indiv1, IndividualT<double> indiv2, unsigned indexI ); 
 	void RandomSampleGenDef (); 
+	bool TestInterWalk (  IndividualT<double> indiv2, unsigned indexI, unsigned indexJ, IndividualT<double> &localBest ); 
+	void RandomWalkGenDef (  ); 
 
 public:
 	CCVIL(RunParameter* runParam);
