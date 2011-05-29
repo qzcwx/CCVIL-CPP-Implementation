@@ -14,6 +14,7 @@
  *
  * =====================================================================================
  */
+
 #ifndef _CCVIL_H
 #define _CCVIL_H
 
@@ -124,8 +125,11 @@ protected:
 	int findInteractPosition ( IndividualT<double> indiv1, IndividualT<double> indiv2, unsigned indexI ); 
 	bool testInteraction ( IndividualT<double> indiv1, IndividualT<double> indiv2, unsigned indexI ); 
 	void RandomSampleGenDef (); 
-	bool TestInterWalk (  IndividualT<double> indiv2, unsigned indexI, unsigned indexJ, IndividualT<double> &localBest ); 
+	bool TestInterWalk (  IndividualT<double> indiv2, unsigned indexI, IndividualT<double> &localBest , vector< IndividualT<double> > &improveIndivVec); 
+	bool TestInterWalk (  IndividualT<double> indiv2, unsigned indexI, IndividualT<double> &localBest); 
 	void RandomWalkGenDef (  ); 
+	void BinSearchRandWalk (  ); 
+	int findInterPosWalk ( IndividualT<double> &localBest, IndividualT<double> indiv2, unsigned indexI , vector< IndividualT<double> > &improveIndivVec); 
 
 public:
 	CCVIL(RunParameter* runParam);
