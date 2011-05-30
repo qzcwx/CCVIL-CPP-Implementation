@@ -65,11 +65,12 @@ class RunParameter{
 
 		unsigned Afactor;
 
+		unsigned performOpt; 
+
 		// default constructor
 		RunParameter();
 
 		// default destructor
 		~RunParameter();
-
 };
 #endif

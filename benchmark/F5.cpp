@@ -70,14 +70,15 @@ double F5::compute(vector<double> x){
 
   if(Ovector == NULL) {
 		Ovector   = createShiftVector(dimension,minX,maxX);
-		//	  Pvector   = createPermVector(dimension);
+	  Pvector   = createPermVector(dimension);
 	  RotMatrix = createRotMatrix1D(nonSeparableGroupSize);
 
-		// TODO delete this debugging part
+/*
 		Pvector = new int[dimension];
 		for (int i=0; i<dimension; i++){
 			Pvector[i] = i; 
 		}
+		*/
   }
 
   for(i = 0; i < dimension; i++) {

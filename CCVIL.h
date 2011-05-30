@@ -78,6 +78,8 @@ protected:
 	// in trace folder
 	FILE *groupFP; 
 	vector<unsigned> groupRec;
+	FILE *groupFesFP; 
+	vector<unsigned> groupFesRec;
 	FILE *fesFP;
 	vector<unsigned> fesRec;
 	FILE *valFP;

@@ -37,8 +37,10 @@ CCVIL::CCVIL(RunParameter* runParam){
 		lowerThreshold = runParam->lowerThreshold;
 		upperThreshold = min(round(MaxFitEval*param->learnPortion/(runParam->dimension*((1+1)*(3)+1))), 800.0); 
 	}else if (param->learnStrategy>=4){
-		lowerThreshold = 3*round(log(1-0.995)/log(1-1/(double)param->dimension));
-		upperThreshold = 3*(param->dimension)*((param->dimension)-1)/2; 
+		//		lowerThreshold = 3*round(log(1-0.995)/log(1-1/(double)param->dimension));
+		//		upperThreshold = 3*(param->dimension)*((param->dimension)-1)/2; 
+		lowerThreshold = 3000000; 
+		upperThreshold = 3000000; 
 	}
 	cout<<"Lower threshold = "<<lowerThreshold<<", Upper threshold = "<<upperThreshold<<endl;
 	bestCand = new IndividualT<double>(ChromosomeT<double>(param->dimension));
@@ -96,7 +98,7 @@ void CCVIL::run(){
 	for (unsigned i=0; i < param->numOfRun; i++){
 		printf ( "\n\n\n========================== F %d, Run %d ========================\n\n\n", fp->getID(), i+1 );
 
-		if (param->learnStrategy == 0){
+		if ( param->learnStrategy >= 1 && param->learnStrategy<=3 ){
 			/************************* re-initialize the sampling points *************************/
 			groupInfo.clear();
 			// initialize the groupInfo
@@ -134,6 +136,20 @@ void CCVIL::run(){
 		printf("\n");
 		groupFP = fopen(groupStr.c_str(), "w");
 
+		string groupFesStr("trace/groupFesF");
+		groupFesStr += itos(fp->getID());
+		groupFesStr += "-";
+		groupFesStr += itos(i+1);
+		if (param->learnStrategy != 0){
+			groupFesStr += "-";
+			groupFesStr += itos (floor(param->knownGroupPercent[0]*100));
+		}
+		groupFesStr += "-";
+		groupFesStr += itos(param->learnStrategy);
+		groupFesStr += ".txt";
+		printf("groupFesStr = %s", groupFesStr.c_str());
+		printf("\n");
+		groupFesFP = fopen(groupFesStr.c_str(), "w");
 
 		string fesStr("trace/fesF");
 		fesStr += itos(fp->getID());
@@ -170,6 +186,9 @@ void CCVIL::run(){
 		fes = 0;
 		bestFit = DBL_MAX;
 
+		groupRec.push_back(groupInfo.size());
+		groupFesRec.push_back(fes);
+		
 		//		printf ( "Vector, size of interaction array =%d\n", (fp->getInterArray()).size() );
 		//		printVector(fp->getInterArray());
 
@@ -192,7 +211,9 @@ void CCVIL::run(){
 			(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
 		}
 
-		optimizationStage();
+		if (param->performOpt == 1){
+			optimizationStage();
+		}
 
 		gettimeofday(&end, NULL);
 		/* algorithm runing part: end */
@@ -213,6 +234,12 @@ void CCVIL::run(){
 		}
 		fclose(groupFP);
 		groupRec.clear();
+
+		for (unsigned i=0; i<groupFesRec.size(); i++){
+			fprintf(groupFesFP, "%d\n", groupFesRec[i]);
+		}
+		fclose(groupFesFP);
+		groupFesRec.clear();
 
 		for (unsigned i=0; i<fesRec.size(); i++){
 			fprintf(fesFP, "%d\n", fesRec[i]);
@@ -2260,6 +2287,8 @@ void CCVIL::combineGroup ( unsigned group1, unsigned group2 )
 			lookUpGroup[i]--;
 		}
 	}
+	groupRec.push_back(groupInfo.size());
+	groupFesRec.push_back(fes);
 }		/* -----  end of function CCVIL::combineGroup  ----- */
 
 /*
@@ -2313,7 +2342,6 @@ CCVIL::sampleInfo ( double curFit )
 {
 	if (!samplingPoints.empty()&& fes>=samplingPoints.front()){
 		samplingPoints.erase(samplingPoints.begin());
-		groupRec.push_back(groupInfo.size());
 		fesRec.push_back(fes);
 		valRec.push_back(curFit);
 	}

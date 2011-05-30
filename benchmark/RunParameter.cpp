@@ -71,6 +71,8 @@ RunParameter::RunParameter(){
 							learnPortion = atof (strArray);
 						}else if (strcmp(confType.c_str(), "Afactor")==0){
 							Afactor = atoi (strArray);
+						}else if (strcmp(confType.c_str(), "performOpt")==0){
+							performOpt = atoi (strArray);
 						}else if (strcmp(confType.c_str(), "knownGroupPercent")==0){
 							knownGroupPercent.push_back(atof (strArray));
 						}else if (strcmp(confType.c_str(), "learnStrategy")==0){

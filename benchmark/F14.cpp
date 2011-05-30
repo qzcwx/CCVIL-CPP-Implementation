@@ -30,7 +30,7 @@ F14::F14(RunParameter* runParam):Benchmarks(runParam){
 //		Pvector[i] = i;	
 //	}
 
-//	TODO: Neeed to change back to random one ****************************************************************************
+
 	Pvector=createPermVector(dimension);
 
 	MultiRotMatrix1D = createMultiRotateMatrix1D(nonSeparableGroupSize,dimension/(nonSeparableGroupSize));
