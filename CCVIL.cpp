@@ -108,15 +108,11 @@ void CCVIL::run(){
 				lookUpGroup[j] = j;
 				groupInfo.push_back(tempVec);
 			}
-			//		printf ( "groupInfo\n" );
-			//		print2Dvector(groupInfo);
 		}
 
 		samplingPoints.clear();
-		//	printf ( "Sampling Points\n" );
 		for (unsigned j=0 ; j<= param->samplingPoint; j++){
 			samplingPoints.push_back(j*param->samplingInterval);
-			//		printf("%d\n",samplingPoints.back());
 		}
 
 		/************************* in trace folder *************************/
@@ -125,7 +121,7 @@ void CCVIL::run(){
 		groupStr += itos(fp->getID());
 		groupStr += "-";
 		groupStr += itos(i+1);
-		if (param->learnStrategy != 0){
+		if (param->learnStrategy >= 1 && param->learnStrategy <= 3){
 			groupStr += "-";
 			groupStr += itos (floor(param->knownGroupPercent[0]*100));
 		}
@@ -140,7 +136,7 @@ void CCVIL::run(){
 		groupFesStr += itos(fp->getID());
 		groupFesStr += "-";
 		groupFesStr += itos(i+1);
-		if (param->learnStrategy != 0){
+		if (param->learnStrategy >= 1 && param->learnStrategy <= 3){
 			groupFesStr += "-";
 			groupFesStr += itos (floor(param->knownGroupPercent[0]*100));
 		}
@@ -155,7 +151,7 @@ void CCVIL::run(){
 		fesStr += itos(fp->getID());
 		fesStr += "-";
 		fesStr += itos(i+1);
-		if (param->learnStrategy != 0){
+		if (param->learnStrategy >= 1 && param->learnStrategy <= 3){
 			fesStr += "-";
 			fesStr += itos (floor(param->knownGroupPercent[0]*100));
 		}
@@ -170,7 +166,7 @@ void CCVIL::run(){
 		valStr += itos(fp->getID());
 		valStr += "-";
 		valStr += itos(i+1);
-		if (param->learnStrategy != 0){
+		if (param->learnStrategy >= 1 && param->learnStrategy <= 3){
 			valStr += "-";
 			valStr += itos (floor(param->knownGroupPercent[0]*100));
 		}

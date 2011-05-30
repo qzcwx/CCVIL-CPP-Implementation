@@ -1,5 +1,5 @@
 #!/bin/sh
-#PBS -N STDOUT-$jobID
+#PBS -N STDOUT-$jobID-$learnStrat
 #PBS -M chenwx.ustc@gmail.com
 #PBS -l cput=480:0:00
 #PBS -l walltime=300:0:0
@@ -7,22 +7,18 @@
 echo "I ran on:"
 cat $PBS_NODEFILE
 
-cd /home/fb16/tweise/wenxiang/workplace/CCVIL
+cd /home/fb16/tweise/test/workspace/CCVIL
 
 echo Job ID: $jobID, partialGroup $parGroup, learnStrategy $learnStrat
 
-# modifiy function to fun
-sed "s/^functionToRun [0-9]*$/functionToRun $jobID/" configure.ini > temp$jobID-$learnStrat
-cat temp$jobID-$learnStrat > configure.ini
-rm temp$jobID-$learnStrat-$learnStrat
+# modify function to fun
+sed -i "s/^functionToRun [0-9]*$/functionToRun $jobID/" configure.ini
 
-# modifiy the percentage of known grouping information to fun
+# modify the percentage of known grouping information to fun
 #sed "s/^knownGroupPercent [0-9]*$/knownGroupPercent $parGroup/" configure.ini > temp1
 #cat temp1 > configure.ini
 
-sed "s/^learnStrategy [0-9]*$/learnStrategy $learnStrat/" configure.ini > temp2$jobID-$learnStrat
-cat temp2$jobID-$learnStrat > configure.ini
-rm temp2$jobID-$learnStrat
+sed -i "s/^learnStrategy [0-9]*$/learnStrategy $learnStrat/" configure.ini
 
 # checkout whether the modified result is correct or not
 cat configure.ini | grep '^functionToRun [0-9]*$'
