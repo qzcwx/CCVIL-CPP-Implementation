@@ -98,7 +98,7 @@ void CCVIL::run(){
 	for (unsigned i=0; i < param->numOfRun; i++){
 		printf ( "\n\n\n========================== F %d, Run %d ========================\n\n\n", fp->getID(), i+1 );
 
-		if ( param->learnStrategy >= 1 && param->learnStrategy<=3 ){
+//		if ( param->learnStrategy >= 1 && param->learnStrategy<=3 ){
 			/************************* re-initialize the sampling points *************************/
 			groupInfo.clear();
 			// initialize the groupInfo
@@ -108,7 +108,7 @@ void CCVIL::run(){
 				lookUpGroup[j] = j;
 				groupInfo.push_back(tempVec);
 			}
-		}
+//		}
 
 		samplingPoints.clear();
 		for (unsigned j=0 ; j<= param->samplingPoint; j++){
@@ -177,10 +177,10 @@ void CCVIL::run(){
 		printf("\n");
 		valFP = fopen(valStr.c_str(), "w");
 
-		/* algorithm runing part: start */
-		gettimeofday(&start, NULL);
 		fes = 0;
 		bestFit = DBL_MAX;
+		/* algorithm runing part: start */
+		gettimeofday(&start, NULL);
 
 		groupRec.push_back(groupInfo.size());
 		groupFesRec.push_back(fes);
