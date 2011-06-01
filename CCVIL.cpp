@@ -119,13 +119,13 @@ void CCVIL::run(){
 		// store grouping information
 		string groupStr("trace/groupF");
 		groupStr += itos(fp->getID());
-		groupStr += "-";
+		groupStr += "-R";
 		groupStr += itos(i+1);
 		if (param->learnStrategy >= 1 && param->learnStrategy <= 3){
-			groupStr += "-";
+			groupStr += "-P";
 			groupStr += itos (floor(param->knownGroupPercent[0]*100));
 		}
-		groupStr += "-";
+		groupStr += "-S";
 		groupStr += itos(param->learnStrategy);
 		groupStr += ".txt";
 		printf("groupStr = %s", groupStr.c_str());
@@ -134,13 +134,13 @@ void CCVIL::run(){
 
 		string groupFesStr("trace/groupFesF");
 		groupFesStr += itos(fp->getID());
-		groupFesStr += "-";
+		groupFesStr += "-R";
 		groupFesStr += itos(i+1);
 		if (param->learnStrategy >= 1 && param->learnStrategy <= 3){
-			groupFesStr += "-";
+			groupFesStr += "-P";
 			groupFesStr += itos (floor(param->knownGroupPercent[0]*100));
 		}
-		groupFesStr += "-";
+		groupFesStr += "-S";
 		groupFesStr += itos(param->learnStrategy);
 		groupFesStr += ".txt";
 		printf("groupFesStr = %s", groupFesStr.c_str());
@@ -149,13 +149,13 @@ void CCVIL::run(){
 
 		string fesStr("trace/fesF");
 		fesStr += itos(fp->getID());
-		fesStr += "-";
+		fesStr += "-R";
 		fesStr += itos(i+1);
 		if (param->learnStrategy >= 1 && param->learnStrategy <= 3){
-			fesStr += "-";
+			fesStr += "-P";
 			fesStr += itos (floor(param->knownGroupPercent[0]*100));
 		}
-		fesStr += "-";
+		fesStr += "-S";
 		fesStr += itos(param->learnStrategy);
 		fesStr += ".txt";
 		printf("fesStr = %s", fesStr.c_str());
@@ -164,13 +164,13 @@ void CCVIL::run(){
 
 		string valStr("trace/valF");
 		valStr += itos(fp->getID());
-		valStr += "-";
+		valStr += "-R";
 		valStr += itos(i+1);
 		if (param->learnStrategy >= 1 && param->learnStrategy <= 3){
-			valStr += "-";
+			valStr += "-P";
 			valStr += itos (floor(param->knownGroupPercent[0]*100));
 		}
-		valStr += "-";
+		valStr += "-S";
 		valStr += itos(param->learnStrategy);
 		valStr += ".txt";
 		printf("valStr = %s", valStr.c_str());
