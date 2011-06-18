@@ -1,7 +1,7 @@
 #!/bin/bash
 make
 
-for ((i = 20;i>=1;i=$i-1)) 
+for ((i = 1;i<=20;i=$i+1)) 
 do
 	for ((j = 4; j<=9; j=$j+1))
 	do

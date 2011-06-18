@@ -1,13 +1,25 @@
 #include "Header.h"
 
-int main(){
+//int main(int argc, char **argv){
+//	printf ( "argc = %d\n", argc );
+//	for (int i=1; i<argc; i++){
+//		printf ( "arg %d: %s\n", i, argv[i] );
+//	}
+//}
+
+int main(int argc, char **argv){
 
 	RunParameter* runParam;
 	unsigned funcIndex;
 	Benchmarks* fp=NULL;
 	
-
-	runParam = new RunParameter();
+	if (argc==2){
+//		specify the file of configuration
+		runParam = new RunParameter(argv[1]);
+	} else{
+		// if no file specified, use the default file "configure.ini"
+		runParam = new RunParameter();
+	}
 	vector<unsigned> funcToRun=runParam->functionToRun;
 
 	
@@ -20,37 +32,12 @@ int main(){
 		delete fp;
 	}
 
-
-	/*  Test the population template */
-	//	parents->setMinimize();
-	//	offsprings->setMinimize();
-	//
-	//	for (i = 0; (unsigned int)i < parents.size(); ++i) {
-	//		parents[ i ][ 0 ]->initialize(fp->getMinX(), fp->getMaxX());
-	//	}
-	//
-	//	for (i = 0;(unsigned int)i < parents.size(); ++i){
-	//		printf("pop %d = %1.20E\n", i, fp->compute(parents[ i ][ 0 ]));
-	//		parents[ i ]->setFitness(fp->compute(parents[ i ][ 0 ]));
-	//	}
-
-	/*  Test the basic benchmark function */
-	//	double* X;
-	//	unsigned funcID = 1; // funcID ranges from 1 to 20 in this benchmark set
-	//	unsigned dim = 1000;
-	//	X = new double[dim];
-	//	for (unsigned i=0; i<dim; i++){
-	//		X[i]=0;
-	//	}
-	//	fp = generateFuncObj(funcID); 
-	//	printf("function F %d value = %1.20E\n", fp->getID(), fp->compute(X));
-	//	delete X;
-
 	delete algo;
 	delete runParam;
 
 	return 0;
 }
+
 
 // create new object of class according to the configure.ini file
 Benchmarks* generateFuncObj(RunParameter* runParam, int funcID){

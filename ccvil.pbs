@@ -12,19 +12,19 @@ cd /home/fb16/tweise/test/workspace/CCVIL
 echo Job ID: $jobID, partialGroup $parGroup, learnStrategy $learnStrat
 
 # modify function to fun
-sed -i "s/^functionToRun [0-9]*$/functionToRun $jobID/" configure.ini
+sed "s/^functionToRun [0-9]*$/functionToRun $jobID/" configure.ini > F$jobID-S$learnStrat
 
 # modify the percentage of known grouping information to fun
 #sed "s/^knownGroupPercent [0-9]*$/knownGroupPercent $parGroup/" configure.ini > temp1
 #cat temp1 > configure.ini
 
-sed -i "s/^learnStrategy [0-9]*$/learnStrategy $learnStrat/" configure.ini
+sed -i "s/^learnStrategy [0-9]*$/learnStrategy $learnStrat/" F$jobID-S$learnStrat
 
 # checkout whether the modified result is correct or not
-cat configure.ini | grep '^functionToRun [0-9]*$'
+cat F$jobID-S$learnStrat | grep '^functionToRun [0-9]*$'
 #cat configure.ini | grep '^knownGroupPercent [0-9]*$'
-cat configure.ini | grep '^learnStrategy [0-9]*$'
+cat F$jobID-S$learnStrat | grep '^learnStrategy [0-9]*$'
 
 echo Start Time is `date`
-./main.out
+./main.out F$jobID-S$learnStrat
 echo Finish Time is `date`

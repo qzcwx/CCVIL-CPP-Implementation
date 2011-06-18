@@ -70,6 +70,9 @@ class RunParameter{
 		// default constructor
 		RunParameter();
 
+		// constructor with configuration file name specified
+		RunParameter(char* filePath); 
+
 		// default destructor
 		~RunParameter();
 };
