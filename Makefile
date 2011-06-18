@@ -1,4 +1,4 @@
-CC=g++-4.4
+CC=g++
 SHARKLIB=/usr/lib/
 SHARKINC=/usr/include/
 LDLIBS=-lshark
