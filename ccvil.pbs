@@ -28,3 +28,6 @@ cat F$jobID-S$learnStrat | grep '^learnStrategy [0-9]*$'
 echo Start Time is `date`
 ./main.out F$jobID-S$learnStrat
 echo Finish Time is `date`
+
+# remove intermediate file
+rm F$jobID-S$learnStrat
