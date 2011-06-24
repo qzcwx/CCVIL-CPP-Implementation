@@ -1,5 +1,5 @@
 #!/bin/sh
-#PBS -N STDOUT-$jobID-$learnStrat
+#PBS -N STD-$fun-$strat-$dim
 #PBS -M chenwx.ustc@gmail.com
 #PBS -l cput=480:0:00
 #PBS -l walltime=300:0:0
@@ -9,24 +9,26 @@ cat $PBS_NODEFILE
 
 cd /home/fb16/tweise/test/workspace/CCVIL
 
-echo Job ID: $jobID, partialGroup $parGroup, learnStrategy $learnStrat
+echo Function ID: $fun, learnStrategy $strat, dimension $dim
 
 # modify function to fun
-sed "s/^functionToRun [0-9]*$/functionToRun $jobID/" configure.ini > F$jobID-S$learnStrat
+sed "s/^functionToRun [0-9]*$/functionToRun $fun/" configure.ini > F$fun-S$strat-D$dim
 
 # modify the percentage of known grouping information to fun
 #sed "s/^knownGroupPercent [0-9]*$/knownGroupPercent $parGroup/" configure.ini > temp1
 #cat temp1 > configure.ini
 
-sed -i "s/^learnStrategy [0-9]*$/learnStrategy $learnStrat/" F$jobID-S$learnStrat
+sed -i "s/^learnStrategy [0-9]*$/learnStrategy $strat/" F$fun-S$strat-D$dim
 
-# checkout whether the modified result is correct or not
-cat F$jobID-S$learnStrat | grep '^functionToRun [0-9]*$'
-#cat configure.ini | grep '^knownGroupPercent [0-9]*$'
-cat F$jobID-S$learnStrat | grep '^learnStrategy [0-9]*$'
+sed -i "s/^dimension [0-9]*$/dimension $dim/" F$fun-S$strat-D$dim
+
+# check whether the modified result is correct or not
+cat F$fun-S$strat-$dim | grep '^functionToRun [0-9]*$'
+cat F$fun-S$strat-$dim | grep '^learnStrategy [0-9]*$'
+cat F$fun-S$strat-$dim | grep '^dimension [0-9]*$'
 
 echo Start Time is `date`
-./main.out F$jobID-S$learnStrat
+./main.out F$fun-S$strat-$dim
 echo Finish Time is `date`
 
 # remove intermediate file
