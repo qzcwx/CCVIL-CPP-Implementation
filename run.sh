@@ -1,11 +1,11 @@
 #!/bin/bash
 make
 
-for ((i = 1;i<=20;i=$i+1)) 
+for ((i = 1; i<=20; i=$i+1)) 
 do
 	for ((j = 5; j<=5; j=$j+1))
 	do
-		for k in 50 100 200 500 1000 2000
+		for k in 1000
 		do
 			#	sed "s/^functionToRun [0-9]*$/functionToRun $i/" configure.ini > temp
 			#	cat temp > configure.ini
