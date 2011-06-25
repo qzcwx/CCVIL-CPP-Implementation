@@ -76,12 +76,14 @@ void CCVIL::run(){
 	// in result folder
 	string resultStr("result/resF");
 	resultStr += itos(fp->getID());
-	if (param->learnStrategy != 0){
-		resultStr += "-";
+	if (param->learnStrategy >= 1 && param->learnStrategy <= 3){
+		resultStr += "-P";
 		resultStr += itos (floor(param->knownGroupPercent[0]*100));
 	}
-	resultStr += "-";
+	resultStr += "-S";
 	resultStr += itos(param->learnStrategy);
+	resultStr += "-D";
+	resultStr += itos(param->dimension);
 	resultStr += ".txt";
 	printf("resultStr = %s", resultStr.c_str());
 	printf("\n");
@@ -89,12 +91,14 @@ void CCVIL::run(){
 
 	string timeStr("result/timeF");
 	timeStr += itos(fp->getID());
-	if (param->learnStrategy != 0){
-		timeStr += "-";
+	if (param->learnStrategy >= 1 && param->learnStrategy <= 3){
+		timeStr += "-P";
 		timeStr += itos (floor(param->knownGroupPercent[0]*100));
 	}
-	timeStr += "-";
+	timeStr += "-S";
 	timeStr += itos(param->learnStrategy);
+	timeStr += "-D";
+	timeStr += itos(param->dimension);
 	timeStr += ".txt";
 	printf("timeStr = %s", timeStr.c_str());
 	printf("\n");
@@ -103,17 +107,17 @@ void CCVIL::run(){
 	for (unsigned i=0; i < param->numOfRun; i++){
 		printf ( "\n\n\n========================== F %d, Run %d ========================\n\n\n", fp->getID(), i+1 );
 
-//		if ( param->learnStrategy >= 1 && param->learnStrategy<=3 ){
-			/************************* re-initialize the sampling points *************************/
-			groupInfo.clear();
-			// initialize the groupInfo
-			for (unsigned j = 0; j<param->dimension; j++){
-				vector<unsigned> tempVec;
-				tempVec.push_back(j);
-				lookUpGroup[j] = j;
-				groupInfo.push_back(tempVec);
-			}
-//		}
+		//		if ( param->learnStrategy >= 1 && param->learnStrategy<=3 ){
+		/************************* re-initialize the sampling points *************************/
+		groupInfo.clear();
+		// initialize the groupInfo
+		for (unsigned j = 0; j<param->dimension; j++){
+			vector<unsigned> tempVec;
+			tempVec.push_back(j);
+			lookUpGroup[j] = j;
+			groupInfo.push_back(tempVec);
+		}
+		//		}
 
 		samplingPoints.clear();
 		for (unsigned j=0 ; j<= param->samplingPoint; j++){
@@ -132,6 +136,8 @@ void CCVIL::run(){
 		}
 		groupStr += "-S";
 		groupStr += itos(param->learnStrategy);
+		groupStr += "-D";
+		groupStr += itos(param->dimension);
 		groupStr += ".txt";
 		printf("groupStr = %s", groupStr.c_str());
 		printf("\n");
@@ -147,6 +153,8 @@ void CCVIL::run(){
 		}
 		groupFesStr += "-S";
 		groupFesStr += itos(param->learnStrategy);
+		groupFesStr += "-D";
+		groupFesStr += itos(param->dimension);
 		groupFesStr += ".txt";
 		printf("groupFesStr = %s", groupFesStr.c_str());
 		printf("\n");
@@ -162,6 +170,8 @@ void CCVIL::run(){
 		}
 		fesStr += "-S";
 		fesStr += itos(param->learnStrategy);
+		fesStr += "-D";
+		fesStr += itos(param->dimension);
 		fesStr += ".txt";
 		printf("fesStr = %s", fesStr.c_str());
 		printf("\n");
@@ -177,6 +187,8 @@ void CCVIL::run(){
 		}
 		valStr += "-S";
 		valStr += itos(param->learnStrategy);
+		valStr += "-D";
+		valStr += itos(param->dimension);
 		valStr += ".txt";
 		printf("valStr = %s", valStr.c_str());
 		printf("\n");
@@ -189,7 +201,7 @@ void CCVIL::run(){
 
 		groupRec.push_back(groupInfo.size());
 		groupFesRec.push_back(fes);
-		
+
 		//		printf ( "Vector, size of interaction array =%d\n", (fp->getInterArray()).size() );
 		//		printVector(fp->getInterArray());
 
@@ -518,17 +530,17 @@ CCVIL::BinSearchRandWalk ()
 		}
 
 		// update the localBest by selecting the best Individual from the improveIndivVec
-//		if (improveIndivVec.size()>0){
-//			printf ( "Number of improved individual vector = %d\n",  improveIndivVec.size());
-//			unsigned bestIndivIndex=0; 
-//			for (unsigned i=0; i< improveIndivVec.size(); i++){
-//				if (improveIndivVec[i].getFitness()<localBest.getFitness()&&improveIndivVec[i].getFitness()<improveIndivVec[bestIndivIndex].getFitness()){
-//					bestIndivIndex = i; 
-//					printf ( "Update i = %d\n" , i);
-//				}	
-//			}
-//			localBest = improveIndivVec[bestIndivIndex]; 
-//		}
+		//		if (improveIndivVec.size()>0){
+		//			printf ( "Number of improved individual vector = %d\n",  improveIndivVec.size());
+		//			unsigned bestIndivIndex=0; 
+		//			for (unsigned i=0; i< improveIndivVec.size(); i++){
+		//				if (improveIndivVec[i].getFitness()<localBest.getFitness()&&improveIndivVec[i].getFitness()<improveIndivVec[bestIndivIndex].getFitness()){
+		//					bestIndivIndex = i; 
+		//					printf ( "Update i = %d\n" , i);
+		//				}	
+		//			}
+		//			localBest = improveIndivVec[bestIndivIndex]; 
+		//		}
 	}
 
 	(*bestCand)[0].initialize(fp->getMinX(), fp->getMaxX());
@@ -1088,7 +1100,7 @@ CCVIL::RandomWalkGenDef (  )
 		while ( (indexI==indexJ || lookUpGroup[indexI]==lookUpGroup[indexJ])&& groupInfo.size()!=1 ){
 			indexI = floor(Rng::uni()*param->dimension);
 			indexJ = floor(Rng::uni()*param->dimension);
-	}
+		}
 
 		randi = Rng::uni() * (fp->getMaxX() - fp->getMinX()) + fp->getMinX(); 
 		indiv[0][indexJ] = randi; 
@@ -1154,8 +1166,8 @@ void CCVIL::optimizationStage(){
 		//				fp->getID(), 	cycle, 			(int)groupInfo.size(), fes, improveRate, bestCand->fitnessValue());
 
 		for (unsigned i=0; i<groupAmount && fes<MaxFitEval; i++) {
-//			printf ( "Phase = %d\n" , i);
-//			printf ( "*****************************************************\n" );
+			//			printf ( "Phase = %d\n" , i);
+			//			printf ( "*****************************************************\n" );
 			if (failCounter[i] <= param->failThreshold){
 				//only optimize on current group, if no a single improvement in the past "failThreshold" successive cycle
 				innerImprove = JADECC(i,learnStageFlag);
@@ -1553,10 +1565,11 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 		////			printf ( "after adaptation, CRm = %f, Fm = %f\n", CRm, Fm );
 		//		}
 
-		/* Adaptation in rJADE by [Fei Peng al. et. CEC 2009] */
 		//		printf("rJADE adaptation: CRm = %f, Fm = %f\n", CRm, Fm);
 		if (goodCR.size()>0 && sum(goodF)>0){
-			CRm = (1-c)*CRm + c*sum(dotMultiply(f_rec, goodCR))/sum(f_rec);
+		/* Original Adaptation in JADE by [Zhang, Anderson. TEC 2009] */
+			CRm = (1-c)*CRm + c*sum(goodCR)/goodCR.size();
+			// CRm = (1-c)*CRm + c*sum(dotMultiply(f_rec, goodCR))/sum(f_rec);
 			Fm = (1-c)*Fm + c*sum(dotMultiply(goodF, goodF))/sum(goodF);
 			//			printf ( "after adaptation, CRm = %f, Fm = %f\n", CRm, Fm );
 		}
