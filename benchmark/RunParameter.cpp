@@ -39,6 +39,7 @@ RunParameter::RunParameter(){
 //						cout<<"confType = "<<confType.c_str()<<endl;
 						if (strcmp(confType.c_str(), "dimension")==0){
 							dimension = atoi (strArray);
+							nonSeparableGroupSize = dimension/20; 
 						}else if (strcmp(confType.c_str(), "functionToRun")==0){
 							functionToRun.push_back(atoi (strArray));
 						}else if (strcmp(confType.c_str(), "numOfRun")==0){

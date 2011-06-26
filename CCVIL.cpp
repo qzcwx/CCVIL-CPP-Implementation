@@ -30,7 +30,8 @@ CCVIL::CCVIL(RunParameter* runParam){
 	lookUpGroup = new unsigned[param->dimension];
 	impreciseGroup = new bool[param->dimension];
 
-	MaxFitEval = runParam->fitnessCheckPoint[(*runParam).fitnessCheckPoint.size()-1];
+	// MaxFitEval = runParam->fitnessCheckPoint[(*runParam).fitnessCheckPoint.size()-1];
+	MaxFitEval = param->dimension * 5000;
 	cout<<"Max Fitness Evaluation = "<<MaxFitEval<<endl;
 
 	if (param->learnStrategy==0){
@@ -1567,7 +1568,7 @@ unsigned CCVIL::JADECC(unsigned index, bool learnStageFlag){
 
 		//		printf("rJADE adaptation: CRm = %f, Fm = %f\n", CRm, Fm);
 		if (goodCR.size()>0 && sum(goodF)>0){
-		/* Original Adaptation in JADE by [Zhang, Anderson. TEC 2009] */
+			/* Original Adaptation in JADE by [Zhang, Anderson. TEC 2009] */
 			CRm = (1-c)*CRm + c*sum(goodCR)/goodCR.size();
 			// CRm = (1-c)*CRm + c*sum(dotMultiply(f_rec, goodCR))/sum(f_rec);
 			Fm = (1-c)*Fm + c*sum(dotMultiply(goodF, goodF))/sum(goodF);

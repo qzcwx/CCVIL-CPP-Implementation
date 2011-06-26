@@ -1,11 +1,5 @@
 #include "Header.h"
 
-//int main(int argc, char **argv){
-//	printf ( "argc = %d\n", argc );
-//	for (int i=1; i<argc; i++){
-//		printf ( "arg %d: %s\n", i, argv[i] );
-//	}
-//}
 
 int main(int argc, char **argv){
 
