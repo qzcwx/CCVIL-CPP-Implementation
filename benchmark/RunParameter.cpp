@@ -39,7 +39,6 @@ RunParameter::RunParameter(){
 //						cout<<"confType = "<<confType.c_str()<<endl;
 						if (strcmp(confType.c_str(), "dimension")==0){
 							dimension = atoi (strArray);
-							nonSeparableGroupSize = (int)(dimension/(double)20); 
 						}else if (strcmp(confType.c_str(), "functionToRun")==0){
 							functionToRun.push_back(atoi (strArray));
 						}else if (strcmp(confType.c_str(), "numOfRun")==0){
@@ -104,6 +103,9 @@ RunParameter::RunParameter(){
 	printf("Initial Random Seed = %d\n", initRandomSeed);
 	srand(initRandomSeed);
 
+	printf ( "Dimension = %d\n", dimension );
+
+	nonSeparableGroupSize = (int)(dimension/(double)20); 
 	printf ( "Non-separable group size = %d\n", nonSeparableGroupSize );
 
 	printf ( "Percentage of pior grouping information\n" );
@@ -218,6 +220,9 @@ RunParameter::RunParameter(char* filePath){
 	printf("Initial Random Seed = %d\n", initRandomSeed);
 	srand(initRandomSeed);
 
+	printf ( "Dimension = %d\n", dimension );
+
+	nonSeparableGroupSize = (int)(dimension/(double)20); 
 	printf ( "Non-separable group size = %d\n", nonSeparableGroupSize );
 
 	printf ( "Percentage of pior grouping information\n" );

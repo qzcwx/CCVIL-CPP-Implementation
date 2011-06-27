@@ -39,7 +39,7 @@ CCVIL::CCVIL(RunParameter* runParam){
 		upperThreshold = min(round(MaxFitEval*param->learnPortion/(runParam->dimension*((1+1)*(3)+1))), 800.0); 
 	}
 	else if (param->learnStrategy==5){
-		lowerThreshold = 4 * param->dimension;
+		lowerThreshold = 4 * param->dimension* (1+log(param->dimension)/log(2)); 
 		upperThreshold = 4 * (log(1-0.95)/log(1 - 2/(double)param->dimension)) * (1+log(param->dimension)/log(2)); 
 	}
 	else if (param->learnStrategy>=4){

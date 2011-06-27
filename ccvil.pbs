@@ -7,7 +7,7 @@
 echo "I ran on:"
 cat $PBS_NODEFILE
 
-cd /home/fb16/tweise/test/workspace/CCVIL
+cd /home/fb16/tweise/exp/workspace/CCVIL
 
 echo Function ID: $fun, learnStrategy $strat, dimension $dim
 
