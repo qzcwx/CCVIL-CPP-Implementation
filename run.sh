@@ -14,7 +14,7 @@ do
 			#	cat configure.ini | grep '^functionToRun [0-9]*$'
 			# ./submit.sh $i
 			qsub ccvil.pbs -v fun=$i,strat=$j,dim=$k
-			sleep 2
+			sleep 1
 		done
 	done
 done
